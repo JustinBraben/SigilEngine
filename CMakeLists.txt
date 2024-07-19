@@ -1,6 +1,21 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(Sigil VERSION 0.1.0 LANGUAGES CXX)
+project(
+    Sigil 
+    VERSION 0.1.0
+    DESCRIPTION "Basic 2D Game Engine using SDL libraries and EnTT"
+    HOMEPAGE_URL "https://github.com/JustinBraben/SigilEngine"
+    LANGUAGES C CXX
+)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+message(VERBOSE "*")
+message(VERBOSE "* ${PROJECT_NAME} v${PROJECT_VERSION} (${CMAKE_BUILD_TYPE})")
+message(VERBOSE "* Copyright (c) 2024-2024 Justin Braben <brabenj1996@gmail.com>")
+message(VERBOSE "*")
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -53,24 +68,67 @@ include_directories(
 
 set(
     HEADERS
-    include/Sigil/engine.hpp
-    include/Sigil/sigil.hpp
+    "include/Sigil/config.hpp"
+    "include/Sigil/engine.hpp"
+    "include/Sigil/sigil.hpp"
 )
 
 set(
     SOURCES
-    src/engine.cpp
+    "src/engine.cpp"
+    "src/config.cpp"
 )
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})
 
 # Set include directories for users of this library
-target_include_directories(Sigil
-    PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+target_include_directories(
+    Sigil
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+
+target_link_libraries(
+    Sigil 
+        PRIVATE 
+            SDL2::SDL2-static SDL2_image::SDL2_image-static SDL2_ttf::SDL2_ttf-static 
+            EnTT::EnTT 
+            nlohmann_json::nlohmann_json
+)
+
 target_compile_features(Sigil PUBLIC cxx_std_20)
 
 # TODO: this should be done by game cmakelists.txt?
 # Copy resources to binary location
 # file(COPY resources DESTINATION ${CMAKE_BINARY_DIR})
+
+# Tests
+
+option(SIGIL_BUILD_TESTING "Enable building tests." OFF)
+
+if(SIGIL_BUILD_TESTING)
+    option(SIGIL_FIND_GTEST_PACKAGE "Enable finding gtest package." OFF)
+    option(SIGIL_BUILD_BENCHMARK "Build benchmark." OFF)
+    option(SIGIL_BUILD_EXAMPLE "Build examples." OFF)
+    option(SIGIL_BUILD_LIB "Build lib tests." OFF)
+    option(SIGIL_BUILD_SNAPSHOT "Build snapshot test with Cereal." OFF)
+
+    set(SIGIL_ID_TYPE std::uint32_t CACHE STRING "Type of identifiers to use for the tests")
+    set(SIGIL_CXX_STD cxx_std_17 CACHE STRING "C++ standard revision to use for the tests")
+
+    include(CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif()
+
+# Documentation
+
+option(SIGIL_BUILD_DOCS "Enable building with documentation." OFF)
+
+if(SIGIL_BUILD_DOCS)
+    find_package(Doxygen 1.10)
+
+    if(DOXYGEN_FOUND)
+        add_subdirectory(docs)
+    endif()
+endif()

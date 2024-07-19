@@ -11,4 +11,4 @@ namespace Sigil
 	};
 }
 
-#endif
+#endif // SIGIL_ENGINE_HPP
