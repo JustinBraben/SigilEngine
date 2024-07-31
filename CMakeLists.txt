@@ -71,13 +71,14 @@ set(
     "include/Sigil/config.hpp"
     "include/Sigil/engine.hpp"
     "include/Sigil/sigil.hpp"
+    "include/Sigil/renderer.hpp"
 )
 
 set(
     SOURCES
     "src/engine.cpp"
     "src/config.cpp"
-)
+ "src/renderer.cpp")
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})
 

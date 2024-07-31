@@ -8,6 +8,10 @@ namespace Sigil
 	public:
 		Engine();
 		~Engine();
+
+		void init();
+
+
 	};
 }
 
