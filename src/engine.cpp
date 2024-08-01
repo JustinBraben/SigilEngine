@@ -2,7 +2,7 @@
 
 namespace Sigil
 {
-	Sigil::Engine::Engine()
+	Engine::Engine(Configuration& configuration)
 	{
 	}
 	Engine::~Engine()

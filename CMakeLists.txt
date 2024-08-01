@@ -78,7 +78,8 @@ set(
     SOURCES
     "src/engine.cpp"
     "src/config.cpp"
- "src/renderer.cpp")
+    "src/renderer.cpp"
+)
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})
 
