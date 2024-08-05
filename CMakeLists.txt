@@ -104,6 +104,15 @@ target_compile_features(Sigil PUBLIC cxx_std_20)
 # Copy resources to binary location
 # file(COPY resources DESTINATION ${CMAKE_BINARY_DIR})
 
+# Examples
+
+option(SIGIL_BUILD_EXAMPLES "Build examples." OFF)
+
+if(SIGIL_BUILD_EXAMPLES)
+    message("Building Examples...")
+    add_subdirectory(examples)
+endif()
+
 # Tests
 
 option(SIGIL_BUILD_TESTING "Enable building tests." OFF)
@@ -111,12 +120,11 @@ option(SIGIL_BUILD_TESTING "Enable building tests." OFF)
 if(SIGIL_BUILD_TESTING)
     option(SIGIL_FIND_GTEST_PACKAGE "Enable finding gtest package." OFF)
     option(SIGIL_BUILD_BENCHMARK "Build benchmark." OFF)
-    option(SIGIL_BUILD_EXAMPLE "Build examples." OFF)
     option(SIGIL_BUILD_LIB "Build lib tests." OFF)
     option(SIGIL_BUILD_SNAPSHOT "Build snapshot test with Cereal." OFF)
 
     set(SIGIL_ID_TYPE std::uint32_t CACHE STRING "Type of identifiers to use for the tests")
-    set(SIGIL_CXX_STD cxx_std_17 CACHE STRING "C++ standard revision to use for the tests")
+    set(SIGIL_CXX_STD cxx_std_20 CACHE STRING "C++ standard revision to use for the tests")
 
     include(CTest)
     enable_testing()

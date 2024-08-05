@@ -35,6 +35,14 @@
       }
     },
     {
+      "name": "Build-Examples",
+      "displayName": "Build Examples",
+      "inherits": "x64-debug",
+      "cacheVariables": {
+        "SIGIL_BUILD_EXAMPLES": "ON"
+      }
+    },
+    {
       "name": "Build-Docs",
       "displayName": "Build Docs",
       "inherits": "x64-debug",
