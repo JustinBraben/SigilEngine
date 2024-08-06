@@ -1,3 +1,4 @@
+#define SDL_MAIN_HANDLED
 #include <Sigil/Sigil.hpp>
 #include <iostream>
 

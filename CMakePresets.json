@@ -43,6 +43,14 @@
       }
     },
     {
+      "name": "Build-Shared",
+      "displayName": "Build Shared",
+      "inherits": "x64-debug",
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": "ON"
+      }
+    },
+    {
       "name": "Build-Docs",
       "displayName": "Build Docs",
       "inherits": "x64-debug",

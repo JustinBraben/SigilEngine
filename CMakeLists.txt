@@ -12,6 +12,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
 message(VERBOSE "*")
 message(VERBOSE "* ${PROJECT_NAME} v${PROJECT_VERSION} (${CMAKE_BUILD_TYPE})")
 message(VERBOSE "* Copyright (c) 2024-2024 Justin Braben <brabenj1996@gmail.com>")
