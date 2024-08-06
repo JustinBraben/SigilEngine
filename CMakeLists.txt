@@ -94,7 +94,7 @@ target_include_directories(
 target_link_libraries(
     Sigil
         PUBLIC
-            SDL2::SDL2 SDL2_image SDL2_ttf::SDL2_ttf
+            SDL2::SDL2 SDL2_image SDL2_ttf
             EnTT::EnTT
             nlohmann_json::nlohmann_json
 )
