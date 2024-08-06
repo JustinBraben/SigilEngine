@@ -8,6 +8,10 @@ class FallingBlocksScene : public Sigil::SceneBase
 	// Code goes here to extend the scene to your choosing
 };
 
+class SceneA : public Sigil::SceneBase{};
+
+class SceneB : public Sigil::SceneBase{};
+
 int main()
 {
 	json config_json;
@@ -45,6 +49,17 @@ int main()
 
 	// TODO: Add actions to scene, as every scene should have their own actions
 	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("game_quit", SDLK_ESCAPE);
+
+	auto sceneA = std::make_shared<SceneA>();
+	auto sceneB = std::make_shared<SceneB>();
+	engine.sceneManager().addScene("sceneA", sceneA);
+	engine.sceneManager().addScene("sceneB", sceneB);
+
+	// TODO: Make functionality like this
+	// engine.sceneManager().switchToScene("sceneA");
+	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
+	// engine.sceneManager().switchToScene("sceneB");
+	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
 
 	engine.mainLoop().run();
 
