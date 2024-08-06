@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(
-    Sigil 
+    Sigil
     VERSION 0.1.0
-    DESCRIPTION "Basic 2D Game Engine using SDL libraries and EnTT"
+    DESCRIPTION "Basic 2D Game Engine using SDL libraries, EnTT, and nlohmann::json"
     HOMEPAGE_URL "https://github.com/JustinBraben/SigilEngine"
     LANGUAGES C CXX
 )
@@ -23,9 +23,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
-set(BUILD_SHARED_LIBS OFF)
-set(SDL_SHARED OFF)
-set(SDL_STATIC ON)
+# set(BUILD_SHARED_LIBS OFF)
+# set(SDL_SHARED OFF)
+# set(SDL_STATIC ON)
 FetchContent_Declare(
     SDL2
     GIT_REPOSITORY  https://github.com/libsdl-org/SDL.git
@@ -82,6 +82,7 @@ set(
 )
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})
+add_library(Sigil::Sigil ALIAS Sigil)
 
 # Set include directories for users of this library
 target_include_directories(
@@ -92,8 +93,8 @@ target_include_directories(
 
 target_link_libraries(
     Sigil 
-        PRIVATE 
-            SDL2::SDL2-static SDL2_image::SDL2_image-static SDL2_ttf::SDL2_ttf-static 
+        PUBLIC 
+            SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf
             EnTT::EnTT 
             nlohmann_json::nlohmann_json
 )

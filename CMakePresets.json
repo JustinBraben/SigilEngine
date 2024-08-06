@@ -128,6 +128,14 @@
       }
     },
     {
+      "name": "macos-Build-Examples",
+      "displayName": "macos Build Examples",
+      "inherits": "macos-debug",
+      "cacheVariables": {
+        "SIGIL_BUILD_EXAMPLES": "ON"
+      }
+    },
+    {
       "name": "macos-release",
       "displayName": "macOS Release",
       "inherits": "macos-base",
