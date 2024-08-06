@@ -98,6 +98,7 @@ set(
     "include/Sigil/Renderer.hpp"
     "include/Sigil/InitializerBase.hpp"
     "include/Sigil/MainLoop.hpp"
+    "include/Sigil/Timer.hpp"
 )
 
 set(
@@ -106,6 +107,7 @@ set(
     "src/Renderer.cpp"
     "src/InitializerBase.cpp"
     "src/MainLoop.cpp"
+    "src/Timer.cpp"
 )
 
 add_library(Sigil ${HEADERS} ${SOURCES})

@@ -2,6 +2,7 @@
 #define SIGIL_ENGINE_HPP
 
 #include <Sigil/Renderer.hpp>
+#include <Sigil/MainLoop.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -20,12 +21,15 @@ namespace Sigil
 
 		void init();
 
+		MainLoop& mainLoop();
+
 		SDL_Window* window;
 
 	private:
 		json config;
 
 		Renderer m_renderer;
+		MainLoop m_mainLoop;
 	};
 }
 

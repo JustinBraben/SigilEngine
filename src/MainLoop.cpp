@@ -2,12 +2,13 @@
 
 namespace Sigil {
 
-    MainLoop::MainLoop(int fps)
-        : fps(fps), running(false) {}
+    MainLoop::MainLoop()
+        : running(false) {}
 
     void MainLoop::run() 
     {
         running = true;
+        std::cout << "MainLoop::run() called\n";
 
         // // While running handle events, until quit
         // while (running)

@@ -1,7 +1,7 @@
 #ifndef SIGIL_RENDERER_HPP
 #define SIGIL_RENDERER_HPP
 
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 
 namespace Sigil
 {

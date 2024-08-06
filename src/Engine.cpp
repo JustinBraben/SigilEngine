@@ -47,4 +47,9 @@ namespace Sigil
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
 		}
 	}
+
+	MainLoop& Engine::mainLoop()
+	{
+		return m_mainLoop;
+	}
 }

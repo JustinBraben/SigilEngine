@@ -37,7 +37,7 @@ int main()
 	// engine.scenes().add_scene("test", testscene);
 	// engine.scenes().switch_to_scene("test");
 
-	// engine.mainloop().run();
+	engine.mainLoop().run();
 
 	return return_code;
 }

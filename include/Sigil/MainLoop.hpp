@@ -1,15 +1,16 @@
 #ifndef SIGIL_MAIN_LOOP_HPP
 #define SIGIL_MAIN_LOOP_HPP
 
+#include <iostream>
+
 namespace Sigil {
     class MainLoop {
     public:
-        MainLoop(int fps);
+        MainLoop();
 
         void run();
         void quit();
     private:
-        int fps;
         bool running;
     };
 }
