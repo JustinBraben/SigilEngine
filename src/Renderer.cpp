@@ -22,4 +22,4 @@ namespace Sigil
 	{
 		SDL_RenderPresent(m_renderer);
 	}
-}
+} // namespace Sigil

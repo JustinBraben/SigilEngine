@@ -16,6 +16,6 @@ namespace Sigil
 	private:
 		SDL_Renderer* m_renderer;
 	};
-}
+} // namespace Sigil
 
 #endif // SIGIL_RENDERER_HPP

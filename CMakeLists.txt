@@ -105,6 +105,8 @@ set(
 
     "include/Sigil/Scene/SceneBase.hpp"
     "include/Sigil/Scene/SceneManager.hpp"
+
+    "include/Sigil/Action/ActionManager.hpp"
 )
 
 set(
@@ -117,6 +119,8 @@ set(
 
     "src/Scene/SceneBase.cpp"
     "src/Scene/SceneManager.cpp"
+
+    "src/Action/ActionManager.cpp"
 )
 
 add_library(Sigil ${HEADERS} ${SOURCES})

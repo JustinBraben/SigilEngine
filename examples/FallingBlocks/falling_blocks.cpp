@@ -17,6 +17,7 @@ int main()
 	json config_json;
 	int return_code = 0;
 
+	// Setup config for game
 	config_json["fps"] = 60;
 	config_json["display"]["name"] = "Falling Blocks";
 	config_json["display"]["width"] = 1024;
@@ -31,8 +32,24 @@ int main()
 
 	engine.init();
 
-	// engine.actions().register_keyboard_action("ui_quit", SDLK_ESCAPE);
+	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
+	engine.sceneManager().addScene("fallingBlockScene", fallingBlockScene);
+	engine.sceneManager().switchToScene("fallingBlockScene");
+	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
 
+	auto sceneA = std::make_shared<SceneA>();
+	auto sceneB = std::make_shared<SceneB>();
+	engine.sceneManager().addScene("sceneA", sceneA);
+	engine.sceneManager().addScene("sceneB", sceneB);
+
+	engine.sceneManager().switchToScene("sceneA");
+	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
+	engine.sceneManager().switchToScene("sceneB");
+	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
+
+	// TODO: Work on mainLoop queueProcessHandler
+	// use it to take action such as moving scenes
+	// or quiting the window
 	// engine.mainloop().queue_process_handler(
 	// 	[&](Uint32)
 	// 	{
@@ -42,24 +59,6 @@ int main()
 	// 		}
 	// 	}
 	// );
-
-	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
-	engine.sceneManager().addScene("fallingBlockScene", fallingBlockScene);
-	engine.sceneManager().switchToScene("fallingBlockScene");
-
-	// TODO: Add actions to scene, as every scene should have their own actions
-	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("game_quit", SDLK_ESCAPE);
-
-	auto sceneA = std::make_shared<SceneA>();
-	auto sceneB = std::make_shared<SceneB>();
-	engine.sceneManager().addScene("sceneA", sceneA);
-	engine.sceneManager().addScene("sceneB", sceneB);
-
-	// TODO: Make functionality like this
-	// engine.sceneManager().switchToScene("sceneA");
-	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
-	// engine.sceneManager().switchToScene("sceneB");
-	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
 
 	engine.mainLoop().run();
 

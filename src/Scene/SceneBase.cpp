@@ -15,4 +15,9 @@ namespace Sigil
 	{
 		return m_name;
 	}
-}
+
+	ActionManager& SceneBase::actionManager()
+	{
+		return m_actionManager;
+	}
+} // namespace Sigil

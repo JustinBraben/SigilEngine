@@ -1,12 +1,10 @@
 #include <Sigil/Scene/SceneManager.hpp>
+#include <Sigil/Engine.hpp>
 
 namespace Sigil
 {
-	SceneManager::SceneManager() 
-		: m_currentScene(nullptr)
-	{
-
-	}
+	SceneManager::SceneManager(Sigil::Engine& engine)
+		: engine(engine), m_currentScene(nullptr) {}
 
 	SceneManager::~SceneManager() 
 	{
@@ -34,4 +32,4 @@ namespace Sigil
 	{
 		return m_currentScene;
 	}
-}
+} // namespace Sigil

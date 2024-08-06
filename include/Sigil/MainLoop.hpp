@@ -13,6 +13,6 @@ namespace Sigil {
     private:
         bool m_running;
     };
-}
+} // namespace Sigil
 
 #endif // SIGIL_MAIN_LOOP_HPP

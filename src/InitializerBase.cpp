@@ -23,4 +23,4 @@ namespace Sigil {
     {
         return false;
     }
-}
+} // namespace Sigil

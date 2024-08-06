@@ -7,6 +7,6 @@ namespace Sigil
         OK,
         FAILED
     };
-}
+} // namespace Sigil
 
 #endif // SIGIL_ERROR_HPP
