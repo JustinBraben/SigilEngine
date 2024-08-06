@@ -37,7 +37,11 @@ namespace Sigil
 		}
 
 		//Create window
-		window = SDL_CreateWindow("Falling Blocks", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN);
+		auto displayNameCString = config["display"]["name"].dump().c_str();
+		auto width = config["display"]["width"].template get<int>();
+		auto height = config["display"]["height"].template get<int>();
+
+		window = SDL_CreateWindow(displayNameCString, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 		if (window == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());

@@ -17,7 +17,34 @@ message(VERBOSE "* ${PROJECT_NAME} v${PROJECT_VERSION} (${CMAKE_BUILD_TYPE})")
 message(VERBOSE "* Copyright (c) 2024-2024 Justin Braben <brabenj1996@gmail.com>")
 message(VERBOSE "*")
 
+# Compiler stuff
+
+option(SIGIL_USE_LIBCPP "Use libc++ by adding -stdlib=libc++ flag if available." OFF)
+
+if(SIGIL_USE_LIBCPP)
+    if(NOT WIN32)
+        include(CheckCXXSourceCompiles)
+        include(CMakePushCheckState)
+
+        cmake_push_check_state()
+
+        set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -stdlib=libc++")
+
+        check_cxx_source_compiles("
+            #include<type_traits>
+            int main() { return std::is_same_v<int, char>; }
+        " SIGIL_HAS_LIBCPP)
+
+        cmake_pop_check_state()
+    endif()
+
+    if(NOT SIGIL_HAS_LIBCPP)
+        message(VERBOSE "The option SIGIL_USE_LIBCPP is set but libc++ is not available.")
+    endif()
+endif()
+
 # Set C++ standard
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -100,6 +127,10 @@ target_link_libraries(
 )
 
 target_compile_features(Sigil PUBLIC cxx_std_20)
+
+if(SIGIL_HAS_LIBCPP)
+    target_compile_options(Sigil BEFORE PUBLIC -stdlib=libc++)
+endif()
 
 # TODO: this should be done by game cmakelists.txt?
 # Copy resources to binary location
