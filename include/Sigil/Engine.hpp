@@ -9,24 +9,24 @@
 
 using json = nlohmann::json;
 
-namespace Sigil
-{
-	class Engine
-	{
-	public:
-		Engine() = delete;
-		Engine(json configuration);
-		~Engine();
+namespace Sigil {
 
-		void init();
+class Engine {
+public:
+  Engine() = delete;
+  Engine(json configuration);
+  ~Engine();
 
-		SDL_Window* window;
+  void init();
 
-	private:
-		json config;
+  SDL_Window *window;
 
-		Renderer m_renderer;
-	};
-}
+private:
+  json config;
+
+  Renderer m_renderer;
+};
+
+} // namespace Sigil
 
 #endif // SIGIL_ENGINE_HPP

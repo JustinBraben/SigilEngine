@@ -3,19 +3,19 @@
 
 #include "SDL2/SDL.h"
 
-namespace Sigil
-{
-	class Renderer
-	{
-	public:
-		void set_renderer(SDL_Renderer* inputRenderer);
+namespace Sigil {
 
-		bool clear();
-		void present();
+class Renderer {
+public:
+  void set_renderer(SDL_Renderer *inputRenderer);
 
-	private:
-		SDL_Renderer* renderer;
-	};
-}
+  bool clear();
+  void present();
+
+private:
+  SDL_Renderer *renderer;
+};
+
+} // namespace Sigil
 
 #endif // SIGIL_RENDERER_HPP
