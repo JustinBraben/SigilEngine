@@ -1,7 +1,7 @@
 #ifndef SIGIL_ENGINE_HPP
 #define SIGIL_ENGINE_HPP
 
-#include <Sigil/renderer.hpp>
+#include <Sigil/Renderer.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>

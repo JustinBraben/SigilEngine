@@ -66,15 +66,15 @@ include_directories(
 
 set(
     HEADERS
-    "include/Sigil/engine.hpp"
-    "include/Sigil/sigil.hpp"
-    "include/Sigil/renderer.hpp"
+    "include/Sigil/Engine.hpp"
+    "include/Sigil/Sigil.hpp"
+    "include/Sigil/Renderer.hpp"
 )
 
 set(
     SOURCES
-    "src/engine.cpp"
-    "src/renderer.cpp"
+    "src/Engine.cpp"
+    "src/Renderer.cpp"
 )
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})

@@ -1,4 +1,4 @@
-#include <Sigil/renderer.hpp>
+#include <Sigil/Renderer.hpp>
 
 namespace Sigil
 {

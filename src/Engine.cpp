@@ -1,4 +1,4 @@
-#include <Sigil/engine.hpp>
+#include <Sigil/Engine.hpp>
 
 namespace Sigil
 {
