@@ -16,11 +16,11 @@ namespace Sigil {
 
     bool InitializerBase::isInitialized() const
     {
-
+        return false;
     }
 
     bool InitializerBase::isFreed() const
     {
-
+        return false;
     }
 }
