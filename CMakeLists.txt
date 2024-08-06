@@ -81,7 +81,7 @@ set(
     "src/MainLoop.cpp"
 )
 
-add_library(Sigil SHARED ${HEADERS} ${SOURCES})
+add_library(Sigil ${HEADERS} ${SOURCES})
 add_library(Sigil::Sigil ALIAS Sigil)
 
 # Set include directories for users of this library
