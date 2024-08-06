@@ -7,6 +7,7 @@ int main()
 	int return_code = 0;
 
 	config_json["fps"] = 60;
+	config_json["display"]["name"] = "Falling Blocks";
 	config_json["display"]["width"] = 1024;
 	config_json["display"]["height"] = 768;
 	config_json["display"]["fullscreen"] = false;

@@ -9,6 +9,8 @@ namespace Sigil
 
 	Engine::~Engine()
 	{
+		SDL_DestroyWindow(window);
+
 		TTF_Quit();
 		IMG_Quit();
 		SDL_Quit();
@@ -32,6 +34,13 @@ namespace Sigil
 		if (TTF_Init() != 0)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not initialize TTF. SDL_ttf Error: %s", TTF_GetError());
+		}
+
+		//Create window
+		window = SDL_CreateWindow("Falling Blocks", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN);
+		if (window == nullptr)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
 		}
 	}
 }
