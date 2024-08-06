@@ -70,6 +70,7 @@ set(
     "include/Sigil/Sigil.hpp"
     "include/Sigil/Renderer.hpp"
     "include/Sigil/InitializerBase.hpp"
+    "include/Sigil/MainLoop.hpp"
 )
 
 set(
@@ -77,6 +78,7 @@ set(
     "src/Engine.cpp"
     "src/Renderer.cpp"
     "src/InitializerBase.cpp"
+    "src/MainLoop.cpp"
 )
 
 add_library(Sigil SHARED ${HEADERS} ${SOURCES})
