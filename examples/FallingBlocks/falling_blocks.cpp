@@ -1,4 +1,4 @@
-#include <Sigil/sigil.hpp>
+#include <Sigil/Sigil.hpp>
 #include <iostream>
 
 int main()
