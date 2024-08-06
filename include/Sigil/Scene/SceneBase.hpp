@@ -1,6 +1,8 @@
 #ifndef SIGIL_SCENE_BASE_HPP
 #define SIGIL_SCENE_BASE_HPP
 
+#include <Sigil/EngineFwd.hpp>
+
 #include <string>
 
 namespace Sigil 
@@ -11,9 +13,6 @@ namespace Sigil
 		SceneBase();
 		SceneBase(std::string& inputName);
 		~SceneBase();
-
-		virtual void load() = 0;
-		virtual void unload() = 0;
 
 		std::string getName() const;
 

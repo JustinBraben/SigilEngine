@@ -1,6 +1,12 @@
 #define SDL_MAIN_HANDLED
 #include <Sigil/Sigil.hpp>
 #include <iostream>
+#include <memory>
+
+class FallingBlocksScene : public Sigil::SceneBase
+{
+	// Code goes here to extend the scene to your choosing
+};
 
 int main()
 {
@@ -21,7 +27,6 @@ int main()
 
 	engine.init();
 
-	// TODO: Work on action system, and registering them to exit an SDL window
 	// engine.actions().register_keyboard_action("ui_quit", SDLK_ESCAPE);
 
 	// engine.mainloop().queue_process_handler(
@@ -34,9 +39,12 @@ int main()
 	// 	}
 	// );
 
-	// auto testscene = make_shared<TestScene>();
-	// engine.scenes().add_scene("test", testscene);
-	// engine.scenes().switch_to_scene("test");
+	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
+	engine.sceneManager().addScene("fallingBlockScene", fallingBlockScene);
+	engine.sceneManager().switchToScene("fallingBlockScene");
+
+	// TODO: Add actions to scene, as every scene should have their own actions
+	// engine.sceneManager().getCurrentScene().actions().registerKeyboardAction("game_quit", SDLK_ESCAPE);
 
 	engine.mainLoop().run();
 

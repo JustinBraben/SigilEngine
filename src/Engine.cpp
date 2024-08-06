@@ -52,4 +52,9 @@ namespace Sigil
 	{
 		return m_mainLoop;
 	}
+
+	SceneManager& Engine::sceneManager()
+	{
+		return m_sceneManager;
+	}
 }

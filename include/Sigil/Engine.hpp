@@ -3,7 +3,7 @@
 
 #include <Sigil/Renderer.hpp>
 #include <Sigil/MainLoop.hpp>
-#include <Sigil/Scene/SceneBase.hpp>
+#include <Sigil/Scene/SceneManager.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -21,7 +21,9 @@ namespace Sigil
 
 		void init();
 
+		// Acquire references 
 		MainLoop& mainLoop();
+		SceneManager& sceneManager();
 
 		SDL_Window* window;
 
@@ -30,6 +32,7 @@ namespace Sigil
 
 		Renderer m_renderer;
 		MainLoop m_mainLoop;
+		SceneManager m_sceneManager;
 	};
 }
 

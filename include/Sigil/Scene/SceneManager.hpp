@@ -6,10 +6,12 @@
 #include <unordered_map>
 #include <memory>
 #include <string>
+#include <iostream>
 
 namespace Sigil
 {
 	using SceneMap = std::unordered_map<std::string, std::shared_ptr<SceneBase>>;
+	using NameScenePair = std::pair<std::string, std::shared_ptr<SceneBase>>;
 
 	class SceneManager
 	{
@@ -20,8 +22,11 @@ namespace Sigil
 		void addScene(const std::string& name, std::shared_ptr<SceneBase> scene);
 		void switchToScene(const std::string& name);
 
+		std::shared_ptr<SceneBase> getCurrentScene();
 
 	protected:
+		std::shared_ptr<SceneBase> m_currentScene;
+
 		SceneMap m_scenes;
 	};
 }
