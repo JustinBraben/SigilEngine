@@ -11,7 +11,7 @@ namespace Sigil {
         void run();
         void quit();
     private:
-        bool running;
+        bool m_running;
     };
 }
 

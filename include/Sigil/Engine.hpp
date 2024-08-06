@@ -15,7 +15,6 @@ namespace Sigil
 	class Engine
 	{
 	public:
-		Engine() = delete;
 		Engine(json configuration);
 		~Engine();
 
@@ -26,7 +25,7 @@ namespace Sigil
 		SDL_Window* window;
 
 	private:
-		json config;
+		json m_config;
 
 		Renderer m_renderer;
 		MainLoop m_mainLoop;

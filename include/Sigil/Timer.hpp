@@ -15,7 +15,7 @@ namespace Sigil
 
         Uint64 getTicks();
     private:
-        Uint64 ticks;
+        Uint64 m_ticks;
     };
 } // namespace Sigil
 

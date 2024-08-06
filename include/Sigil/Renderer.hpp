@@ -14,7 +14,7 @@ namespace Sigil
 		void present();
 
 	private:
-		SDL_Renderer* renderer;
+		SDL_Renderer* m_renderer;
 	};
 }
 

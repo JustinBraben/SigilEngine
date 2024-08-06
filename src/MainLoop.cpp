@@ -3,11 +3,11 @@
 namespace Sigil {
 
     MainLoop::MainLoop()
-        : running(false) {}
+        : m_running(false) {}
 
     void MainLoop::run() 
     {
-        running = true;
+        m_running = true;
         std::cout << "MainLoop::run() called\n";
 
         // // While running handle events, until quit
@@ -19,7 +19,7 @@ namespace Sigil {
 
     void MainLoop::quit() 
     {
-        running = false;
+        m_running = false;
     }
 
 } // namespace Sigil

@@ -3,7 +3,7 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: config(configuration)
+		: m_config(configuration)
     {
     }
 
@@ -37,9 +37,9 @@ namespace Sigil
 		}
 
 		//Create window
-		auto displayNameCString = config["display"]["name"].dump().c_str();
-		auto width = config["display"]["width"].template get<int>();
-		auto height = config["display"]["height"].template get<int>();
+		auto displayNameCString = m_config["display"]["name"].dump().c_str();
+		auto width = m_config["display"]["width"].template get<int>();
+		auto height = m_config["display"]["height"].template get<int>();
 
 		window = SDL_CreateWindow(displayNameCString, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 		if (window == nullptr)
