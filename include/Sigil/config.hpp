@@ -12,16 +12,10 @@ namespace Sigil
 	class Configuration
 	{
 	public:
-		std::string getString(const std::string& param, const std::string& _default = std::string()) const;
-		int getParamAsInt(const std::string& param, int _default = 0) const;
-		int getParamAsBool(const std::string& param, bool _default = false) const;
-		int getParamAsFloat(const std::string& param, float _default = 0.0f) const;
-
-		Configuration& setStringParam(const std::string& param, const std::string& value);
-		Configuration& setIntParam(const std::string& param, const std::string& value);
-		Configuration& setBoolParam(const std::string& param, const std::string& value);
-		Configuration& setFloatParam(const std::string& param, const std::string& value);
-
+		Configuration& setParam(const std::string& paramName, const std::string& value);
+		Configuration& setParam(const std::string& paramName, int value);
+		Configuration& setParam(const std::string& paramName, bool value);
+		Configuration& setParam(const std::string& paramName, float value);
 	private:
 		json config_json;
 	};

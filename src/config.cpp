@@ -8,27 +8,21 @@ namespace Sigil
 		config_json = json::parse(configJsonPathStream);
 	}*/
 
-	std::string Configuration::getString(const std::string& param, const std::string& _default) const
+	Configuration& Configuration::setParam(const std::string &paramName, const std::string &value)
 	{
-		std::string result;
-
-		// Get the parameter within member config_json using param string
-
-		// If the param string is not found in the json, return the default value instead
-
-		return result;
-	}
-
-	int Configuration::getParamAsInt(const std::string& param, int _default) const
-	{
-		return 0;
-	}
-
-	Configuration& Configuration::setStringParam(const std::string& param, const std::string& value)
-	{
-		// Set parameter within member config_json using param string
-
-		// Then return itself
+		config_json[paramName] = value;
 		return *this;
 	}
+    Configuration& Configuration::setParam(const std::string &paramName, int value)
+    {
+        return setParam(paramName, std::to_string(value));
+    }
+    Configuration& Configuration::setParam(const std::string &paramName, bool value)
+    {
+        return setParam(paramName, std::to_string(value));
+    }
+    Configuration& Configuration::setParam(const std::string &paramName, float value)
+    {
+        return setParam(paramName, std::to_string(value));
+    }
 }

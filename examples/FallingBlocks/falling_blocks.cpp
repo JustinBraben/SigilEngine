@@ -10,6 +10,10 @@ int main()
 
 	// Make some functions to set param name and param value of
 	// Configuration config_json member 
+	engine_config.setParam("fps", 60);
+	engine_config.setParam("display/width", 1024);
+	engine_config.setParam("display/height", 768);
+	engine_config.setParam("display/resizable", false);
 
 	// engine_config.set("fps", 60)
     //     .set("display/width", 1024)
