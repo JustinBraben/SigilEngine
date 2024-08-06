@@ -3,6 +3,8 @@
 
 #include <Sigil/renderer.hpp>
 
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -22,6 +24,8 @@ namespace Sigil
 
 	private:
 		json config;
+
+		Renderer m_renderer;
 	};
 }
 

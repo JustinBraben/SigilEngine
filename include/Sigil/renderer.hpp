@@ -8,7 +8,6 @@ namespace Sigil
 	class Renderer
 	{
 	public:
-		Renderer() = delete;
 		void set_renderer(SDL_Renderer* inputRenderer);
 
 		bool clear();

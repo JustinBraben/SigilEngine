@@ -66,7 +66,6 @@ include_directories(
 
 set(
     HEADERS
-    "include/Sigil/config.hpp"
     "include/Sigil/engine.hpp"
     "include/Sigil/sigil.hpp"
     "include/Sigil/renderer.hpp"
@@ -75,7 +74,6 @@ set(
 set(
     SOURCES
     "src/engine.cpp"
-    "src/config.cpp"
     "src/renderer.cpp"
 )
 
