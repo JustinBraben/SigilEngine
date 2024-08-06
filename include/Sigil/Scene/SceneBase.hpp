@@ -9,6 +9,8 @@ namespace Sigil
 	{
 	public:
 		SceneBase();
+		SceneBase(std::string& inputName);
+		~SceneBase();
 
 		virtual void load() = 0;
 		virtual void unload() = 0;

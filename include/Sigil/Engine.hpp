@@ -3,6 +3,7 @@
 
 #include <Sigil/Renderer.hpp>
 #include <Sigil/MainLoop.hpp>
+#include <Sigil/Scene/SceneBase.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>

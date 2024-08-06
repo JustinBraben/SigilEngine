@@ -95,13 +95,16 @@ include_directories(
 
 set(
     HEADERS
+    "include/Sigil/EngineFwd.hpp"
     "include/Sigil/Engine.hpp"
     "include/Sigil/Sigil.hpp"
     "include/Sigil/Renderer.hpp"
     "include/Sigil/InitializerBase.hpp"
     "include/Sigil/MainLoop.hpp"
     "include/Sigil/Timer.hpp"
-    "include/Sigil/SceneBase.hpp"
+
+    "include/Sigil/Scene/SceneBase.hpp"
+    "include/Sigil/Scene/SceneManager.hpp"
 )
 
 set(
@@ -111,7 +114,9 @@ set(
     "src/InitializerBase.cpp"
     "src/MainLoop.cpp"
     "src/Timer.cpp"
-    "src/SceneBase.cpp"
+
+    "src/Scene/SceneBase.cpp"
+    "src/Scene/SceneManager.cpp"
 )
 
 add_library(Sigil ${HEADERS} ${SOURCES})
