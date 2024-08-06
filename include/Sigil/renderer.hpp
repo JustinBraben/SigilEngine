@@ -9,7 +9,7 @@ namespace Sigil
 	{
 	public:
 		Renderer() = delete;
-		void set_renderer(SDL_Renderer* rdr);
+		void set_renderer(SDL_Renderer* inputRenderer);
 
 		bool clear();
 		void present();

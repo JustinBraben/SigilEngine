@@ -3,24 +3,19 @@
 
 int main()
 {
-	std::cout << "Testing falling_blocks\n";
-
-	Sigil::Configuration engine_config;
+	json config_json;
 	int return_code = 0;
 
-	// Make some functions to set param name and param value of
-	// Configuration config_json member 
-	engine_config.setParam("fps", 60);
-	engine_config.setParam("display/width", 1024);
-	engine_config.setParam("display/height", 768);
-	engine_config.setParam("display/resizable", false);
+	config_json["fps"] = 60;
+	config_json["display"]["width"] = 1024;
+	config_json["display"]["height"] = 768;
+	config_json["display"]["fullscreen"] = false;
+	config_json["display"]["resizeable"] = false;
 
-	// engine_config.set("fps", 60)
-    //     .set("display/width", 1024)
-    //     .set("display/height", 768)
-    //     .set("display/fullscreen", true)
-    //     .set("display/resizable", false)
-    //     .set("assets/file/location", SGE_SOURCE_DIR);
+	auto config_json_string = config_json.dump(4);
+	std::cout << config_json_string << '\n';
+
+	Sigil::Engine engine(config_json);
 
 	return return_code;
 }

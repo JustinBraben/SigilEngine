@@ -1,7 +1,11 @@
 #ifndef SIGIL_ENGINE_HPP
 #define SIGIL_ENGINE_HPP
 
-#include <Sigil/config.hpp>
+#include <Sigil/renderer.hpp>
+
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 namespace Sigil
 {
@@ -9,13 +13,15 @@ namespace Sigil
 	{
 	public:
 		Engine() = delete;
-		Engine(Configuration& configuration);
+		Engine(json configuration);
 		~Engine();
 
 		void init();
 
+		SDL_Window* window;
+
 	private:
-		Configuration config;
+		json config;
 	};
 }
 

@@ -2,10 +2,14 @@
 
 namespace Sigil
 {
-	Engine::Engine(Configuration& configuration)
+    Engine::~Engine()
 	{
 	}
-	Engine::~Engine()
-	{
-	}
+
+    void Engine::init()
+    {
+    }
+    Engine::Engine(json configuration)
+    {
+    }
 }

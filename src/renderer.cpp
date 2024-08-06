@@ -2,14 +2,20 @@
 
 namespace Sigil
 {
-	void Renderer::set_renderer(SDL_Renderer* rdr)
+	void Renderer::set_renderer(SDL_Renderer* inputRenderer)
 	{
-		renderer = rdr;
+		renderer = inputRenderer;
 	}
 
 	bool Renderer::clear()
 	{
-		return true;
+		if (SDL_RenderClear(renderer) != 0)
+        {
+			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not RenderClear SDL. SDL_Error: %s", SDL_GetError());
+            return false;
+        }
+
+        return true;
 	}
 
 	void Renderer::present()

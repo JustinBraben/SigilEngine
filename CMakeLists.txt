@@ -23,9 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
-# set(BUILD_SHARED_LIBS OFF)
-# set(SDL_SHARED OFF)
-# set(SDL_STATIC ON)
+
 FetchContent_Declare(
     SDL2
     GIT_REPOSITORY  https://github.com/libsdl-org/SDL.git
