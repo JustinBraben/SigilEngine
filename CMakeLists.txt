@@ -107,6 +107,10 @@ set(
     "include/Sigil/Scene/SceneManager.hpp"
 
     "include/Sigil/Action/ActionManager.hpp"
+
+    "include/Sigil/Event/EventDispatcher.hpp"
+    "include/Sigil/Event/EventListener.hpp"
+    "include/Sigil/Event/EventTypes.hpp"
 )
 
 set(
@@ -121,6 +125,8 @@ set(
     "src/Scene/SceneManager.cpp"
 
     "src/Action/ActionManager.cpp"
+
+    "src/Event/EventDispatcher.cpp"
 )
 
 add_library(Sigil ${HEADERS} ${SOURCES})

@@ -48,13 +48,20 @@ namespace Sigil {
              SDL_Event evnt;
              while (SDL_PollEvent(&evnt))
              {
-
+                 switch (evnt.type)
+                 {
+                 case SDL_EventType::SDL_QUIT:
+                     m_running = false;
+                     break;
+                 default:
+                     break;
+                 }
              }
 
              for (auto& it : m_processList)
              {
-                 auto& handler = get<0>(it);
-                 auto& timer = get<1>(it);
+                 auto& handler = std::get<0>(it);
+                 auto& timer = std::get<1>(it);
 
                  handler(timer.getTicks());
                  timer.start();

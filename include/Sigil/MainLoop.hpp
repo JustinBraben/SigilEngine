@@ -8,8 +8,11 @@
 #include <tuple>
 #include <list>
 
+#include <entt/signal/dispatcher.hpp>
+
 namespace Sigil 
 {
+    using EventHandler = std::function<bool(SDL_Event*)>;
     using ProcessHandler = std::function<void(int)>;
 
     using ProcessEntry = std::tuple<ProcessHandler, Timer>;
@@ -28,7 +31,8 @@ namespace Sigil
         bool m_running;
         Timer m_fpsTimer;
 
-        std::list<ProcessEntry> m_processList;
+        entt::dispatcher            m_eventDispatcher;
+        std::list<ProcessEntry>     m_processList;
     };
 } // namespace Sigil
 
