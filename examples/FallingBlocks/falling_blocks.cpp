@@ -50,15 +50,16 @@ int main()
 	// TODO: Work on mainLoop queueProcessHandler
 	// use it to take action such as moving scenes
 	// or quiting the window
-	// engine.mainloop().queue_process_handler(
-	// 	[&](Uint32)
-	// 	{
-	// 		if (engine.actions().is_action_pressed("ui_quit"))
-	// 		{
-	// 			engine.mainloop().quit();
-	// 		}
-	// 	}
-	// );
+	engine.sceneManager().switchToScene("fallingBlockScene");
+	 engine.mainLoop().processListHandler(
+	 	[&](Uint32)
+	 	{
+	 		if (engine.sceneManager().getCurrentScene()->actionManager().isPressed("ui_quit"))
+	 		{
+	 			engine.mainLoop().quit();
+	 		}
+	 	}
+	 );
 
 	engine.mainLoop().run();
 
