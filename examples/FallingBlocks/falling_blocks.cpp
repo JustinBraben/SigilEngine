@@ -34,24 +34,24 @@ int main()
 	engine.init();
 
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
-	engine.sceneManager().addScene("fallingBlockScene", fallingBlockScene);
-	engine.sceneManager().switchToScene("fallingBlockScene");
-	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
+	engine.mainLoop().sceneManager().addScene("fallingBlockScene", fallingBlockScene);
+	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
+	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
 
 	auto sceneA = std::make_shared<SceneA>();
 	auto sceneB = std::make_shared<SceneB>();
-	engine.sceneManager().addScene("sceneA", sceneA);
-	engine.sceneManager().addScene("sceneB", sceneB);
+	engine.mainLoop().sceneManager().addScene("sceneA", sceneA);
+	engine.mainLoop().sceneManager().addScene("sceneB", sceneB);
 
-	engine.sceneManager().switchToScene("sceneA");
-	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
-	engine.sceneManager().switchToScene("sceneB");
-	engine.sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
+	engine.mainLoop().sceneManager().switchToScene("sceneA");
+	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
+	engine.mainLoop().sceneManager().switchToScene("sceneB");
+	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
 
 	// TODO: Work on mainLoop queueProcessHandler
 	// use it to take action such as moving scenes
 	// or quiting the window
-	engine.sceneManager().switchToScene("fallingBlockScene");
+	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
 	engine.mainLoop().sinkEventQuit();
 
 	// engine.mainLoop().m_eventDispatcher.sink<Sigil::Event_Quit>().connect<engine.mainLoop().m_eventListener.HandleQuit()>()

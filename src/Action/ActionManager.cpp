@@ -36,7 +36,7 @@ namespace Sigil
 			{
 				if (key == evnt->key.keysym.sym)
 				{
-					m_actionActive.insert(NameActionActivePair(action, true));
+					m_actionActive.insert_or_assign(action, true);
 					break;
 				}
 			}
@@ -47,7 +47,7 @@ namespace Sigil
 			{
 				if (key == evnt->key.keysym.sym)
 				{
-					m_actionActive.insert(NameActionActivePair(action, false));
+					m_actionActive.insert_or_assign(action, false);
 					break;
 				}
 			}
@@ -58,7 +58,7 @@ namespace Sigil
 			{
 				if (button == evnt->button.button)
 				{
-					m_actionActive.insert(NameActionActivePair(action, true));
+					m_actionActive.insert_or_assign(action, true);
 					break;
 				}
 			}
@@ -69,7 +69,7 @@ namespace Sigil
 			{
 				if (button == evnt->button.button)
 				{
-					m_actionActive.insert(NameActionActivePair(action, false));
+					m_actionActive.insert_or_assign(action, false);
 					break;
 				}
 			}

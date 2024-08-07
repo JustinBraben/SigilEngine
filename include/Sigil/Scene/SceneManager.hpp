@@ -17,7 +17,7 @@ namespace Sigil
 	class SceneManager
 	{
 	public:
-		SceneManager(Engine& engine);
+		SceneManager();
 		~SceneManager();
 
 		void addScene(const std::string& name, std::shared_ptr<SceneBase> scene);
@@ -26,7 +26,6 @@ namespace Sigil
 		std::shared_ptr<SceneBase> getCurrentScene();
 
 	protected:
-		Engine& engine;
 		std::shared_ptr<SceneBase> m_currentScene;
 
 		SceneMap m_scenes;

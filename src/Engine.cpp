@@ -3,8 +3,7 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: m_config(configuration), 
-		  m_sceneManager(*this)
+		: m_config(configuration)
     {
     }
 
@@ -52,10 +51,5 @@ namespace Sigil
 	MainLoop& Engine::mainLoop()
 	{
 		return m_mainLoop;
-	}
-
-	SceneManager& Engine::sceneManager()
-	{
-		return m_sceneManager;
 	}
 } // namespace Sigil
