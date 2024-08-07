@@ -1,5 +1,6 @@
 #define SDL_MAIN_HANDLED
 #include <Sigil/Sigil.hpp>
+#include <Sigil/Event/EventTypes.hpp>
 #include <iostream>
 #include <memory>
 
@@ -51,15 +52,19 @@ int main()
 	// use it to take action such as moving scenes
 	// or quiting the window
 	engine.sceneManager().switchToScene("fallingBlockScene");
-	 engine.mainLoop().processListHandler(
-	 	[&](Uint32)
-	 	{
-	 		if (engine.sceneManager().getCurrentScene()->actionManager().isPressed("ui_quit"))
-	 		{
+	engine.mainLoop().sinkEventQuit();
+
+	// engine.mainLoop().m_eventDispatcher.sink<Sigil::Event_Quit>().connect<engine.mainLoop().m_eventListener.HandleQuit()>()
+
+	/*engine.mainLoop().processListHandler(
+		[&](Uint32)
+		{
+			if (engine.sceneManager().getCurrentScene()->actionManager().isPressed("ui_quit"))
+			{
 	 			engine.mainLoop().quit();
-	 		}
-	 	}
-	 );
+			}
+		}
+	 );*/
 
 	engine.mainLoop().run();
 

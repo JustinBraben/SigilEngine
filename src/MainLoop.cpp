@@ -16,6 +16,11 @@ namespace Sigil {
     MainLoop::MainLoop()
         : m_running(false) {}
 
+    void MainLoop::sinkEventQuit()
+    {
+        m_eventDispatcher.sink<Event_Quit>().connect<&EventListener::HandleQuit>(m_eventListener);
+    }
+
     void MainLoop::processListHandler(ProcessHandler handler)
     {
         Timer timer;
@@ -44,13 +49,15 @@ namespace Sigil {
          while (m_running)
          {
              m_fpsTimer.start();
-
+             
              SDL_Event evnt;
              while (SDL_PollEvent(&evnt))
              {
+                 // m_eventDispatcher.enqueue<SDL_Event>(evnt);
                  switch (evnt.type)
                  {
                  case SDL_EventType::SDL_QUIT:
+                     m_eventDispatcher.enqueue<Event_Quit>();
                      m_running = false;
                      break;
                  default:
@@ -58,14 +65,7 @@ namespace Sigil {
                  }
              }
 
-             for (auto& it : m_processList)
-             {
-                 auto& handler = std::get<0>(it);
-                 auto& timer = std::get<1>(it);
-
-                 handler(timer.getTicks());
-                 timer.start();
-             }
+             m_eventDispatcher.update();
          }
     }
 
