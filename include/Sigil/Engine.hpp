@@ -23,7 +23,6 @@ namespace Sigil
 
 		// Acquire references 
 		MainLoop& mainLoop();
-		SceneManager& sceneManager();
 
 		SDL_Window* window;
 
@@ -32,7 +31,6 @@ namespace Sigil
 
 		Renderer m_renderer;
 		MainLoop m_mainLoop;
-		SceneManager m_sceneManager;
 	};
 }
 

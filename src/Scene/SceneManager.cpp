@@ -3,8 +3,8 @@
 
 namespace Sigil
 {
-	SceneManager::SceneManager(Sigil::Engine& engine)
-		: engine(engine), m_currentScene(nullptr) {}
+	SceneManager::SceneManager()
+		: m_currentScene(nullptr) {}
 
 	SceneManager::~SceneManager() 
 	{

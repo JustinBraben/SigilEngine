@@ -41,6 +41,8 @@ namespace Sigil
         void run();
         void quit();
 
+        SceneManager& sceneManager();
+
         entt::dispatcher            m_eventDispatcher;
         Sigil::EventListener        m_eventListener;
 
@@ -48,8 +50,8 @@ namespace Sigil
         bool m_running;
         Timer m_fpsTimer;
 
-
         std::list<ProcessEntry>     m_processList;
+        Sigil::SceneManager         m_sceneManager;
     };
 } // namespace Sigil
 

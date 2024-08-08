@@ -50,20 +50,32 @@ namespace Sigil {
          {
              m_fpsTimer.start();
              
+             //SDL_Event evnt;
+             //while (SDL_PollEvent(&evnt))
+             //{
+             //    // m_eventDispatcher.enqueue<SDL_Event>(evnt);
+             //    /*switch (evnt.type)
+             //    {
+             //    case SDL_EventType::SDL_QUIT:
+             //        m_eventDispatcher.enqueue<Event_Quit>();
+             //        m_running = false;
+             //        break;
+             //    default:
+             //        break;
+             //    }*/
+
+             //    /*m_sceneManager.getCurrentScene()->actionManager().eventHandler(&evnt);*/
+             //}
              SDL_Event evnt;
-             while (SDL_PollEvent(&evnt))
+             SDL_PollEvent(&evnt);
+             m_sceneManager.getCurrentScene()->actionManager().eventHandler(&evnt);
+
+             if (m_sceneManager.getCurrentScene()->actionManager().isPressed("ui_quit"))
              {
-                 // m_eventDispatcher.enqueue<SDL_Event>(evnt);
-                 switch (evnt.type)
-                 {
-                 case SDL_EventType::SDL_QUIT:
-                     m_eventDispatcher.enqueue<Event_Quit>();
-                     m_running = false;
-                     break;
-                 default:
-                     break;
-                 }
+                 m_running = false;
              }
+
+
 
              m_eventDispatcher.update();
          }
@@ -72,6 +84,11 @@ namespace Sigil {
     void MainLoop::quit() 
     {
         m_running = false;
+    }
+
+    SceneManager& MainLoop::sceneManager()
+    {
+        return m_sceneManager;
     }
 
 } // namespace Sigil
