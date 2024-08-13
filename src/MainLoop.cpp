@@ -76,7 +76,7 @@ namespace Sigil {
              }
 
 
-
+             // Every event that was queued up will run now, order not guarenteed
              m_eventDispatcher.update();
          }
     }
