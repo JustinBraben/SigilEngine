@@ -1,6 +1,8 @@
 #ifndef SIGIL_ACTION_MANAGER_HPP
 #define SIGIL_ACTION_MANAGER_HPP
 
+#include <Sigil/Event/EventTypes.hpp>
+
 #include <SDL2/SDL.h>
 #include <entt/signal/dispatcher.hpp>
 
@@ -26,6 +28,8 @@ namespace Sigil
 		bool isReleased(const std::string& name);
 
 		bool eventHandler(SDL_Event* evnt);
+
+		bool enqueueKeyboardEvent(entt::dispatcher& dispatcher, SDL_Event* evnt);
 
 		entt::dispatcher& getKeyboardEventDispatcherRef();
 

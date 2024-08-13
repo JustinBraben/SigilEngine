@@ -5,6 +5,14 @@
 
 namespace Sigil
 {
+	struct KeyEvent {
+		SDL_EventType evnt_type;
+		SDL_KeyboardEvent key_evnt;
+	};
+	struct MouseEvent {
+		SDL_EventType evnt_type;
+		SDL_MouseButtonEvent mouse_evnt;
+	};
 	struct Event_Quit		{};
 	struct Event_OnClick	{ Sint32 mouseX, mouseY; };
 	struct Event_KeyPress	{ SDL_KeyCode keycode; };

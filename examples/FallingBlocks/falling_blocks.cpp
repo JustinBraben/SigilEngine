@@ -13,6 +13,19 @@ class SceneA : public Sigil::SceneBase{};
 
 class SceneB : public Sigil::SceneBase{};
 
+struct KeyboardListener {
+	void KeyDown(const Sigil::KeyEvent& keyboardEvnt) {
+		switch (keyboardEvnt.evnt_type)
+		{
+		case SDL_KEYDOWN:
+			std::cout << "KeyDown event emitted for key : " << keyboardEvnt.key_evnt.keysym.sym << '\n';
+			break;
+		default:
+			break;
+		}
+	}
+};
+
 int main()
 {
 	json config_json;
@@ -41,6 +54,10 @@ int main()
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_left", SDLK_LEFT);
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_right", SDLK_RIGHT);
+
+	KeyboardListener kbListener;
+	engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyDown>(kbListener);
+	// engine.
 
 	/*auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
 	engine.mainLoop().sceneManager().addScene("fallingBlockScene", fallingBlockScene);

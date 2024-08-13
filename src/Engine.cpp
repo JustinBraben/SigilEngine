@@ -66,9 +66,11 @@ namespace Sigil
 					break;
 				}
 
-				getSceneManagerRef().getCurrentScene()->getActionManagerRef().eventHandler(&evnt);
+				// getSceneManagerRef().getCurrentScene()->getActionManagerRef().eventHandler(&evnt);
+				getSceneManagerRef().getCurrentScene()->getActionManagerRef().enqueueKeyboardEvent(m_keyboardEventDispatcher, &evnt);
 
 				// call update on dispatcher 
+				m_keyboardEventDispatcher.update();
 			}
 		}
 	}
@@ -76,5 +78,10 @@ namespace Sigil
 	SceneManager& Engine::getSceneManagerRef()
 	{
 		return m_sceneManager;
+	}
+
+	entt::dispatcher& Engine::getKeyboardEventDispatcherRef()
+	{
+		return m_keyboardEventDispatcher;
 	}
 } // namespace Sigil
