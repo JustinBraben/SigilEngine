@@ -2,6 +2,7 @@
 #define SIGIL_ACTION_MANAGER_HPP
 
 #include <SDL2/SDL.h>
+#include <entt/signal/dispatcher.hpp>
 
 #include <unordered_map>
 #include <string>
@@ -26,12 +27,15 @@ namespace Sigil
 
 		bool eventHandler(SDL_Event* evnt);
 
+		entt::dispatcher& getKeyboardEventDispatcherRef();
+
 	private:
 		std::unordered_map<std::string, SDL_Keycode> m_actionKeyboardMap;
 		std::unordered_map<std::string, Uint8> m_actionMouseMap;
 		std::unordered_map<std::string, Uint8> m_actionJoystickMap;
 
 		std::unordered_map<std::string, bool> m_actionActive;
+		entt::dispatcher m_keyboardEventDispatcher;
 	};
 } // namespace Sigil
 

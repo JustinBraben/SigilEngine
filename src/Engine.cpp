@@ -3,7 +3,7 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: m_config(configuration)
+		: m_config(configuration), m_sceneManager()
     {
     }
 
@@ -46,10 +46,35 @@ namespace Sigil
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
 		}
+
+		m_running = true;
 	}
 
-	MainLoop& Engine::mainLoop()
+	void Engine::run()
 	{
-		return m_mainLoop;
+		while (m_running)
+		{
+			SDL_Event evnt;
+			while (SDL_PollEvent(&evnt))
+			{
+				switch (evnt.type)
+				{
+				case SDL_EventType::SDL_QUIT:
+					m_running = false;
+					break;
+				default:
+					break;
+				}
+
+				getSceneManagerRef().getCurrentScene()->getActionManagerRef().eventHandler(&evnt);
+
+				// call update on dispatcher 
+			}
+		}
+	}
+
+	SceneManager& Engine::getSceneManagerRef()
+	{
+		return m_sceneManager;
 	}
 } // namespace Sigil

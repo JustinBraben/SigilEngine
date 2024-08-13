@@ -45,7 +45,10 @@ engine.getCurrentScene()->actionManager().registerKeyboardAction("exit_game", SD
 Events can be listened for within the current scene, enabling the game to respond to user inputs or other events.
 
 ```cpp
+struct listener {
+    void example_func_to_trigger(const SDL_KeyCode keycode) { std::cout << "Pressed key : " << keycode << '\n'; }
+};
 // Using the currentScene, listen for events of relevance
 auto currentScene = engine.getCurrentScene();
-engine.addListener(currentScene, SDLK_ESCAPE);
+engine.addListener(currentScene, event, listener, &listener::example_func_to_trigger);
 ```

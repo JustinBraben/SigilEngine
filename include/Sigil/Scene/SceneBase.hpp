@@ -17,7 +17,7 @@ namespace Sigil
 
 		std::string getName() const;
 
-		ActionManager& actionManager();
+		ActionManager& getActionManagerRef();
 
 	protected:
 		std::string m_name;

@@ -81,4 +81,9 @@ namespace Sigil
 
 		return true;
 	}
+
+	entt::dispatcher& ActionManager::getKeyboardEventDispatcherRef() 
+	{
+		return m_keyboardEventDispatcher;
+	}
 } // namespace Sigil

@@ -31,9 +31,18 @@ int main()
 
 	Sigil::Engine engine(config_json);
 
-	engine.init();
+	engine.init(); 
 
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
+	engine.getSceneManagerRef().addScene("fallingBlockScene", fallingBlockScene);
+	engine.getSceneManagerRef().switchToScene("fallingBlockScene");
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("quit_game", SDLK_ESCAPE);
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_up", SDLK_UP);
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_left", SDLK_LEFT);
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_right", SDLK_RIGHT);
+
+	/*auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
 	engine.mainLoop().sceneManager().addScene("fallingBlockScene", fallingBlockScene);
 	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
 	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
@@ -46,13 +55,13 @@ int main()
 	engine.mainLoop().sceneManager().switchToScene("sceneA");
 	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
 	engine.mainLoop().sceneManager().switchToScene("sceneB");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
+	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);*/
 
 	// TODO: Work on mainLoop queueProcessHandler
 	// use it to take action such as moving scenes
 	// or quiting the window
-	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
-	engine.mainLoop().sinkEventQuit();
+	/*engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
+	engine.mainLoop().sinkEventQuit();*/
 
 	// engine.mainLoop().m_eventDispatcher.sink<Sigil::Event_Quit>().connect<engine.mainLoop().m_eventListener.HandleQuit()>()
 
@@ -66,7 +75,7 @@ int main()
 		}
 	 );*/
 
-	engine.mainLoop().run();
+	engine.run();
 
 	return return_code;
 }
