@@ -26,6 +26,10 @@ namespace Sigil
 		void handleKeyEvent(const SDL_Event& event);
 		void handleMouseEvent(const SDL_Event& event);
 
+		void addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene);
+		void setCurrentScene(const std::string& name);
+		std::shared_ptr<SceneBase> getCurrentScene();
+
 		SceneManager& getSceneManagerRef();
 		entt::dispatcher& getKeyboardEventDispatcherRef();
 

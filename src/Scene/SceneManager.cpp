@@ -28,6 +28,11 @@ namespace Sigil
 		}
 	}
 
+	bool SceneManager::sceneExists(const std::string& name) const
+	{
+		return m_scenes.contains(name);
+	}
+
 	std::shared_ptr<SceneBase> SceneManager::getCurrentScene()
 	{
 		return m_currentScene;

@@ -110,6 +110,31 @@ namespace Sigil
 		}
 	}
 
+	void Engine::addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene)
+	{
+		// TODO: Have this emit a compiler error if trying to add a scene with a name already used
+		if (!m_sceneManager.sceneExists(name))
+		{
+			m_sceneManager.addScene(name, scene);
+		}
+	}
+
+	void Engine::setCurrentScene(const std::string& name)
+	{
+		// TODO: Have this emit a compiler error if trying to add a scene with a name already used
+		if (m_sceneManager.sceneExists(name))
+		{
+			m_sceneManager.switchToScene(name);
+		}
+	}
+
+	std::shared_ptr<SceneBase> Engine::getCurrentScene()
+	{
+		// TODO: Have this emit a compiler error when trying to
+		// getCurrentScene without any added yet
+		return m_sceneManager.getCurrentScene();
+	}
+
 	SceneManager& Engine::getSceneManagerRef()
 	{
 		return m_sceneManager;
