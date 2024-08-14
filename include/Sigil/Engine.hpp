@@ -1,7 +1,7 @@
 #ifndef SIGIL_ENGINE_HPP
 #define SIGIL_ENGINE_HPP
 
-#include <Sigil/Renderer.hpp>
+#include <SDL2/SDL.h>
 #include <Sigil/Scene/SceneManager.hpp>
 
 #include <SDL_image.h>
@@ -30,12 +30,14 @@ namespace Sigil
 		std::shared_ptr<SceneBase> getCurrentScene();
 
 	private:
-		SDL_Window* m_window;
-		SDL_Renderer* m_renderer;
+
+		void render();
+
+		SDL_Window* m_window			= NULL;
+		SDL_Renderer* m_renderer		= NULL;
 		json m_config;
 
 		SceneManager m_sceneManager;
-		/*Renderer m_renderer;*/
 
 		bool m_running;
 	};

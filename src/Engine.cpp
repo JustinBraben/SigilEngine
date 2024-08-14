@@ -60,6 +60,8 @@ namespace Sigil
 	{
 		while (m_running)
 		{
+			SDL_GetPerformanceCounter();
+
 			SDL_Event evnt;
 			while (SDL_PollEvent(&evnt))
 			{
@@ -84,6 +86,9 @@ namespace Sigil
 					break;
 				}
 			}
+
+			// Render the current scene
+			render();
 		}
 	}
 
@@ -135,5 +140,16 @@ namespace Sigil
 		// TODO: Have this emit a compiler error when trying to
 		// getCurrentScene without any added yet
 		return m_sceneManager.getCurrentScene();
+	}
+
+	void Engine::render()
+	{
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene)
+		{
+			currentScene->render(m_renderer);
+		}
+
+		SDL_RenderPresent(m_renderer);
 	}
 } // namespace Sigil

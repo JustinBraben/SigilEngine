@@ -3,7 +3,7 @@
 # Table of Contents
 
 * [Introduction](#introduction)
-* [The Engine, SceneBase, and registering Actions for a scene](#The Engine, SceneBase, and registering Actions for a scene)
+* [The Engine, SceneBase, and registering Actions for a scene](#the-engine-scenebase-and-registering-events-for-a-scene)
   * [Sigil_ERROR](#sigil_error)
   * [Sigil_INIT](#sigil_init)
 
@@ -33,9 +33,19 @@ Sigil::Engine engine(config_json);
 engine.init(); 
 ```
 
-Scenes are used to keep track of entities contained within a scene,
-along with registered actions a player can wield in the context 
-of a scene.<br/>
+Scenes are used to keep track of entities, registered actions,
+and systems a developer can weld to the context of a scene.
+An example of adding a scene below:
+
+```cpp
+class ExampleSceneA : public Sigil::SceneBase
+{
+	// Code goes here to extend the scene to your choosing
+};
+
+auto exampleSceneA = std::make_shared<ExampleSceneA>();
+engine.addNewScene("exampleSceneA", exampleSceneA);
+```
 
 ## Sigil_ERROR
 

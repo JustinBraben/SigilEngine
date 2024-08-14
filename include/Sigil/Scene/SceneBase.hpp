@@ -7,6 +7,9 @@
 #include <string>
 #include <unordered_map>
 
+#include <SDL2/SDL.h>
+#include <entt/entity/registry.hpp>
+
 namespace Sigil 
 {
 	class SceneBase
@@ -26,10 +29,13 @@ namespace Sigil
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseEvent& event);
 
+		virtual void render(SDL_Renderer* renderer) = 0;
+
 	protected:
 		std::string m_name;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
 		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;
+		entt::registry m_registry;
 	};
 } // namespace Sigil
 
