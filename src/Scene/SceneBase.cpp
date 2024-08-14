@@ -16,11 +16,6 @@ namespace Sigil
 		return m_name;
 	}
 
-	ActionManager& SceneBase::getActionManagerRef()
-	{
-		return m_actionManager;
-	}
-
 	void SceneBase::registerKeyAction(SDL_Keycode key, KeyActionCallback callback)
 	{
 		m_keyBindings[key] = std::move(callback);

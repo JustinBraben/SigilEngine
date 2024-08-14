@@ -1,8 +1,8 @@
 #ifndef SIGIL_SCENE_BASE_HPP
 #define SIGIL_SCENE_BASE_HPP
 
+#include <Sigil/EngineFwd.hpp>
 #include <Sigil/Event/EventTypes.hpp>
-#include <Sigil/Action/ActionManager.hpp>
 
 #include <string>
 #include <unordered_map>
@@ -19,7 +19,7 @@ namespace Sigil
 		std::string getName() const;
 
 		// TODO: Deprecate
-		ActionManager& getActionManagerRef();
+		//ActionManager& getActionManagerRef();
 
 		void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
 		void registerMouseAction(Uint8 button, MouseActionCallback callback);
@@ -30,9 +30,6 @@ namespace Sigil
 		std::string m_name;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
 		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;
-
-		// TODO: Deprecate
-		ActionManager m_actionManager;
 	};
 } // namespace Sigil
 

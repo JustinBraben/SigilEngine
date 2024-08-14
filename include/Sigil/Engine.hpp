@@ -7,7 +7,6 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <nlohmann/json.hpp>
-#include <entt/signal/dispatcher.hpp>
 
 using json = nlohmann::json;
 
@@ -30,18 +29,13 @@ namespace Sigil
 		void setCurrentScene(const std::string& name);
 		std::shared_ptr<SceneBase> getCurrentScene();
 
-		SceneManager& getSceneManagerRef();
-		entt::dispatcher& getKeyboardEventDispatcherRef();
-
-		SDL_Window* window;
-
 	private:
+		SDL_Window* m_window;
+		SDL_Renderer* m_renderer;
 		json m_config;
 
 		SceneManager m_sceneManager;
-		Renderer m_renderer;
-
-		entt::dispatcher m_keyboardEventDispatcher;
+		/*Renderer m_renderer;*/
 
 		bool m_running;
 	};

@@ -3,13 +3,13 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: m_config(configuration), m_sceneManager()
+		: m_config(configuration), m_sceneManager(), m_running(false)
     {
     }
 
 	Engine::~Engine()
 	{
-		SDL_DestroyWindow(window);
+		SDL_DestroyWindow(m_window);
 
 		TTF_Quit();
 		IMG_Quit();
@@ -41,10 +41,16 @@ namespace Sigil
 		auto width = m_config["display"]["width"].template get<int>();
 		auto height = m_config["display"]["height"].template get<int>();
 
-		window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-		if (window == nullptr)
+		m_window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+		if (m_window == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
+		}
+
+		m_renderer = SDL_CreateRenderer(m_window, NULL, SDL_RENDERER_ACCELERATED);
+		if (m_renderer == nullptr)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
 		}
 
 		m_running = true;
@@ -77,12 +83,6 @@ namespace Sigil
 				default:
 					break;
 				}
-
-				//// Only enqueue keyboard events for the current scene
-				//getSceneManagerRef().getCurrentScene()->getActionManagerRef().enqueueKeyboardEvent(m_keyboardEventDispatcher, &evnt);
-
-				//// call update on dispatcher 
-				//m_keyboardEventDispatcher.update();
 			}
 		}
 	}
@@ -92,6 +92,7 @@ namespace Sigil
 		m_running = false;
 	}
 
+	// Handles Keyboard events relevant to the current scene
 	void Engine::handleKeyEvent(const SDL_Event& event) 
 	{
 		KeyEvent keyEvent{ static_cast<SDL_EventType>(event.type), event.key };
@@ -101,6 +102,7 @@ namespace Sigil
 		}
 	}
 
+	// Handles Mouse events relevant to the current scene
 	void Engine::handleMouseEvent(const SDL_Event& event) 
 	{
 		MouseEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
@@ -133,15 +135,5 @@ namespace Sigil
 		// TODO: Have this emit a compiler error when trying to
 		// getCurrentScene without any added yet
 		return m_sceneManager.getCurrentScene();
-	}
-
-	SceneManager& Engine::getSceneManagerRef()
-	{
-		return m_sceneManager;
-	}
-
-	entt::dispatcher& Engine::getKeyboardEventDispatcherRef()
-	{
-		return m_keyboardEventDispatcher;
 	}
 } // namespace Sigil
