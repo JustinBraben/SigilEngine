@@ -22,6 +22,9 @@ namespace Sigil
 		void run();
 		void quit();
 
+		void update(Uint64 deltaTime);
+		void render(Uint64 deltaTime);
+
 		void handleKeyEvent(const SDL_Event& event);
 		void handleMouseEvent(const SDL_Event& event);
 
@@ -31,14 +34,14 @@ namespace Sigil
 
 	private:
 
-		void render();
-
 		SDL_Window* m_window			= NULL;
 		SDL_Renderer* m_renderer		= NULL;
 		json m_config;
 
 		SceneManager m_sceneManager;
-
+		Uint64 m_previousTime;
+		Uint64 m_currentTime;
+		Uint64 m_deltaTime;
 		bool m_running;
 	};
 }

@@ -52,16 +52,20 @@ namespace Sigil
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
 		}
-
-		m_running = true;
 	}
 
+	// Main game loop
 	void Engine::run()
 	{
+		m_running = true;
+		m_previousTime = SDL_GetPerformanceCounter();
+		Uint64 fpsUpdateInterval = SDL_GetPerformanceFrequency() / 2; // Update FPS twice per second
+		Uint64 fpsLastUpdateTime = m_previousTime;
+		int frameCount = 0;
+		double fps = 0.0;
+
 		while (m_running)
 		{
-			SDL_GetPerformanceCounter();
-
 			SDL_Event evnt;
 			while (SDL_PollEvent(&evnt))
 			{
@@ -87,8 +91,28 @@ namespace Sigil
 				}
 			}
 
+			m_currentTime = SDL_GetPerformanceCounter();
+			m_deltaTime = m_currentTime - m_previousTime;
+			m_previousTime = m_currentTime;
+
+			// Update game logic
+			update(m_deltaTime);
+
 			// Render the current scene
-			render();
+			render(m_deltaTime);
+
+			// FPS calculation
+			frameCount++;
+			if (m_currentTime - fpsLastUpdateTime > fpsUpdateInterval)
+			{
+				fps = frameCount / (static_cast<double>(m_currentTime - fpsLastUpdateTime) / SDL_GetPerformanceFrequency());
+				frameCount = 0;
+				fpsLastUpdateTime = m_currentTime;
+
+				// Update window title with FPS
+				std::string title = "FPS: " + std::to_string(static_cast<int>(std::round(fps)));
+				SDL_SetWindowTitle(m_window, title.c_str());
+			}
 		}
 	}
 
@@ -142,12 +166,20 @@ namespace Sigil
 		return m_sceneManager.getCurrentScene();
 	}
 
-	void Engine::render()
+	void Engine::update(Uint64 deltaTime)
+	{
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->update(deltaTime);
+		}
+	}
+
+	void Engine::render(Uint64 deltaTime)
 	{
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene)
 		{
-			currentScene->render(m_renderer);
+			currentScene->render(m_renderer, deltaTime);
 		}
 
 		SDL_RenderPresent(m_renderer);

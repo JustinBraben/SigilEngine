@@ -5,7 +5,15 @@
 
 class FallingBlocksScene : public Sigil::SceneBase
 {
-	void render(SDL_Renderer* renderer) override 
+	void update(Uint64 deltaTime) override
+	{
+		// Implement scene-specific update logic here
+		// You can convert deltaTime to seconds if needed:
+		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		// Use deltaSeconds for time-based updates
+	}
+
+	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
 		SDL_RenderClear(renderer);
 
@@ -17,7 +25,15 @@ class FallingBlocksScene : public Sigil::SceneBase
 
 class SceneA : public Sigil::SceneBase
 {
-	void render(SDL_Renderer* renderer) override
+	void update(Uint64 deltaTime) override
+	{
+		// Implement scene-specific update logic here
+		// You can convert deltaTime to seconds if needed:
+		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		// Use deltaSeconds for time-based updates
+	}
+
+	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
 		SDL_RenderClear(renderer);
 
@@ -29,7 +45,15 @@ class SceneA : public Sigil::SceneBase
 
 class SceneB : public Sigil::SceneBase
 {
-	void render(SDL_Renderer* renderer) override
+	void update(Uint64 deltaTime) override
+	{
+		// Implement scene-specific update logic here
+		// You can convert deltaTime to seconds if needed:
+		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		// Use deltaSeconds for time-based updates
+	}
+
+	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
 		SDL_RenderClear(renderer);
 

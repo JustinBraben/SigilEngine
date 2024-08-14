@@ -29,7 +29,8 @@ namespace Sigil
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseEvent& event);
 
-		virtual void render(SDL_Renderer* renderer) = 0;
+		virtual void update(Uint64 deltaTime) = 0;
+		virtual void render(SDL_Renderer* renderer, Uint64 deltaTime) = 0;
 
 	protected:
 		std::string m_name;
