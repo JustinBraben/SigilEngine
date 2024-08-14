@@ -60,18 +60,53 @@ namespace Sigil
 				switch (evnt.type)
 				{
 				case SDL_EventType::SDL_QUIT:
-					m_running = false;
+					quit();
+					break;
+				case SDL_KEYDOWN:
+					handleKeyEvent(evnt);
+					break;
+				case SDL_KEYUP:
+					handleKeyEvent(evnt);
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					handleMouseEvent(evnt);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					handleMouseEvent(evnt);
 					break;
 				default:
 					break;
 				}
 
-				// Only enqueue keyboard events for the current scene
-				getSceneManagerRef().getCurrentScene()->getActionManagerRef().enqueueKeyboardEvent(m_keyboardEventDispatcher, &evnt);
+				//// Only enqueue keyboard events for the current scene
+				//getSceneManagerRef().getCurrentScene()->getActionManagerRef().enqueueKeyboardEvent(m_keyboardEventDispatcher, &evnt);
 
-				// call update on dispatcher 
-				m_keyboardEventDispatcher.update();
+				//// call update on dispatcher 
+				//m_keyboardEventDispatcher.update();
 			}
+		}
+	}
+
+	void Engine::quit()
+	{
+		m_running = false;
+	}
+
+	void Engine::handleKeyEvent(const SDL_Event& event) 
+	{
+		KeyEvent keyEvent{ static_cast<SDL_EventType>(event.type), event.key };
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->handleKeyEvent(*this, keyEvent);
+		}
+	}
+
+	void Engine::handleMouseEvent(const SDL_Event& event) 
+	{
+		MouseEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->handleMouseEvent(*this, mouseEvent);
 		}
 	}
 

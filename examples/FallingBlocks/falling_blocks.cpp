@@ -52,24 +52,41 @@ int main()
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
 	engine.getSceneManagerRef().addScene("fallingBlockScene", fallingBlockScene);
 	engine.getSceneManagerRef().switchToScene("fallingBlockScene");
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("quit_game", SDLK_ESCAPE);
-	// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_up", SDLK_UP);
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_left", SDLK_LEFT);
-	// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_right", SDLK_RIGHT);
+	engine.getSceneManagerRef().getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			eng.quit();
+		}
+	});
+	engine.getSceneManagerRef().getCurrentScene()->registerKeyAction(SDLK_UP, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			std::cout << "Up arrow pressed!\n";
+		}
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Up arrow released!\n";
+		}
+	});
 
-	KeyboardListener kbListener;
-	engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyDown>(kbListener);
+	//auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
+	//engine.getSceneManagerRef().addScene("fallingBlockScene", fallingBlockScene);
+	//engine.getSceneManagerRef().switchToScene("fallingBlockScene");
+	//engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("quit_game", SDLK_ESCAPE);
+	//// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_up", SDLK_UP);
+	//engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_left", SDLK_LEFT);
+	//// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
+	//engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_right", SDLK_RIGHT);
 
-	auto sceneA = std::make_shared<SceneA>();
-	auto sceneB = std::make_shared<SceneB>();
-	engine.getSceneManagerRef().addScene("sceneA", sceneA);
-	engine.getSceneManagerRef().addScene("sceneB", sceneB);
+	//KeyboardListener kbListener;
+	//engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyDown>(kbListener);
 
-	engine.getSceneManagerRef().switchToScene("sceneA");
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneB", SDLK_RIGHT);
-	engine.getSceneManagerRef().switchToScene("sceneB");
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneA", SDLK_LEFT);
+	//auto sceneA = std::make_shared<SceneA>();
+	//auto sceneB = std::make_shared<SceneB>();
+	//engine.getSceneManagerRef().addScene("sceneA", sceneA);
+	//engine.getSceneManagerRef().addScene("sceneB", sceneB);
+
+	//engine.getSceneManagerRef().switchToScene("sceneA");
+	//engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneB", SDLK_RIGHT);
+	//engine.getSceneManagerRef().switchToScene("sceneB");
+	//engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneA", SDLK_LEFT);
 
 	//engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyUp>(kbListener);
 

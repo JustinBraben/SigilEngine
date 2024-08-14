@@ -21,6 +21,10 @@ namespace Sigil
 
 		void init();
 		void run();
+		void quit();
+
+		void handleKeyEvent(const SDL_Event& event);
+		void handleMouseEvent(const SDL_Event& event);
 
 		SceneManager& getSceneManagerRef();
 		entt::dispatcher& getKeyboardEventDispatcherRef();
