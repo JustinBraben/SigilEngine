@@ -66,7 +66,7 @@ namespace Sigil
 					break;
 				}
 
-				// getSceneManagerRef().getCurrentScene()->getActionManagerRef().eventHandler(&evnt);
+				// Only enqueue keyboard events for the current scene
 				getSceneManagerRef().getCurrentScene()->getActionManagerRef().enqueueKeyboardEvent(m_keyboardEventDispatcher, &evnt);
 
 				// call update on dispatcher 

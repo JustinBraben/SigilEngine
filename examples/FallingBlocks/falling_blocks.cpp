@@ -24,6 +24,9 @@ struct KeyboardListener {
 			break;
 		}
 	}
+	static void KeyUp(const Sigil::Engine& engine, const Sigil::KeyEvent& keyboardEvnt) {
+		
+	}
 };
 
 int main()
@@ -50,29 +53,25 @@ int main()
 	engine.getSceneManagerRef().addScene("fallingBlockScene", fallingBlockScene);
 	engine.getSceneManagerRef().switchToScene("fallingBlockScene");
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("quit_game", SDLK_ESCAPE);
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_up", SDLK_UP);
+	// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_up", SDLK_UP);
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_left", SDLK_LEFT);
-	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
+	// engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_down", SDLK_DOWN);
 	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_right", SDLK_RIGHT);
 
 	KeyboardListener kbListener;
 	engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyDown>(kbListener);
-	// engine.
-
-	/*auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
-	engine.mainLoop().sceneManager().addScene("fallingBlockScene", fallingBlockScene);
-	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
 
 	auto sceneA = std::make_shared<SceneA>();
 	auto sceneB = std::make_shared<SceneB>();
-	engine.mainLoop().sceneManager().addScene("sceneA", sceneA);
-	engine.mainLoop().sceneManager().addScene("sceneB", sceneB);
+	engine.getSceneManagerRef().addScene("sceneA", sceneA);
+	engine.getSceneManagerRef().addScene("sceneB", sceneB);
 
-	engine.mainLoop().sceneManager().switchToScene("sceneA");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
-	engine.mainLoop().sceneManager().switchToScene("sceneB");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);*/
+	engine.getSceneManagerRef().switchToScene("sceneA");
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneB", SDLK_RIGHT);
+	engine.getSceneManagerRef().switchToScene("sceneB");
+	engine.getSceneManagerRef().getCurrentScene()->getActionManagerRef().registerKeyboardAction("move_to_sceneA", SDLK_LEFT);
+
+	//engine.getKeyboardEventDispatcherRef().sink<Sigil::KeyEvent>().connect<&KeyboardListener::KeyUp>(kbListener);
 
 	// TODO: Work on mainLoop queueProcessHandler
 	// use it to take action such as moving scenes
