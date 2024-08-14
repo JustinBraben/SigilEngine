@@ -3,13 +3,13 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: m_config(configuration)
+		: m_config(configuration), m_sceneManager(), m_running(false)
     {
     }
 
 	Engine::~Engine()
 	{
-		SDL_DestroyWindow(window);
+		SDL_DestroyWindow(m_window);
 
 		TTF_Quit();
 		IMG_Quit();
@@ -41,15 +41,99 @@ namespace Sigil
 		auto width = m_config["display"]["width"].template get<int>();
 		auto height = m_config["display"]["height"].template get<int>();
 
-		window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-		if (window == nullptr)
+		m_window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+		if (m_window == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
 		}
+
+		m_renderer = SDL_CreateRenderer(m_window, NULL, SDL_RENDERER_ACCELERATED);
+		if (m_renderer == nullptr)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
+		}
+
+		m_running = true;
 	}
 
-	MainLoop& Engine::mainLoop()
+	void Engine::run()
 	{
-		return m_mainLoop;
+		while (m_running)
+		{
+			SDL_Event evnt;
+			while (SDL_PollEvent(&evnt))
+			{
+				switch (evnt.type)
+				{
+				case SDL_EventType::SDL_QUIT:
+					quit();
+					break;
+				case SDL_KEYDOWN:
+					handleKeyEvent(evnt);
+					break;
+				case SDL_KEYUP:
+					handleKeyEvent(evnt);
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					handleMouseEvent(evnt);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					handleMouseEvent(evnt);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	void Engine::quit()
+	{
+		m_running = false;
+	}
+
+	// Handles Keyboard events relevant to the current scene
+	void Engine::handleKeyEvent(const SDL_Event& event) 
+	{
+		KeyEvent keyEvent{ static_cast<SDL_EventType>(event.type), event.key };
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->handleKeyEvent(*this, keyEvent);
+		}
+	}
+
+	// Handles Mouse events relevant to the current scene
+	void Engine::handleMouseEvent(const SDL_Event& event) 
+	{
+		MouseEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->handleMouseEvent(*this, mouseEvent);
+		}
+	}
+
+	void Engine::addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene)
+	{
+		// TODO: Have this emit a compiler error if trying to add a scene with a name already used
+		if (!m_sceneManager.sceneExists(name))
+		{
+			m_sceneManager.addScene(name, scene);
+		}
+	}
+
+	void Engine::setCurrentScene(const std::string& name)
+	{
+		// TODO: Have this emit a compiler error if trying to add a scene with a name already used
+		if (m_sceneManager.sceneExists(name))
+		{
+			m_sceneManager.switchToScene(name);
+		}
+	}
+
+	std::shared_ptr<SceneBase> Engine::getCurrentScene()
+	{
+		// TODO: Have this emit a compiler error when trying to
+		// getCurrentScene without any added yet
+		return m_sceneManager.getCurrentScene();
 	}
 } // namespace Sigil

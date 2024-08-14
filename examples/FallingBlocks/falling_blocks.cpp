@@ -1,6 +1,5 @@
 #define SDL_MAIN_HANDLED
 #include <Sigil/Sigil.hpp>
-#include <Sigil/Event/EventTypes.hpp>
 #include <iostream>
 #include <memory>
 
@@ -31,42 +30,71 @@ int main()
 
 	Sigil::Engine engine(config_json);
 
-	engine.init();
+	engine.init(); 
 
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
-	engine.mainLoop().sceneManager().addScene("fallingBlockScene", fallingBlockScene);
-	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("ui_quit", SDLK_ESCAPE);
+	engine.addNewScene("fallingBlockScene", fallingBlockScene);
+	engine.setCurrentScene("fallingBlockScene");
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			eng.quit();
+		}
+	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_UP, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			std::cout << "Up arrow pressed!\n";
+		}
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Up arrow released!\n";
+		}
+	});
 
 	auto sceneA = std::make_shared<SceneA>();
 	auto sceneB = std::make_shared<SceneB>();
-	engine.mainLoop().sceneManager().addScene("sceneA", sceneA);
-	engine.mainLoop().sceneManager().addScene("sceneB", sceneB);
+	engine.addNewScene("sceneA", sceneA);
+	engine.addNewScene("sceneB", sceneB);
 
-	engine.mainLoop().sceneManager().switchToScene("sceneA");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneB", SDLK_RIGHT);
-	engine.mainLoop().sceneManager().switchToScene("sceneB");
-	engine.mainLoop().sceneManager().getCurrentScene()->actionManager().registerKeyboardAction("MoveTo_SceneA", SDLK_LEFT);
-
-	// TODO: Work on mainLoop queueProcessHandler
-	// use it to take action such as moving scenes
-	// or quiting the window
-	engine.mainLoop().sceneManager().switchToScene("fallingBlockScene");
-	engine.mainLoop().sinkEventQuit();
-
-	// engine.mainLoop().m_eventDispatcher.sink<Sigil::Event_Quit>().connect<engine.mainLoop().m_eventListener.HandleQuit()>()
-
-	/*engine.mainLoop().processListHandler(
-		[&](Uint32)
-		{
-			if (engine.sceneManager().getCurrentScene()->actionManager().isPressed("ui_quit"))
-			{
-	 			engine.mainLoop().quit();
-			}
+	engine.setCurrentScene("sceneA");
+	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Switching from sceneA to fallingBlockScene!\n";
+			eng.setCurrentScene("fallingBlockScene");
 		}
-	 );*/
+	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			std::cout << "There is no escape from sceneA...\n";
+		}
+	});
 
-	engine.mainLoop().run();
+	engine.setCurrentScene("sceneB");
+	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Switching from sceneB to fallingBlockScene!\n";
+			eng.setCurrentScene("fallingBlockScene");
+		}
+	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+			std::cout << "There is no escape from sceneB...\n";
+		}
+	});
+
+	engine.setCurrentScene("fallingBlockScene");
+	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Switching from fallingBlockScene to sceneA!\n";
+			eng.setCurrentScene("sceneA");
+		}
+	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+			std::cout << "Switching from fallingBlockScene to sceneB!\n";
+			eng.setCurrentScene("sceneB");
+		}
+	});
+
+	engine.run();
 
 	return return_code;
 }

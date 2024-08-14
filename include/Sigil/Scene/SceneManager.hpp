@@ -23,6 +23,8 @@ namespace Sigil
 		void addScene(const std::string& name, std::shared_ptr<SceneBase> scene);
 		void switchToScene(const std::string& name);
 
+		bool sceneExists(const std::string& name) const;
+
 		std::shared_ptr<SceneBase> getCurrentScene();
 
 	protected:

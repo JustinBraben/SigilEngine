@@ -99,17 +99,11 @@ set(
     "include/Sigil/Engine.hpp"
     "include/Sigil/Sigil.hpp"
     "include/Sigil/Renderer.hpp"
-    "include/Sigil/InitializerBase.hpp"
-    "include/Sigil/MainLoop.hpp"
     "include/Sigil/Timer.hpp"
 
     "include/Sigil/Scene/SceneBase.hpp"
     "include/Sigil/Scene/SceneManager.hpp"
 
-    "include/Sigil/Action/ActionManager.hpp"
-
-    "include/Sigil/Event/EventDispatcher.hpp"
-    "include/Sigil/Event/EventListener.hpp"
     "include/Sigil/Event/EventTypes.hpp"
 )
 
@@ -117,16 +111,11 @@ set(
     SOURCES
     "src/Engine.cpp"
     "src/Renderer.cpp"
-    "src/InitializerBase.cpp"
-    "src/MainLoop.cpp"
+    
     "src/Timer.cpp"
 
     "src/Scene/SceneBase.cpp"
     "src/Scene/SceneManager.cpp"
-
-    "src/Action/ActionManager.cpp"
-
-    "src/Event/EventDispatcher.cpp"
 )
 
 add_library(Sigil ${HEADERS} ${SOURCES})

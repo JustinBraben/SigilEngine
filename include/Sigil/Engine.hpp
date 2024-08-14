@@ -2,7 +2,6 @@
 #define SIGIL_ENGINE_HPP
 
 #include <Sigil/Renderer.hpp>
-#include <Sigil/MainLoop.hpp>
 #include <Sigil/Scene/SceneManager.hpp>
 
 #include <SDL_image.h>
@@ -20,17 +19,25 @@ namespace Sigil
 		~Engine();
 
 		void init();
+		void run();
+		void quit();
 
-		// Acquire references 
-		MainLoop& mainLoop();
+		void handleKeyEvent(const SDL_Event& event);
+		void handleMouseEvent(const SDL_Event& event);
 
-		SDL_Window* window;
+		void addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene);
+		void setCurrentScene(const std::string& name);
+		std::shared_ptr<SceneBase> getCurrentScene();
 
 	private:
+		SDL_Window* m_window;
+		SDL_Renderer* m_renderer;
 		json m_config;
 
-		Renderer m_renderer;
-		MainLoop m_mainLoop;
+		SceneManager m_sceneManager;
+		/*Renderer m_renderer;*/
+
+		bool m_running;
 	};
 }
 
