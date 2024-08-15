@@ -31,16 +31,16 @@ namespace Sigil
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseEvent& event);
 
-		using SystemFunction = std::function<void(entt::registry&, Uint64)>;
+		using SystemFunction = std::function<void(entt::registry&, float)>;
 		void addSystem(SystemFunction system);
-		void runSystems(Uint64 deltaTime);
+		void runSystems(float deltaTime);
 
 		void clearRegistry();
 		void initializeScene();
 		virtual void initializeEntities() = 0;
 
-		virtual void update(Uint64 deltaTime) = 0;
-		virtual void render(SDL_Renderer* renderer, Uint64 deltaTime) = 0;
+		virtual void update(float deltaTime) = 0;
+		virtual void render(SDL_Renderer* renderer, float deltaTime) = 0;
 
 	protected:
 		std::string m_name;

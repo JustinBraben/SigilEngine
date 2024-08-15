@@ -45,7 +45,7 @@ namespace Sigil
 		m_systems.push_back(std::move(system));
 	}
 
-	void SceneBase::runSystems(Uint64 deltaTime)
+	void SceneBase::runSystems(float deltaTime)
 	{
 		for (auto& system : m_systems)
 		{

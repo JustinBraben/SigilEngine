@@ -11,26 +11,29 @@ class FallingBlocksScene : public Sigil::SceneBase
 	{
 		auto block = m_registry.create();
 		m_registry.emplace<Position>(block, 400, 384);
+		m_registry.emplace<Velocity>(block, -150, 150);
+		m_registry.emplace<SpriteSize>(block, 100, 100);
 	}
 
-	void update(Uint64 deltaTime) override
+	void update(float deltaTime) override
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
 		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
-	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
+	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		auto block_view = m_registry.view<const Position>();
-		for (const auto [e_block, pos] : block_view.each())
+		auto block_view = m_registry.view<const Position, const SpriteSize>();
+		for (const auto [e_block, pos, sprite_size] : block_view.each())
 		{
-			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			SDL_RenderFillRect(renderer, &block_rect);
 		}
 	}
@@ -42,26 +45,29 @@ class SceneA : public Sigil::SceneBase
 	{
 		auto block = m_registry.create();
 		m_registry.emplace<Position>(block, 200, 384);
+		m_registry.emplace<Velocity>(block, 0, -200);
+		m_registry.emplace<SpriteSize>(block, 100, 100);
 	}
 
-	void update(Uint64 deltaTime) override
+	void update(float deltaTime) override
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
 		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
-	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
+	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		auto block_view = m_registry.view<const Position>();
-		for (const auto [e_block, pos] : block_view.each())
+		auto block_view = m_registry.view<const Position, const SpriteSize>();
+		for (const auto [e_block, pos, sprite_size] : block_view.each())
 		{
-			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			SDL_RenderFillRect(renderer, &block_rect);
 		}
 	}
@@ -73,26 +79,29 @@ class SceneB : public Sigil::SceneBase
 	{
 		auto block = m_registry.create();
 		m_registry.emplace<Position>(block, 600, 384);
+		m_registry.emplace<Velocity>(block, 200, 0);
+		m_registry.emplace<SpriteSize>(block, 100, 100);
 	}
 
-	void update(Uint64 deltaTime) override
+	void update(float deltaTime) override
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
 		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
-	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
+	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		auto block_view = m_registry.view<const Position>();
-		for (const auto [e_block, pos] : block_view.each())
+		auto block_view = m_registry.view<const Position, const SpriteSize>();
+		for (const auto [e_block, pos, sprite_size] : block_view.each())
 		{
-			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			SDL_RenderFillRect(renderer, &block_rect);
 		}
 	}
@@ -146,44 +155,52 @@ int main()
 	engine.addNewScene("sceneB", sceneB);
 
 	engine.setCurrentScene("sceneA");
-	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-			std::cout << "Switching from sceneA to fallingBlockScene!\n";
-			eng.setCurrentScene("fallingBlockScene");
-		}
-	});
-	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-			std::cout << "There is no escape from sceneA...\n";
-		}
-	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+				std::cout << "Switching from sceneA to fallingBlockScene!\n";
+				eng.setCurrentScene("fallingBlockScene");
+			}
+		});
+
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+				std::cout << "There is no escape from sceneA...\n";
+			}
+		});
 
 	engine.setCurrentScene("sceneB");
-	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-			std::cout << "Switching from sceneB to fallingBlockScene!\n";
-			eng.setCurrentScene("fallingBlockScene");
-		}
-	});
-	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-			std::cout << "There is no escape from sceneB...\n";
-		}
-	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+				std::cout << "Switching from sceneB to fallingBlockScene!\n";
+				eng.setCurrentScene("fallingBlockScene");
+			}
+		});
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+				std::cout << "There is no escape from sceneB...\n";
+			}
+		});
 
 	engine.setCurrentScene("fallingBlockScene");
-	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-			std::cout << "Switching from fallingBlockScene to sceneA!\n";
-			eng.setCurrentScene("sceneA");
-		}
-	});
-	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-			std::cout << "Switching from fallingBlockScene to sceneB!\n";
-			eng.setCurrentScene("sceneB");
-		}
-	});
+	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+				std::cout << "Switching from fallingBlockScene to sceneA!\n";
+				eng.setCurrentScene("sceneA");
+			}
+		});
+
+	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+				std::cout << "Switching from fallingBlockScene to sceneB!\n";
+				eng.setCurrentScene("sceneB");
+			}
+		});
 
 	// Setup some entities for each scene
 	engine.setCurrentScene("sceneA");
@@ -194,6 +211,80 @@ int main()
 
 	engine.setCurrentScene("fallingBlockScene");
 	engine.getCurrentScene()->initializeEntities();
+
+	// Setup systems for each scene
+	engine.setCurrentScene("sceneA");
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		});
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>();
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		});
+
+	engine.setCurrentScene("sceneB");
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		});
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>();
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
+			}
+		});
+
+	engine.setCurrentScene("fallingBlockScene");
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		});
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>();
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
+
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		});
 
 	engine.run();
 

@@ -62,7 +62,7 @@ namespace Sigil
 		Uint64 fpsUpdateInterval = SDL_GetPerformanceFrequency() / 2; // Update FPS twice per second
 		Uint64 fpsLastUpdateTime = m_previousTime;
 		int frameCount = 0;
-		double fps = 0.0;
+		float fps = 0.0;
 
 		while (m_running)
 		{
@@ -93,19 +93,20 @@ namespace Sigil
 
 			m_currentTime = SDL_GetPerformanceCounter();
 			m_deltaTime = m_currentTime - m_previousTime;
+			float deltaSeconds = ticksToSeconds(m_deltaTime);
 			m_previousTime = m_currentTime;
 
 			// Update game logic
-			update(m_deltaTime);
+			update(deltaSeconds);
 
 			// Render the current scene
-			render(m_deltaTime);
+			render(deltaSeconds);
 
 			// FPS calculation
 			frameCount++;
 			if (m_currentTime - fpsLastUpdateTime > fpsUpdateInterval)
 			{
-				fps = frameCount / (static_cast<double>(m_currentTime - fpsLastUpdateTime) / SDL_GetPerformanceFrequency());
+				fps = frameCount / ticksToSeconds(m_currentTime - fpsLastUpdateTime);
 				frameCount = 0;
 				fpsLastUpdateTime = m_currentTime;
 
@@ -115,12 +116,34 @@ namespace Sigil
 				std::string title = "Scene : " + currentSceneStr + " FPS: " + std::to_string(static_cast<int>(std::round(fps)));
 				SDL_SetWindowTitle(m_window, title.c_str());
 			}
+
+			// Add a small delay to control frame rate if needed
+			SDL_Delay(16); // Roughly 60 FPS
 		}
 	}
 
 	void Engine::quit()
 	{
 		m_running = false;
+	}
+
+	void Engine::update(float deltaTime)
+	{
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene) {
+			currentScene->update(deltaTime);
+		}
+	}
+
+	void Engine::render(float deltaTime)
+	{
+		auto currentScene = m_sceneManager.getCurrentScene();
+		if (currentScene)
+		{
+			currentScene->render(m_renderer, deltaTime);
+		}
+
+		SDL_RenderPresent(m_renderer);
 	}
 
 	// Handles Keyboard events relevant to the current scene
@@ -168,22 +191,9 @@ namespace Sigil
 		return m_sceneManager.getCurrentScene();
 	}
 
-	void Engine::update(Uint64 deltaTime)
-	{
-		auto currentScene = m_sceneManager.getCurrentScene();
-		if (currentScene) {
-			currentScene->update(deltaTime);
-		}
-	}
 
-	void Engine::render(Uint64 deltaTime)
+	float Engine::ticksToSeconds(Uint64 ticks) const
 	{
-		auto currentScene = m_sceneManager.getCurrentScene();
-		if (currentScene)
-		{
-			currentScene->render(m_renderer, deltaTime);
-		}
-
-		SDL_RenderPresent(m_renderer);
+		return static_cast<float>(ticks) / static_cast<float>(SDL_GetPerformanceFrequency());
 	}
 } // namespace Sigil

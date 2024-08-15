@@ -22,8 +22,8 @@ namespace Sigil
 		void run();
 		void quit();
 
-		void update(Uint64 deltaTime);
-		void render(Uint64 deltaTime);
+		void update(float deltaTime);
+		void render(float deltaTime);
 
 		void handleKeyEvent(const SDL_Event& event);
 		void handleMouseEvent(const SDL_Event& event);
@@ -31,6 +31,8 @@ namespace Sigil
 		void addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene);
 		void setCurrentScene(const std::string& name);
 		std::shared_ptr<SceneBase> getCurrentScene();
+
+		float ticksToSeconds(Uint64 ticks) const;
 
 	private:
 

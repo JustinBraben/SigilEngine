@@ -41,4 +41,24 @@ struct Velocity {
 	}
 };
 
+struct SpriteSize {
+	int w, h;
+
+	// Member function approach
+	bool operator==(const SpriteSize& other) const {
+		return (w == other.w) && (h == other.h);
+	}
+
+	// Member function approach
+	bool operator!=(const SpriteSize& other) const {
+		return (w != other.w) && (h != other.h);
+	}
+
+	// Add this operator for ordering
+	bool operator<(const SpriteSize& other) const {
+		if (w != other.w) return w < other.w;
+		return h < other.h;
+	}
+};
+
 #endif // COMPONENTS_HPP
