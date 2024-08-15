@@ -6,6 +6,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <functional>
 
 #include <SDL2/SDL.h>
 #include <entt/entity/registry.hpp>
@@ -29,6 +31,14 @@ namespace Sigil
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseEvent& event);
 
+		using SystemFunction = std::function<void(entt::registry&, Uint64)>;
+		void addSystem(SystemFunction system);
+		void runSystems(Uint64 deltaTime);
+
+		void clearRegistry();
+		void initializeScene();
+		virtual void initializeEntities() = 0;
+
 		virtual void update(Uint64 deltaTime) = 0;
 		virtual void render(SDL_Renderer* renderer, Uint64 deltaTime) = 0;
 
@@ -37,6 +47,8 @@ namespace Sigil
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
 		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;
 		entt::registry m_registry;
+		std::vector<SystemFunction> m_systems;
+
 	};
 } // namespace Sigil
 

@@ -3,8 +3,16 @@
 #include <iostream>
 #include <memory>
 
+#include "components.hpp"
+
 class FallingBlocksScene : public Sigil::SceneBase
 {
+	void initializeEntities() override
+	{
+		auto block = m_registry.create();
+		m_registry.emplace<Position>(block, 400, 384);
+	}
+
 	void update(Uint64 deltaTime) override
 	{
 		// Implement scene-specific update logic here
@@ -15,16 +23,27 @@ class FallingBlocksScene : public Sigil::SceneBase
 
 	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-		SDL_Rect rect = { 100, 100, 200, 200 };
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+		auto block_view = m_registry.view<const Position>();
+		for (const auto [e_block, pos] : block_view.each())
+		{
+			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_RenderFillRect(renderer, &block_rect);
+		}
 	}
 };
 
 class SceneA : public Sigil::SceneBase
 {
+	void initializeEntities() override
+	{
+		auto block = m_registry.create();
+		m_registry.emplace<Position>(block, 200, 384);
+	}
+
 	void update(Uint64 deltaTime) override
 	{
 		// Implement scene-specific update logic here
@@ -35,16 +54,27 @@ class SceneA : public Sigil::SceneBase
 
 	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_Rect rect = { 100, 100, 200, 200 };
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+		auto block_view = m_registry.view<const Position>();
+		for (const auto [e_block, pos] : block_view.each())
+		{
+			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_RenderFillRect(renderer, &block_rect);
+		}
 	}
 };
 
 class SceneB : public Sigil::SceneBase
 {
+	void initializeEntities() override
+	{
+		auto block = m_registry.create();
+		m_registry.emplace<Position>(block, 600, 384);
+	}
+
 	void update(Uint64 deltaTime) override
 	{
 		// Implement scene-specific update logic here
@@ -55,11 +85,16 @@ class SceneB : public Sigil::SceneBase
 
 	void render(SDL_Renderer* renderer, Uint64 deltaTime) override
 	{
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderClear(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-		SDL_Rect rect = { 100, 100, 200, 200 };
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+		auto block_view = m_registry.view<const Position>();
+		for (const auto [e_block, pos] : block_view.each())
+		{
+			SDL_Rect block_rect = { pos.x, pos.y, 100, 100 };
+			SDL_RenderFillRect(renderer, &block_rect);
+		}
 	}
 };
 
@@ -149,6 +184,16 @@ int main()
 			eng.setCurrentScene("sceneB");
 		}
 	});
+
+	// Setup some entities for each scene
+	engine.setCurrentScene("sceneA");
+	engine.getCurrentScene()->initializeEntities();
+
+	engine.setCurrentScene("sceneB");
+	engine.getCurrentScene()->initializeEntities();
+
+	engine.setCurrentScene("fallingBlockScene");
+	engine.getCurrentScene()->initializeEntities();
 
 	engine.run();
 

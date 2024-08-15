@@ -109,8 +109,10 @@ namespace Sigil
 				frameCount = 0;
 				fpsLastUpdateTime = m_currentTime;
 
+				const auto currentSceneStr = m_sceneManager.getCurrentScene()->getName();
+
 				// Update window title with FPS
-				std::string title = "FPS: " + std::to_string(static_cast<int>(std::round(fps)));
+				std::string title = "Scene : " + currentSceneStr + " FPS: " + std::to_string(static_cast<int>(std::round(fps)));
 				SDL_SetWindowTitle(m_window, title.c_str());
 			}
 		}

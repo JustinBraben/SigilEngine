@@ -39,4 +39,28 @@ namespace Sigil
 			it->second(engine, event);
 		}
 	}
+	
+	void SceneBase::addSystem(SystemFunction system)
+	{
+		m_systems.push_back(std::move(system));
+	}
+
+	void SceneBase::runSystems(Uint64 deltaTime)
+	{
+		for (auto& system : m_systems)
+		{
+			system(m_registry, deltaTime);
+		}
+	}
+
+	void SceneBase::clearRegistry()
+	{
+		m_registry.clear();
+	}
+
+	void SceneBase::initializeScene()
+	{
+		clearRegistry();
+		initializeEntities();
+	}
 } // namespace Sigil
