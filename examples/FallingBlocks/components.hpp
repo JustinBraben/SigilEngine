@@ -1,6 +1,8 @@
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 
+#include <SDL2/SDL.h>
+
 struct Position {
 	int x, y;
 
@@ -59,6 +61,12 @@ struct SpriteSize {
 		if (w != other.w) return w < other.w;
 		return h < other.h;
 	}
+};
+
+struct Text {
+	const char* str;
+	SDL_Color foregroundColor;
+	SDL_Color backgroundColor;
 };
 
 #endif // COMPONENTS_HPP

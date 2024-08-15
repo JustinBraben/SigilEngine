@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <Sigil/Scene/SceneManager.hpp>
+#include <Sigil/AssetManager.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -41,11 +42,12 @@ namespace Sigil
 		json m_config;
 
 		SceneManager m_sceneManager;
+		AssetManager m_assetManager;
 		Uint64 m_previousTime;
 		Uint64 m_currentTime;
 		Uint64 m_deltaTime;
 		bool m_running;
 	};
-}
+} // namespace Sigil
 
 #endif // SIGIL_ENGINE_HPP

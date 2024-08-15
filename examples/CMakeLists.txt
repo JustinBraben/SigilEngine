@@ -26,3 +26,6 @@ set(
 if(SIGIL_BUILD_EXAMPLES)
     BUILD_SIGIL_EXAMPLE(falling_blocks ${FALLING_BLOCKS_HEADERS} ${FALLING_BLOCKS_SOURCES})
 endif()
+
+# Copy resources to binary location
+file(COPY "FallingBlocks/resources" DESTINATION ${CMAKE_BINARY_DIR})

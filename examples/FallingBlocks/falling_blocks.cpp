@@ -13,20 +13,26 @@ class FallingBlocksScene : public Sigil::SceneBase
 		m_registry.emplace<Position>(block, 400, 384);
 		m_registry.emplace<Velocity>(block, -150, 150);
 		m_registry.emplace<SpriteSize>(block, 100, 100);
+
+		auto text = m_registry.create();
+		m_registry.emplace<Position>(text, 400, 400);
+		SDL_Color foregroundColor = { 255, 255, 255 };
+		SDL_Color backgroundColor = { 0, 0, 255 };
+		m_registry.emplace<Text>(text, "FallingBlockScene", foregroundColor, backgroundColor);
 	}
 
 	void update(float deltaTime) override
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
-		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 0, 122, 0, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
@@ -36,6 +42,15 @@ class FallingBlocksScene : public Sigil::SceneBase
 			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			SDL_RenderFillRect(renderer, &block_rect);
 		}
+
+		// TODO: proof of concept font rendering
+		/*auto text_view = m_registry.view<const Position, const Text>();
+		for (const auto [e, pos, text] : text_view.each())
+		{
+			TTF_Font* font = TTF_OpenFont("./resources/fonts/dejavu-sans.book.ttf", 12);
+			SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.str, text.foregroundColor);
+			SDL_FreeSurface(textSurface);
+		}*/
 	}
 };
 
@@ -53,14 +68,14 @@ class SceneA : public Sigil::SceneBase
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
-		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 122, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
@@ -87,14 +102,14 @@ class SceneB : public Sigil::SceneBase
 	{
 		// Implement scene-specific update logic here
 		// You can convert deltaTime to seconds if needed:
-		double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();
+		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
 		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
 	{
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 122, 255);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
@@ -124,13 +139,15 @@ int main()
 	config_json["display"]["background"]["color"]["g"] = g;
 	config_json["display"]["background"]["color"]["b"] = b;
 	config_json["display"]["background"]["color"]["a"] = a;
+	config_json["resources"]["fonts"]["name"] = "dejavu-sans";
+	config_json["resources"]["fonts"]["path"] = "./resources/fonts/dejavu-sans.book.ttf";
 
 	auto config_json_string = config_json.dump(4);
 	std::cout << config_json_string << '\n';
 
 	Sigil::Engine engine(config_json);
 
-	engine.init(); 
+	engine.init();
 
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
 	engine.addNewScene("fallingBlockScene", fallingBlockScene);

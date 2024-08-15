@@ -3,7 +3,13 @@
 namespace Sigil
 {
     Engine::Engine(json configuration)
-		: m_config(configuration), m_sceneManager(), m_running(false)
+		:	m_config(configuration), 
+			m_sceneManager(), 
+			m_assetManager(), 
+			m_currentTime(0), 
+			m_deltaTime(0), 
+			m_previousTime(0), 
+			m_running(false)
     {
     }
 
