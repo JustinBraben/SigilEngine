@@ -1,0 +1,44 @@
+{
+  "display": {
+    "background": {
+      "color": {
+        "a": 255,
+        "b": 0,
+        "g": 125,
+        "r": 20
+      }
+    },
+    "fullscreen": false,
+    "height": 768,
+    "name": "Falling Blocks",
+    "resizeable": false,
+    "width": 1024
+  },
+  "fps": 60,
+  "resources": {
+    "fonts": {
+      "dejavu-sans": {
+        "name": "dejavu-sans",
+        "path": "./resources/fonts/dejavu-sans.book.ttf"
+      }
+    },
+    "sprites": {
+      "Idle": {
+        "name": "Idle",
+        "path": "./resources/sprites/Idle_(32x32).png"
+      },
+      "Jump": {
+        "name": "Jump",
+        "path": "./resources/sprites/Jump_(32x32).png"
+      },
+      "Run": {
+        "name": "Run",
+        "path": "./resources/sprites/Run_(32x32).png"
+      },
+      "flower": {
+        "name": "flower",
+        "path": "./resources/sprites/flower.png"
+      }
+    }
+  }
+}

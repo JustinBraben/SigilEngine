@@ -3,6 +3,11 @@
 
 #include <SDL2/SDL.h>
 
+enum class State {
+	pause,
+	play
+};
+
 struct Position {
 	int x, y;
 
@@ -71,6 +76,13 @@ struct Text {
 
 struct Sprite {
 	const char* name;
+};
+
+struct SpriteAnimator {
+	size_t frame = 0;
+	float elapsed = 0;
+	size_t fps = 0;
+	State state = State::pause;
 };
 
 #endif // COMPONENTS_HPP

@@ -193,6 +193,12 @@ int main()
 	config_json["resources"]["fonts"]["dejavu-sans"]["path"] = "./resources/fonts/dejavu-sans.book.ttf";
 	config_json["resources"]["sprites"]["flower"]["name"] = "flower";
 	config_json["resources"]["sprites"]["flower"]["path"] = "./resources/sprites/flower.png";
+	config_json["resources"]["sprites"]["Idle"]["name"] = "Idle";
+	config_json["resources"]["sprites"]["Idle"]["path"] = "./resources/sprites/Idle_(32x32).png";
+	config_json["resources"]["sprites"]["Run"]["name"] = "Run";
+	config_json["resources"]["sprites"]["Run"]["path"] = "./resources/sprites/Run_(32x32).png";
+	config_json["resources"]["sprites"]["Jump"]["name"] = "Jump";
+	config_json["resources"]["sprites"]["Jump"]["path"] = "./resources/sprites/Jump_(32x32).png";
 
 	auto config_json_string = config_json.dump(4);
 	std::cout << config_json_string << '\n';
