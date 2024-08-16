@@ -92,6 +92,7 @@ struct SpriteAnimator {
 	State state = State::pause;
 	// fps the animation is expected to run at
 	size_t fps = 0;
+	int w = 0, h = 0;
 };
 
 #endif // COMPONENTS_HPP

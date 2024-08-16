@@ -9,7 +9,7 @@
 using BlockComponents = entt::type_list<Position, Velocity, SpriteSize>;
 using TextComponents = entt::type_list<Position, Text>;
 using SpriteComponents = entt::type_list<Position, Velocity, SpriteSize, Sprite>;
-using AnimatedSpriteComponents = entt::type_list<Position, Velocity, SpriteSize, Sprite, SpriteAnimator>;
+using AnimatedSpriteComponents = entt::type_list<Position, Velocity, SpriteSize, SpriteAnimator>;
 
 template <class Registry>
 concept IsRegistry = std::is_base_of_v<entt::registry, Registry>;
@@ -106,12 +106,34 @@ public:
 		m_registry.emplace<Velocity>(block, 0, -200);
 		m_registry.emplace<SpriteSize>(block, 100, 100);
 
-		auto animatedSprite = m_registry.create();
-		m_registry.emplace<Position>(animatedSprite, 200, 300);
-		m_registry.emplace<Velocity>(animatedSprite, 100, -100);
-		m_registry.emplace<SpriteSize>(animatedSprite, 32, 32);
-		size_t frame = 0, lastFrame = 10, fps = 30;
-		m_registry.emplace<SpriteAnimator>(animatedSprite, "Idle", frame, lastFrame, 0.f, State::play, fps);
+		for (int i = 0; i < 4; i++)
+		{
+			auto animatedSprite = m_registry.create();
+			m_registry.emplace<Position>(animatedSprite, 100 + 100 * i, 300);
+			m_registry.emplace<Velocity>(animatedSprite, 0, 0);
+			m_registry.emplace<SpriteSize>(animatedSprite, 64, 64);
+			size_t frame = 0, lastFrame = 10, fps = 30;
+			if (i == 0)
+			{
+				lastFrame = 10;
+				m_registry.emplace<SpriteAnimator>(animatedSprite, "Idle", frame, lastFrame, 0.f, State::play, fps, 32, 32);
+			}
+			else if (i == 1)
+			{
+				lastFrame = 11;
+				m_registry.emplace<SpriteAnimator>(animatedSprite, "Run", frame, lastFrame, 0.f, State::play, fps, 32, 32);
+			}
+			else if (i == 2)
+			{
+				lastFrame = 0;
+				m_registry.emplace<SpriteAnimator>(animatedSprite, "Fall", frame, lastFrame, 0.f, State::play, fps, 32, 32);
+			}
+			else if (i == 3)
+			{
+				lastFrame = 0;
+				m_registry.emplace<SpriteAnimator>(animatedSprite, "Jump", frame, lastFrame, 0.f, State::play, fps, 32, 32);
+			}
+		}
 	}
 
 	void update(float deltaTime) override
@@ -135,13 +157,12 @@ public:
 		auto animation_view = m_registry.view<const Position, const Velocity, const SpriteSize, const SpriteAnimator>();
 		for (const auto [e, pos, vel, sprite_size, sprite_animator] : animation_view.each())
 		{
-			SDL_Rect spriteRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			std::string name = sprite_animator.name;
 			auto* spriteTexture = m_engine.getAssetManager().getTexture(name);
 
-			int srcX = sprite_size.w * static_cast<int>(sprite_animator.frame);
+			int srcX = sprite_animator.w * static_cast<int>(sprite_animator.frame);
 
-			SDL_Rect srcRect = { srcX, 0, sprite_size.w, sprite_size.h };
+			SDL_Rect srcRect = { srcX, 0, sprite_animator.w, sprite_animator.h };
 			SDL_Rect dstRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 
 			SDL_RenderCopy(renderer, spriteTexture, &srcRect, &dstRect);
