@@ -16,13 +16,43 @@
   },
   "fps": 60,
   "resources": {
+    "animation": {
+      "Fall": {
+        "fps": 60,
+        "name": "Fall",
+        "path": "./resources/sprites/Fall_(32x32).png",
+        "totalFrames": 1
+      },
+      "Idle": {
+        "fps": 60,
+        "name": "Idle",
+        "path": "./resources/sprites/Idle_(32x32).png",
+        "totalFrames": 11
+      },
+      "Jump": {
+        "fps": 60,
+        "name": "Jump",
+        "path": "./resources/sprites/Jump_(32x32).png",
+        "totalFrames": 1
+      },
+      "Run": {
+        "fps": 60,
+        "name": "Run",
+        "path": "./resources/sprites/Run_(32x32).png",
+        "totalFrames": 12
+      }
+    },
     "fonts": {
       "dejavu-sans": {
         "name": "dejavu-sans",
         "path": "./resources/fonts/dejavu-sans.book.ttf"
       }
     },
-    "sprites": {
+    "textures": {
+      "Fall": {
+        "name": "Fall",
+        "path": "./resources/sprites/Fall_(32x32).png"
+      },
       "Idle": {
         "name": "Idle",
         "path": "./resources/sprites/Idle_(32x32).png"

@@ -1,4 +1,4 @@
-#include <Sigil/AssetManager.hpp>
+#include <Sigil/Asset/AssetManager.hpp>
 #include <Sigil/Engine.hpp>
 
 namespace Sigil
@@ -23,12 +23,22 @@ namespace Sigil
 			m_engine.getAssetManager().addFont(name.c_str(), path.c_str(), 18);
 		}
 
-		for (const auto& entry : m_engine.getConfig()["resources"]["sprites"])
+		for (const auto& entry : m_engine.getConfig()["resources"]["textures"])
 		{
 			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
 			auto name = entry.at("name").template get<std::string>();
 			auto path = entry.at("path").template get<std::string>();
 			m_engine.getAssetManager().addTexture(name.c_str(), path.c_str());
+		}
+
+		for (const auto& entry : m_engine.getConfig()["resources"]["animation"])
+		{
+			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
+			auto name = entry.at("name").template get<std::string>();
+			auto path = entry.at("path").template get<std::string>();
+			auto totalFrames = entry.at("totalFrames").template get<size_t>();
+			auto fps = entry.at("fps").template get<size_t>();
+			m_engine.getAssetManager().addAnimation(name.c_str(), name.c_str(), totalFrames, AnimationState::Pause, fps);
 		}
 	}
 
@@ -100,5 +110,26 @@ namespace Sigil
 	{
 		auto* font = m_fontMap.at(textureKey);
 		return font;
+	}
+
+	void AssetManager::addAnimation(const char* name, const char* textureName, size_t totalFrames, AnimationState state, size_t fps)
+	{
+		if (m_textureMap.contains(textureName))
+		{
+			std::string textureNameString = textureName;
+			auto* animationTexture = getTexture(textureNameString);
+			Animation animation(animationTexture, totalFrames, 0, 0.f, state, fps);
+			m_animationMap.insert(StringAnimationPair(name, animation));
+		}
+		else
+		{
+			std::cout << "Could not find texture : " << textureName << " to use for animation : " << name << '\n';
+		}
+
+	}
+	Animation AssetManager::getAnimation(std::string& animationKey)
+	{
+		auto animation = m_animationMap.at(animationKey);
+		return animation;
 	}
 } // namespace Sigil

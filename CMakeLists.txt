@@ -103,7 +103,9 @@ set(
 
     "include/Sigil/Scene/SceneBase.hpp"
     "include/Sigil/Scene/SceneManager.hpp"
-    "include/Sigil/AssetManager.hpp"
+
+    "include/Sigil/Asset/AssetManager.hpp"
+    "include/Sigil/Asset/Animation.hpp"
 
     "include/Sigil/Event/EventTypes.hpp"
 )
@@ -117,7 +119,9 @@ set(
 
     "src/Scene/SceneBase.cpp"
     "src/Scene/SceneManager.cpp"
-    "src/AssetManager.cpp")
+    "src/Asset/AssetManager.cpp"
+    "src/Asset/Animation.cpp"
+)
 
 add_library(Sigil ${HEADERS} ${SOURCES})
 add_library(Sigil::Sigil ALIAS Sigil)

@@ -28,4 +28,4 @@ if(SIGIL_BUILD_EXAMPLES)
 endif()
 
 # Copy resources to binary location
-file(COPY "FallingBlocks/resources" DESTINATION ${CMAKE_BINARY_DIR}/examples)
+file(COPY "resources" DESTINATION ${CMAKE_BINARY_DIR}/examples)

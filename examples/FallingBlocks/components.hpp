@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include <vector>
+
 enum class State {
 	pause,
 	play
@@ -79,10 +81,16 @@ struct Sprite {
 };
 
 struct SpriteAnimator {
+	// all index values of animation
+	std::vector<size_t> animation;
+	// Current frame of animation
 	size_t frame = 0;
+	// time elapsed since last animating
 	float elapsed = 0;
-	size_t fps = 0;
+	// pause or run the animation
 	State state = State::pause;
+	// fps the animation is expected to run at
+	size_t fps = 0;
 };
 
 #endif // COMPONENTS_HPP
