@@ -1,7 +1,11 @@
 #include <Sigil/AssetManager.hpp>
+#include <Sigil/Engine.hpp>
 
 namespace Sigil
 {
+	AssetManager::AssetManager(Engine& engine)
+		: m_engine(engine) {}
+
 	AssetManager::~AssetManager() 
 	{
 		// Must destroy all textures in the map
@@ -18,6 +22,19 @@ namespace Sigil
 			}
 		}*/
 	}
+
+	void AssetManager::init(SDL_Renderer* renderer)
+	{
+		m_renderer = renderer;
+
+		for (const auto& entry : m_engine.getConfig()["resources"]["fonts"])
+		{
+			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
+			auto path = entry.at("path").template get<std::string>();
+			m_engine.getAssetManager().addFont(m_renderer, path.c_str());
+		}
+	}
+
 	void AssetManager::addTexture(SDL_Renderer* renderer, const char* file)
 	{
 		auto* texture = IMG_LoadTexture(renderer, file);

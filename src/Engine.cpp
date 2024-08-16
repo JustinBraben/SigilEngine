@@ -4,8 +4,8 @@ namespace Sigil
 {
     Engine::Engine(json configuration)
 		:	m_config(configuration), 
-			m_sceneManager(), 
-			m_assetManager(), 
+			m_sceneManager(*this), 
+			m_assetManager(*this),
 			m_currentTime(0), 
 			m_deltaTime(0), 
 			m_previousTime(0), 
@@ -61,12 +61,10 @@ namespace Sigil
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
 		}
 
-		for (const auto& entry : m_config["resources"]["fonts"])
-		{
-			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
-			auto path = entry.at("path").template get<std::string>();
-			m_assetManager.addFont(m_renderer, path.c_str());
-		}
+		m_assetManager.init(m_renderer);
+
+		// Start sending SDL_TextInput events
+		SDL_StartTextInput();
 	}
 
 	// Main game loop

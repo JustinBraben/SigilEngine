@@ -17,8 +17,8 @@ namespace Sigil
 	class SceneBase
 	{
 	public:
-		SceneBase();
-		SceneBase(const std::string& inputName);
+		SceneBase() = delete;
+		SceneBase(Engine& engine, const std::string& inputName);
 		~SceneBase();
 
 		std::string getName() const;
@@ -43,6 +43,7 @@ namespace Sigil
 		virtual void render(SDL_Renderer* renderer, float deltaTime) = 0;
 
 	protected:
+		Engine& m_engine;
 		std::string m_name;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
 		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;

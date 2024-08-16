@@ -3,11 +3,11 @@
 
 namespace Sigil 
 {
-	SceneBase::SceneBase()
-		: m_name("BaseName") {}
+	/*SceneBase::SceneBase()
+		: m_engine(), m_name("BaseName") {}*/
 
-	SceneBase::SceneBase(const std::string& inputName)
-		: m_name(inputName) {}
+	SceneBase::SceneBase(Engine& engine, const std::string& inputName)
+		: m_engine(engine), m_name(inputName) {}
 
 	SceneBase::~SceneBase() {}
 

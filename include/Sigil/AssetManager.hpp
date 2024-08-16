@@ -1,6 +1,8 @@
 #ifndef SIGIL_ASSET_MANAGER_HPP
 #define SIGIL_ASSET_MANAGER_HPP
 
+#include <Sigil/EngineFwd.hpp>
+
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -17,8 +19,10 @@ namespace Sigil
 	class AssetManager
 	{
 	public:
-		AssetManager() = default;
+		AssetManager(Engine& engine);
 		~AssetManager();
+
+		void init(SDL_Renderer* renderer);
 
 		void addTexture(SDL_Renderer* renderer, const char* file);
 		SDL_Texture* getTexture(std::string& textureKey);
@@ -26,9 +30,11 @@ namespace Sigil
 		void addFont(SDL_Renderer* renderer, const char* file);
 		TTF_Font* getFont(std::string& textureKey);
 
-	private: 
-		TextureMap m_textureMap;
-		FontMap m_fontMap;
+	private:
+		Engine&			m_engine;
+		SDL_Renderer*	m_renderer = NULL;
+		TextureMap		m_textureMap;
+		FontMap			m_fontMap;
 	};
 } // namespace Sigil
 

@@ -7,6 +7,10 @@
 
 class FallingBlocksScene : public Sigil::SceneBase
 {
+public:
+	FallingBlocksScene(Sigil::Engine& engine, const std::string& name)
+		: SceneBase(engine, name) {}
+
 	void initializeEntities() override
 	{
 		auto block = m_registry.create();
@@ -47,7 +51,9 @@ class FallingBlocksScene : public Sigil::SceneBase
 		auto text_view = m_registry.view<const Position, const Text>();
 		for (const auto [e, pos, text] : text_view.each())
 		{
-			TTF_Font* font = TTF_OpenFont("./resources/fonts/dejavu-sans.book.ttf", 12);
+			std::string fontName = "dejavu-sans.book.ttf";
+			auto* font = m_engine.getAssetManager().getFont(fontName);
+			/*TTF_Font* font = TTF_OpenFont("./resources/fonts/dejavu-sans.book.ttf", 12);*/
 			SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.str, text.foregroundColor);
 			auto* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
 			SDL_Rect textRect = { pos.x, pos.y, textSurface->w, textSurface->h };
@@ -55,13 +61,16 @@ class FallingBlocksScene : public Sigil::SceneBase
 
 			SDL_DestroyTexture(texture);
 			SDL_FreeSurface(textSurface);
-			TTF_CloseFont(font);
 		}
 	}
 };
 
 class SceneA : public Sigil::SceneBase
 {
+public:
+	SceneA(Sigil::Engine& engine, const std::string& name)
+		: SceneBase(engine, name) {}
+
 	void initializeEntities() override
 	{
 		auto block = m_registry.create();
@@ -96,6 +105,10 @@ class SceneA : public Sigil::SceneBase
 
 class SceneB : public Sigil::SceneBase
 {
+public:
+	SceneB(Sigil::Engine& engine, const std::string& name)
+		: SceneBase(engine, name) {}
+
 	void initializeEntities() override
 	{
 		auto block = m_registry.create();
@@ -156,7 +169,7 @@ int main()
 
 	engine.init();
 
-	auto fallingBlockScene = std::make_shared<FallingBlocksScene>();
+	auto fallingBlockScene = std::make_shared<FallingBlocksScene>(engine, "fallingBlockScene");
 	engine.addNewScene("fallingBlockScene", fallingBlockScene);
 	engine.setCurrentScene("fallingBlockScene");
 	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
@@ -173,8 +186,8 @@ int main()
 		}
 	});
 
-	auto sceneA = std::make_shared<SceneA>();
-	auto sceneB = std::make_shared<SceneB>();
+	auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
+	auto sceneB = std::make_shared<SceneB>(engine, "sceneB");
 	engine.addNewScene("sceneA", sceneA);
 	engine.addNewScene("sceneB", sceneB);
 
