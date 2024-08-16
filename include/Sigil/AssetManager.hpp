@@ -23,6 +23,7 @@ namespace Sigil
 		~AssetManager();
 
 		void init(SDL_Renderer* renderer);
+		void deinit();
 
 		void addTexture(SDL_Renderer* renderer, const char* file);
 		SDL_Texture* getTexture(std::string& textureKey);

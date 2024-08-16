@@ -20,6 +20,7 @@ namespace Sigil
 		~Engine();
 
 		void init();
+		void deinit();
 		void run();
 		void quit();
 

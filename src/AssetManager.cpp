@@ -8,19 +8,7 @@ namespace Sigil
 
 	AssetManager::~AssetManager() 
 	{
-		// Must destroy all textures in the map
-		for (auto [key, value] : m_textureMap)
-		{
-			SDL_DestroyTexture(value);
-		}
-
-		/*for (auto [key, value] : m_fontMap)
-		{
-			if (value != nullptr)
-			{
-				TTF_CloseFont(value);
-			}
-		}*/
+		deinit();
 	}
 
 	void AssetManager::init(SDL_Renderer* renderer)
@@ -33,6 +21,30 @@ namespace Sigil
 			auto path = entry.at("path").template get<std::string>();
 			m_engine.getAssetManager().addFont(m_renderer, path.c_str());
 		}
+	}
+
+	void AssetManager::deinit()
+	{
+		// Must destroy all textures in the map
+		for (auto [key, value] : m_textureMap)
+		{
+			if (value != nullptr)
+			{
+				SDL_DestroyTexture(value);
+			}
+		}
+
+		m_textureMap.clear();
+
+		for (auto [key, value] : m_fontMap)
+		{
+			if (value != nullptr)
+			{
+				TTF_CloseFont(value);
+			}
+		}
+
+		m_fontMap.clear();
 	}
 
 	void AssetManager::addTexture(SDL_Renderer* renderer, const char* file)

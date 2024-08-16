@@ -15,13 +15,7 @@ namespace Sigil
 
 	Engine::~Engine()
 	{
-		SDL_StopTextInput();
-		SDL_DestroyRenderer(m_renderer);
-		SDL_DestroyWindow(m_window);
-
-		TTF_Quit();
-		IMG_Quit();
-		SDL_Quit();
+		deinit();
 	}
 
 	void Engine::init()
@@ -65,6 +59,20 @@ namespace Sigil
 
 		// Start sending SDL_TextInput events
 		SDL_StartTextInput();
+	}
+
+	void Engine::deinit()
+	{
+		SDL_StopTextInput();
+
+		m_assetManager.deinit();
+
+		SDL_DestroyRenderer(m_renderer);
+		SDL_DestroyWindow(m_window);
+
+		TTF_Quit();
+		IMG_Quit();
+		SDL_Quit();
 	}
 
 	// Main game loop
