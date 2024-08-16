@@ -5,6 +5,21 @@
 
 #include "components.hpp"
 
+// Aliases for commonly used component lists
+using BlockComponents = entt::type_list<Position, Velocity, SpriteSize>;
+using TextComponents = entt::type_list<Position, Text>;
+using SpriteComponents = entt::type_list<Position, Velocity, SpriteSize, Sprite>;
+
+template <class Registry>
+concept IsRegistry = std::is_base_of_v<entt::registry, Registry>;
+
+// used to create a view based on the entt::type_list you wish to use
+template<IsRegistry Registry, typename... Components>
+auto create_view(Registry& registry, entt::type_list<Components...>)
+{
+	return registry.template view<Components...>();
+}
+
 class FallingBlocksScene : public Sigil::SceneBase
 {
 public:
@@ -23,6 +38,12 @@ public:
 		SDL_Color foregroundColor = { 255, 255, 255 };
 		SDL_Color backgroundColor = { 0, 0, 255 };
 		m_registry.emplace<Text>(text, "FallingBlockScene", foregroundColor, backgroundColor);
+
+		auto sprite = m_registry.create();
+		m_registry.emplace<Position>(sprite, 200, 300);
+		m_registry.emplace<Velocity>(sprite, 150, -150);
+		m_registry.emplace<SpriteSize>(sprite, 52, 76);
+		m_registry.emplace<Sprite>(sprite, "flower");
 	}
 
 	void update(float deltaTime) override
@@ -40,7 +61,7 @@ public:
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		auto block_view = m_registry.view<const Position, const SpriteSize>();
+		auto block_view = m_registry.view<const Position, const SpriteSize>(entt::exclude<Sprite>);
 		for (const auto [e_block, pos, sprite_size] : block_view.each())
 		{
 			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
@@ -51,7 +72,7 @@ public:
 		auto text_view = m_registry.view<const Position, const Text>();
 		for (const auto [e, pos, text] : text_view.each())
 		{
-			std::string fontName = "dejavu-sans.book.ttf";
+			std::string fontName = "dejavu-sans";
 			auto* font = m_engine.getAssetManager().getFont(fontName);
 			/*TTF_Font* font = TTF_OpenFont("./resources/fonts/dejavu-sans.book.ttf", 12);*/
 			SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.str, text.foregroundColor);
@@ -61,6 +82,16 @@ public:
 
 			SDL_DestroyTexture(texture);
 			SDL_FreeSurface(textSurface);
+		}
+
+		auto sprite_view = create_view(m_registry, SpriteComponents{});
+		for (const auto [e, pos, vel, sprite_size, sprite] : sprite_view.each())
+		{
+			SDL_Rect spriteRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
+			std::string name = sprite.name;
+			auto* spriteTexture = m_engine.getAssetManager().getTexture(name);
+
+			SDL_RenderCopy(renderer, spriteTexture, NULL, &spriteRect);
 		}
 	}
 };
@@ -158,9 +189,10 @@ int main()
 	config_json["display"]["background"]["color"]["g"] = g;
 	config_json["display"]["background"]["color"]["b"] = b;
 	config_json["display"]["background"]["color"]["a"] = a;
-
 	config_json["resources"]["fonts"]["dejavu-sans"]["name"] = "dejavu-sans";
 	config_json["resources"]["fonts"]["dejavu-sans"]["path"] = "./resources/fonts/dejavu-sans.book.ttf";
+	config_json["resources"]["sprites"]["flower"]["name"] = "flower";
+	config_json["resources"]["sprites"]["flower"]["path"] = "./resources/sprites/flower.png";
 
 	auto config_json_string = config_json.dump(4);
 	std::cout << config_json_string << '\n';
@@ -172,19 +204,23 @@ int main()
 	auto fallingBlockScene = std::make_shared<FallingBlocksScene>(engine, "fallingBlockScene");
 	engine.addNewScene("fallingBlockScene", fallingBlockScene);
 	engine.setCurrentScene("fallingBlockScene");
-	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-			eng.quit();
+	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+				eng.quit();
+			}
 		}
-	});
-	engine.getCurrentScene()->registerKeyAction(SDLK_UP, [](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-			std::cout << "Up arrow pressed!\n";
+	);
+	engine.getCurrentScene()->registerKeyAction(SDLK_UP, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
+				std::cout << "Up arrow pressed!\n";
+			}
+			if (keyboardEvnt.evnt_type == SDL_KEYUP) {
+				std::cout << "Up arrow released!\n";
+			}
 		}
-		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-			std::cout << "Up arrow released!\n";
-		}
-	});
+	);
 
 	auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
 	auto sceneB = std::make_shared<SceneB>(engine, "sceneB");
@@ -198,14 +234,16 @@ int main()
 				std::cout << "Switching from sceneA to fallingBlockScene!\n";
 				eng.setCurrentScene("fallingBlockScene");
 			}
-		});
+		}
+	);
 
 	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
 			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
 				std::cout << "There is no escape from sceneA...\n";
 			}
-		});
+		}
+	);
 
 	engine.setCurrentScene("sceneB");
 	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
@@ -214,13 +252,15 @@ int main()
 				std::cout << "Switching from sceneB to fallingBlockScene!\n";
 				eng.setCurrentScene("fallingBlockScene");
 			}
-		});
+		}
+	);
 	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
 			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
 				std::cout << "There is no escape from sceneB...\n";
 			}
-		});
+		}
+	);
 
 	engine.setCurrentScene("fallingBlockScene");
 	engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
@@ -229,7 +269,8 @@ int main()
 				std::cout << "Switching from fallingBlockScene to sceneA!\n";
 				eng.setCurrentScene("sceneA");
 			}
-		});
+		}
+	);
 
 	engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
@@ -237,7 +278,8 @@ int main()
 				std::cout << "Switching from fallingBlockScene to sceneB!\n";
 				eng.setCurrentScene("sceneB");
 			}
-		});
+		}
+	);
 
 	// Setup some entities for each scene
 	engine.setCurrentScene("sceneA");
@@ -261,7 +303,8 @@ int main()
 				pos.x += static_cast<int>(xAdd);
 				pos.y += static_cast<int>(yAdd);
 			}
-		});
+		}
+	);
 	engine.getCurrentScene()->addSystem(
 		[](entt::registry& registry, float deltaTime) {
 			auto view = registry.view<Position, Velocity, SpriteSize>();
@@ -271,7 +314,8 @@ int main()
 					vel.y *= -1;
 				}
 			}
-		});
+		}
+	);
 
 	engine.setCurrentScene("sceneB");
 	engine.getCurrentScene()->addSystem(
@@ -284,7 +328,8 @@ int main()
 				pos.x += static_cast<int>(xAdd);
 				pos.y += static_cast<int>(yAdd);
 			}
-		});
+		}
+	);
 	engine.getCurrentScene()->addSystem(
 		[](entt::registry& registry, float deltaTime) {
 			auto view = registry.view<Position, Velocity, SpriteSize>();
@@ -294,7 +339,8 @@ int main()
 					vel.x *= -1;
 				}
 			}
-		});
+		}
+	);
 
 	engine.setCurrentScene("fallingBlockScene");
 	engine.getCurrentScene()->addSystem(
@@ -307,10 +353,11 @@ int main()
 				pos.x += static_cast<int>(xAdd);
 				pos.y += static_cast<int>(yAdd);
 			}
-		});
+		}
+	);
 	engine.getCurrentScene()->addSystem(
 		[](entt::registry& registry, float deltaTime) {
-			auto view = registry.view<Position, Velocity, SpriteSize>();
+			auto view = registry.view<Position, Velocity, SpriteSize>(entt::exclude<Sprite>);
 			for (auto [e_block, pos, vel, sprite_size] : view.each())
 			{
 				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
@@ -321,7 +368,23 @@ int main()
 					vel.y *= -1;
 				}
 			}
-		});
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize, Sprite>();
+			for (auto [e_sprite, pos, vel, sprite_size, sprite] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
+
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		}
+	);
 
 	engine.run();
 

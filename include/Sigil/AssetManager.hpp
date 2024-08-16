@@ -25,10 +25,10 @@ namespace Sigil
 		void init(SDL_Renderer* renderer);
 		void deinit();
 
-		void addTexture(SDL_Renderer* renderer, const char* file);
+		void addTexture(const char* name, const char* file);
 		SDL_Texture* getTexture(std::string& textureKey);
 
-		void addFont(SDL_Renderer* renderer, const char* file);
+		void addFont(const char* name, const char* file, int fontSize);
 		TTF_Font* getFont(std::string& textureKey);
 
 	private:

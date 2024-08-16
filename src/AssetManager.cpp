@@ -18,8 +18,17 @@ namespace Sigil
 		for (const auto& entry : m_engine.getConfig()["resources"]["fonts"])
 		{
 			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
+			auto name = entry.at("name").template get<std::string>();
 			auto path = entry.at("path").template get<std::string>();
-			m_engine.getAssetManager().addFont(m_renderer, path.c_str());
+			m_engine.getAssetManager().addFont(name.c_str(), path.c_str(), 18);
+		}
+
+		for (const auto& entry : m_engine.getConfig()["resources"]["sprites"])
+		{
+			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
+			auto name = entry.at("name").template get<std::string>();
+			auto path = entry.at("path").template get<std::string>();
+			m_engine.getAssetManager().addTexture(name.c_str(), path.c_str());
 		}
 	}
 
@@ -47,20 +56,20 @@ namespace Sigil
 		m_fontMap.clear();
 	}
 
-	void AssetManager::addTexture(SDL_Renderer* renderer, const char* file)
+	void AssetManager::addTexture(const char* name, const char* file)
 	{
-		auto* texture = IMG_LoadTexture(renderer, file);
+		auto* texture = IMG_LoadTexture(m_renderer, file);
 		if (texture == nullptr)
 		{
-			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create load texture for m_texture. SDL_Error: %s", SDL_GetError());
+			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not load texture for m_texture. SDL_Error: %s", SDL_GetError());
 		}
 		else
 		{
 			// Use the file name as the key for the texture
-			std::string file_as_string = file;
+			/*std::string file_as_string = file;
 			auto found = file_as_string.find_last_of("/\\");
-			auto file_name = file_as_string.substr(found + 1);
-			m_textureMap.insert(StringTexturePair(file_name, texture));
+			auto file_name = file_as_string.substr(found + 1);*/
+			m_textureMap.insert(StringTexturePair(name, texture));
 		}
 	}
 
@@ -70,9 +79,9 @@ namespace Sigil
 		return texture;
 	}
 
-	void AssetManager::addFont(SDL_Renderer* renderer, const char* file)
+	void AssetManager::addFont(const char* name, const char* file, int fontSize)
 	{
-		auto* font = TTF_OpenFont(file, 28);
+		auto* font = TTF_OpenFont(file, fontSize);
 		if (font == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create load font for m_font. SDL_Error: %s", SDL_GetError());
@@ -80,10 +89,10 @@ namespace Sigil
 		else
 		{
 			// Use the file name as the key for the texture
-			std::string file_as_string = file;
+			/*std::string file_as_string = file;
 			auto found = file_as_string.find_last_of("/\\");
-			auto file_name = file_as_string.substr(found + 1);
-			m_fontMap.insert(StringFontPair(file_name, font));
+			auto file_name = file_as_string.substr(found + 1);*/
+			m_fontMap.insert(StringFontPair(name, font));
 		}
 	}
 

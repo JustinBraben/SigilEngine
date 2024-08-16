@@ -69,4 +69,8 @@ struct Text {
 	SDL_Color backgroundColor;
 };
 
+struct Sprite {
+	const char* name;
+};
+
 #endif // COMPONENTS_HPP
