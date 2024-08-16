@@ -9,6 +9,14 @@ namespace Sigil
 		{
 			SDL_DestroyTexture(value);
 		}
+
+		/*for (auto [key, value] : m_fontMap)
+		{
+			if (value != nullptr)
+			{
+				TTF_CloseFont(value);
+			}
+		}*/
 	}
 	void AssetManager::addTexture(SDL_Renderer* renderer, const char* file)
 	{

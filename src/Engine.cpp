@@ -15,6 +15,8 @@ namespace Sigil
 
 	Engine::~Engine()
 	{
+		SDL_StopTextInput();
+		SDL_DestroyRenderer(m_renderer);
 		SDL_DestroyWindow(m_window);
 
 		TTF_Quit();
@@ -57,6 +59,13 @@ namespace Sigil
 		if (m_renderer == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
+		}
+
+		for (const auto& entry : m_config["resources"]["fonts"])
+		{
+			std::cout << "Name : " << entry.at("name") << ", Path: " << entry.at("path") << '\n';
+			auto path = entry.at("path").template get<std::string>();
+			m_assetManager.addFont(m_renderer, path.c_str());
 		}
 	}
 

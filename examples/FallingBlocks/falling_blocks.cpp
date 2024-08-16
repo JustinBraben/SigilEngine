@@ -44,13 +44,19 @@ class FallingBlocksScene : public Sigil::SceneBase
 		}
 
 		// TODO: proof of concept font rendering
-		/*auto text_view = m_registry.view<const Position, const Text>();
+		auto text_view = m_registry.view<const Position, const Text>();
 		for (const auto [e, pos, text] : text_view.each())
 		{
 			TTF_Font* font = TTF_OpenFont("./resources/fonts/dejavu-sans.book.ttf", 12);
-			SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.str, text.foregroundColor);
+			SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.str, text.foregroundColor);
+			auto* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+			SDL_Rect textRect = { pos.x, pos.y, textSurface->w, textSurface->h };
+			SDL_RenderCopy(renderer, texture, NULL, &textRect);
+
+			SDL_DestroyTexture(texture);
 			SDL_FreeSurface(textSurface);
-		}*/
+			TTF_CloseFont(font);
+		}
 	}
 };
 
@@ -139,8 +145,9 @@ int main()
 	config_json["display"]["background"]["color"]["g"] = g;
 	config_json["display"]["background"]["color"]["b"] = b;
 	config_json["display"]["background"]["color"]["a"] = a;
-	config_json["resources"]["fonts"]["name"] = "dejavu-sans";
-	config_json["resources"]["fonts"]["path"] = "./resources/fonts/dejavu-sans.book.ttf";
+
+	config_json["resources"]["fonts"]["dejavu-sans"]["name"] = "dejavu-sans";
+	config_json["resources"]["fonts"]["dejavu-sans"]["path"] = "./resources/fonts/dejavu-sans.book.ttf";
 
 	auto config_json_string = config_json.dump(4);
 	std::cout << config_json_string << '\n';
