@@ -9,6 +9,7 @@
 using BlockComponents = entt::type_list<Position, Velocity, SpriteSize>;
 using TextComponents = entt::type_list<Position, Text>;
 using SpriteComponents = entt::type_list<Position, Velocity, SpriteSize, Sprite>;
+using AnimatedSpriteComponents = entt::type_list<Position, Velocity, SpriteSize, Sprite, SpriteAnimator>;
 
 template <class Registry>
 concept IsRegistry = std::is_base_of_v<entt::registry, Registry>;
@@ -48,11 +49,7 @@ public:
 
 	void update(float deltaTime) override
 	{
-		// Implement scene-specific update logic here
-		// You can convert deltaTime to seconds if needed:
-		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
-		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
@@ -108,15 +105,18 @@ public:
 		m_registry.emplace<Position>(block, 200, 384);
 		m_registry.emplace<Velocity>(block, 0, -200);
 		m_registry.emplace<SpriteSize>(block, 100, 100);
+
+		auto animatedSprite = m_registry.create();
+		m_registry.emplace<Position>(animatedSprite, 200, 300);
+		m_registry.emplace<Velocity>(animatedSprite, 100, -100);
+		m_registry.emplace<SpriteSize>(animatedSprite, 32, 32);
+		size_t frame = 0, lastFrame = 10, fps = 30;
+		m_registry.emplace<SpriteAnimator>(animatedSprite, "Idle", frame, lastFrame, 0.f, State::play, fps);
 	}
 
 	void update(float deltaTime) override
 	{
-		// Implement scene-specific update logic here
-		// You can convert deltaTime to seconds if needed:
-		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
-		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
@@ -125,11 +125,26 @@ public:
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		auto block_view = m_registry.view<const Position, const SpriteSize>();
+		auto block_view = m_registry.view<const Position, const SpriteSize>(entt::exclude<SpriteAnimator>);
 		for (const auto [e_block, pos, sprite_size] : block_view.each())
 		{
 			SDL_Rect block_rect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 			SDL_RenderFillRect(renderer, &block_rect);
+		}
+
+		auto animation_view = m_registry.view<const Position, const Velocity, const SpriteSize, const SpriteAnimator>();
+		for (const auto [e, pos, vel, sprite_size, sprite_animator] : animation_view.each())
+		{
+			SDL_Rect spriteRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
+			std::string name = sprite_animator.name;
+			auto* spriteTexture = m_engine.getAssetManager().getTexture(name);
+
+			int srcX = sprite_size.w * static_cast<int>(sprite_animator.frame);
+
+			SDL_Rect srcRect = { srcX, 0, sprite_size.w, sprite_size.h };
+			SDL_Rect dstRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
+
+			SDL_RenderCopy(renderer, spriteTexture, &srcRect, &dstRect);
 		}
 	}
 };
@@ -150,11 +165,7 @@ public:
 
 	void update(float deltaTime) override
 	{
-		// Implement scene-specific update logic here
-		// You can convert deltaTime to seconds if needed:
-		/*double deltaSeconds = static_cast<double>(deltaTime) / SDL_GetPerformanceFrequency();*/
 		runSystems(deltaTime);
-		// Use deltaSeconds for time-based updates
 	}
 
 	void render(SDL_Renderer* renderer, float deltaTime) override
@@ -260,7 +271,6 @@ int main()
 			}
 		}
 	);
-
 	engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
 			if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
@@ -317,6 +327,33 @@ int main()
 
 	// Setup systems for each scene
 	engine.setCurrentScene("sceneA");
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize, SpriteAnimator>();
+			for (auto [e, pos, vel, sprite_size, sprite_animator] : view.each())
+			{
+				if (sprite_animator.state == State::play)
+				{
+					sprite_animator.elapsed += deltaTime;
+
+					if (sprite_animator.elapsed > (1.0f / sprite_animator.fps))
+					{
+						sprite_animator.elapsed = 0.0f;
+
+						if (sprite_animator.frame < sprite_animator.lastFrame) {
+							sprite_animator.frame += 1;
+						}
+						else
+						{
+							sprite_animator.frame = 0;
+						}
+					}
+
+					//renderers[i].index = animators[i].animation[animators[i].frame];
+				}
+			}
+		}
+	);
 	engine.getCurrentScene()->addSystem(
 		[](entt::registry& registry, float deltaTime) {
 			auto view = registry.view<Position, Velocity>();

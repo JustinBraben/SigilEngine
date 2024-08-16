@@ -81,10 +81,11 @@ struct Sprite {
 };
 
 struct SpriteAnimator {
-	// all index values of animation
-	std::vector<size_t> animation;
+	const char* name;
 	// Current frame of animation
 	size_t frame = 0;
+	// The last frame of the animation
+	size_t lastFrame = 0;
 	// time elapsed since last animating
 	float elapsed = 0;
 	// pause or run the animation
