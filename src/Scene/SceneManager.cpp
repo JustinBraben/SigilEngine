@@ -40,4 +40,9 @@ namespace Sigil
 	{
 		return m_currentScene;
 	}
+
+	SceneMap& SceneManager::getSceneMap()
+	{
+		return m_scenes;
+	}
 } // namespace Sigil

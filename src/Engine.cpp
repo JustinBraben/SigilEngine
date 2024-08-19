@@ -55,6 +55,9 @@ namespace Sigil
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
 		}
 
+		// Must have at least one scene
+		// m_sceneManager.init();
+
 		m_assetManager.init(m_renderer);
 
 		// Start sending SDL_TextInput events
@@ -193,6 +196,12 @@ namespace Sigil
 		if (!m_sceneManager.sceneExists(name))
 		{
 			m_sceneManager.addScene(name, scene);
+		}
+
+		// If the first scene is being added, set it to be the current scene
+		if (m_sceneManager.getSceneMap().size() == 1)
+		{
+			setCurrentScene(name);
 		}
 	}
 

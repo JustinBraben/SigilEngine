@@ -27,6 +27,7 @@ namespace Sigil
 		bool sceneExists(const std::string& name) const;
 
 		std::shared_ptr<SceneBase> getCurrentScene();
+		SceneMap& getSceneMap();
 
 	protected:
 		Engine& m_engine;
