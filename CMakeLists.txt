@@ -123,7 +123,7 @@ set(
     "src/Asset/Animation.cpp"
 )
 
-add_library(Sigil ${HEADERS} ${SOURCES})
+add_library(Sigil STATIC ${HEADERS} ${SOURCES})
 add_library(Sigil::Sigil ALIAS Sigil)
 
 # Set include directories for users of this library

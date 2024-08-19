@@ -17,7 +17,7 @@ jobs:
         - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         - { name: macOS,          os: macos-latest  }
         config:
-        - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
+        # - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
@@ -31,7 +31,7 @@ jobs:
     - name: Compile tests
       shell: bash
       run: |
-        cmake -S . -B build -DSIGIL_BUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
+        cmake -S . -B build -DSIGIL_BUILD_TESTING=ON ${{matrix.platform.flags}} ${{matrix.config.flags}}
         cmake --build build -j4
     - name: Run tests
       shell: bash
