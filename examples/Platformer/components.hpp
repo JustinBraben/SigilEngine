@@ -10,6 +10,13 @@ enum class State {
 	play
 };
 
+enum class PlayerState {
+	Idle,
+	Run,
+	Jump,
+	Fall
+};
+
 struct Position {
 	int x, y;
 

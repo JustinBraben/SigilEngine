@@ -107,6 +107,8 @@ set(
     "include/Sigil/Asset/AssetManager.hpp"
     "include/Sigil/Asset/Animation.hpp"
 
+    "include/Sigil/Action/ActionManager.hpp"
+
     "include/Sigil/Event/EventTypes.hpp"
 )
 
@@ -119,8 +121,11 @@ set(
 
     "src/Scene/SceneBase.cpp"
     "src/Scene/SceneManager.cpp"
+
     "src/Asset/AssetManager.cpp"
     "src/Asset/Animation.cpp"
+
+    "src/Action/ActionManager.cpp"
 )
 
 add_library(Sigil STATIC ${HEADERS} ${SOURCES})

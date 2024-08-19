@@ -277,6 +277,8 @@ int main()
 			}
 		}
 	);
+	Sigil::KeyAction jumpAction("Jump", SDLK_SPACE, SDL_KEYDOWN);
+	engine.getCurrentScene()->getActionManager().addKeyAction(jumpAction);
 
 	auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
 	auto sceneB = std::make_shared<SceneB>(engine, "sceneB");

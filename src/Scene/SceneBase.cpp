@@ -53,6 +53,11 @@ namespace Sigil
 		}
 	}
 
+	ActionManager& SceneBase::getActionManager()
+	{
+		return m_actionManager;
+	}
+
 	void SceneBase::clearRegistry()
 	{
 		m_registry.clear();
