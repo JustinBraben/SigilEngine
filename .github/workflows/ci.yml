@@ -31,7 +31,7 @@ jobs:
     - name: Compile tests
       shell: bash
       run: |
-        cmake -S . -B build -DSIGIL_BUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=install -j 4 ${{matrix.platform.flags}} ${{matrix.config.flags}} 
+        cmake -S . -B build -DSIGIL_BUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}} 
     - name: Run tests
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
