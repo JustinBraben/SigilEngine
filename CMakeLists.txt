@@ -168,7 +168,6 @@ if(SIGIL_BUILD_TESTING)
     option(SIGIL_FIND_GTEST_PACKAGE "Enable finding gtest package." OFF)
     option(SIGIL_BUILD_BENCHMARK "Build benchmark." OFF)
     option(SIGIL_BUILD_LIB "Build lib tests." OFF)
-    option(SIGIL_BUILD_SNAPSHOT "Build snapshot test with Cereal." OFF)
 
     set(SIGIL_ID_TYPE std::uint32_t CACHE STRING "Type of identifiers to use for the tests")
     set(SIGIL_CXX_STD cxx_std_20 CACHE STRING "C++ standard revision to use for the tests")

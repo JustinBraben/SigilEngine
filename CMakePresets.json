@@ -43,6 +43,14 @@
       }
     },
     {
+      "name": "Build-Tests",
+      "displayName": "Build Tests",
+      "inherits": "x64-debug",
+      "cacheVariables": {
+        "SIGIL_BUILD_TESTING": "ON"
+      }
+    },
+    {
       "name": "Build-Shared",
       "displayName": "Build Shared",
       "inherits": "x64-debug",
