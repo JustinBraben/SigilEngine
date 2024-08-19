@@ -277,8 +277,10 @@ int main()
 			}
 		}
 	);
-	Sigil::KeyAction jumpAction("Jump", SDLK_SPACE, SDL_KEYDOWN);
-	engine.getCurrentScene()->getActionManager().addKeyAction(jumpAction);
+	Sigil::KeyAction<SDL_KEYDOWN> jumpPressed("Jump_Pressed", SDLK_SPACE);
+	Sigil::KeyAction<SDL_KEYUP> jumpReleased("Jump_Released", SDLK_SPACE);
+	engine.getCurrentScene()->getActionManager().addKeyPressAction(jumpPressed);
+	engine.getCurrentScene()->getActionManager().addKeyPressAction(jumpReleased);
 
 	auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
 	auto sceneB = std::make_shared<SceneB>(engine, "sceneB");

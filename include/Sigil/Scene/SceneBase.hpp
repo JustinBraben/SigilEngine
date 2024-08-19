@@ -24,9 +24,6 @@ namespace Sigil
 
 		std::string getName() const;
 
-		// TODO: Deprecate
-		//ActionManager& getActionManagerRef();
-
 		void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
 		void registerMouseAction(Uint8 button, MouseActionCallback callback);
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
