@@ -25,7 +25,7 @@ set(
 # Build example using sigil engine
 if(SIGIL_BUILD_EXAMPLES)
     BUILD_SIGIL_EXAMPLE(falling_blocks ${FALLING_BLOCKS_HEADERS} ${FALLING_BLOCKS_SOURCES})
-    # BUILD_SIGIL_EXAMPLE(platformer "Platformer/components.hpp" "Platformer/platformer.cpp")
+    BUILD_SIGIL_EXAMPLE(platformer "Platformer/components.hpp" "Platformer/platformer.cpp")
 endif()
 
 # Copy resources to binary location

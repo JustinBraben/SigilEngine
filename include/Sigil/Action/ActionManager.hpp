@@ -73,7 +73,7 @@ namespace Sigil
 	{
 	public:
 		template<auto EventType> requires KeyEventType<EventType>
-		void addKeyPressAction(const KeyAction<EventType>& action) {
+		void addKeyAction(const KeyAction<EventType>& action) {
 			if (EventType == SDL_KEYDOWN)
 			{
 				m_keyPressActions[action.getName()] = { action.getKeycode() };
@@ -84,8 +84,20 @@ namespace Sigil
 			}
 		}
 
+		template<auto EventType> requires KeyEventType<EventType>
+		KeyCodePressOrRelease<EventType> getKeyAction(const std::string& name) const {
+			if constexpr (EventType == SDL_KEYDOWN)
+			{
+				return m_keyPressActions.at(name);
+			}
+			else
+			{
+				return m_keyReleaseActions.at(name);
+			}
+		}
+
 		template<auto EventType> requires MouseButtonEventType<EventType>
-		void addMouseButtonPressAction(const MouseButtonAction<EventType>& action) {
+		void addMouseButtonAction(const MouseButtonAction<EventType>& action) {
 			if (EventType == SDL_MOUSEBUTTONDOWN) 
 			{
 				m_mouseButtonPressActions[action.getName()] = { action.getButton() };
@@ -93,6 +105,19 @@ namespace Sigil
 			else
 			{
 				m_mouseButtonReleaseActions[action.getName()] = { action.getButton() };
+			}
+		}
+
+		template<auto EventType> requires MouseButtonEventType<EventType>
+		MouseButtonPressOrRelease<EventType> getMouseAction(const std::string& name) const 
+		{
+			if constexpr (EventType == SDL_MOUSEBUTTONDOWN) 
+			{
+				return m_mouseButtonPressActions.at(name);
+			}
+			else
+			{
+				return m_mouseButtonReleaseActions.at(name);
 			}
 		}
 

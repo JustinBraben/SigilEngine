@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <Sigil/Scene/SceneManager.hpp>
 #include <Sigil/Asset/AssetManager.hpp>
+#include <Sigil/Action/ActionManager.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>

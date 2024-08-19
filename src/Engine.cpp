@@ -43,13 +43,15 @@ namespace Sigil
 		auto width = m_config["display"]["width"].template get<int>();
 		auto height = m_config["display"]["height"].template get<int>();
 
-		m_window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+		Uint32 windowFlags = static_cast<Uint32>(SDL_WINDOW_SHOWN);
+		m_window = SDL_CreateWindow(displayNameCString.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, windowFlags);
 		if (m_window == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Window. SDL_Error: %s", SDL_GetError());
 		}
 
-		m_renderer = SDL_CreateRenderer(m_window, NULL, SDL_RENDERER_ACCELERATED);
+		Uint32 renderFlags = static_cast<Uint32>(SDL_RENDERER_ACCELERATED);
+		m_renderer = SDL_CreateRenderer(m_window, -1, renderFlags);
 		if (m_renderer == nullptr)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create Renderer. SDL_Error: %s", SDL_GetError());
