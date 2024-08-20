@@ -66,7 +66,7 @@ int main()
 	engine.getCurrentScene()->registerKeyAction("Right", SDLK_d);
 	engine.getCurrentScene()->registerKeyAction("Left", SDLK_a);
 
-	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYDOWN, 
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYUP, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
 			eng.quit();
 		}

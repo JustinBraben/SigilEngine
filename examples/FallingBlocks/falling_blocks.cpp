@@ -257,220 +257,209 @@ int main()
 
 	engine.init();
 
-	//auto fallingBlockScene = std::make_shared<FallingBlocksScene>(engine, "fallingBlockScene");
-	//engine.addNewScene("fallingBlockScene", fallingBlockScene);
-	//engine.setCurrentScene("fallingBlockScene");
-	//engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-	//			eng.quit();
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->registerKeyAction(SDLK_UP, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-	//			std::cout << "Up arrow pressed!\n";
-	//		}
-	//		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-	//			std::cout << "Up arrow released!\n";
-	//		}
-	//	}
-	//);
-	//Sigil::KeyAction<SDL_KEYDOWN> jumpPressed("Jump_Pressed", SDLK_SPACE);
-	//Sigil::KeyAction<SDL_KEYUP> jumpReleased("Jump_Released", SDLK_SPACE);
-	//engine.getCurrentScene()->getActionManager().addKeyAction(jumpPressed);
-	//engine.getCurrentScene()->getActionManager().addKeyAction(jumpReleased);
+	auto fallingBlockScene = std::make_shared<FallingBlocksScene>(engine, "fallingBlockScene");
+	auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
+	auto sceneB = std::make_shared<SceneB>(engine, "sceneB");
+	engine.addNewScene("fallingBlockScene", fallingBlockScene);
+	engine.addNewScene("sceneA", sceneA);
+	engine.addNewScene("sceneB", sceneB);
 
-	//auto sceneA = std::make_shared<SceneA>(engine, "sceneA");
-	//auto sceneB = std::make_shared<SceneB>(engine, "sceneB");
-	//engine.addNewScene("sceneA", sceneA);
-	//engine.addNewScene("sceneB", sceneB);
+	engine.setCurrentScene("fallingBlockScene");
 
-	//engine.setCurrentScene("sceneA");
-	//engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-	//			std::cout << "Switching from sceneA to fallingBlockScene!\n";
-	//			eng.setCurrentScene("fallingBlockScene");
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-	//			std::cout << "There is no escape from sceneA...\n";
-	//		}
-	//	}
-	//);
+	// Init entities for fallingBlockScene
+	engine.getCurrentScene()->initializeEntities();
 
-	//engine.setCurrentScene("sceneB");
-	//engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-	//			std::cout << "Switching from sceneB to fallingBlockScene!\n";
-	//			eng.setCurrentScene("fallingBlockScene");
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->registerKeyAction(SDLK_ESCAPE, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYDOWN) {
-	//			std::cout << "There is no escape from sceneB...\n";
-	//		}
-	//	}
-	//);
+	// Register Actions for fallingBlockScene
+	engine.getCurrentScene()->registerKeyAction("Escape", SDLK_ESCAPE);
+	engine.getCurrentScene()->registerKeyAction("Jump", SDLK_SPACE);
+	engine.getCurrentScene()->registerKeyAction("Right", SDLK_d);
+	engine.getCurrentScene()->registerKeyAction("Left", SDLK_a);
 
-	//engine.setCurrentScene("fallingBlockScene");
-	//engine.getCurrentScene()->registerKeyAction(SDLK_LEFT, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-	//			std::cout << "Switching from fallingBlockScene to sceneA!\n";
-	//			eng.setCurrentScene("sceneA");
-	//		}
-	//	}
-	//);
+	// Register Callbacks for fallingBlockScene
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			eng.quit();
+		}
+	);
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_LEFT, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "Switching from fallingBlockScene to sceneA!\n";
+			eng.setCurrentScene("sceneA");
+		}
+	);
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_RIGHT, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "Switching from fallingBlockScene to sceneB!\n";
+			eng.setCurrentScene("sceneB");
+		}
+	);
 
-	//engine.getCurrentScene()->registerKeyAction(SDLK_RIGHT, 
-	//	[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-	//		if (keyboardEvnt.evnt_type == SDL_KEYUP) {
-	//			std::cout << "Switching from fallingBlockScene to sceneB!\n";
-	//			eng.setCurrentScene("sceneB");
-	//		}
-	//	}
-	//);
+	// Register Systems for fallingBlockScene
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>(entt::exclude<Sprite>);
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
 
-	//// Setup some entities for each scene
-	//engine.setCurrentScene("sceneA");
-	//engine.getCurrentScene()->initializeEntities();
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize, Sprite>();
+			for (auto [e_sprite, pos, vel, sprite_size, sprite] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
 
-	//engine.setCurrentScene("sceneB");
-	//engine.getCurrentScene()->initializeEntities();
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		}
+	);
 
-	//engine.setCurrentScene("fallingBlockScene");
-	//engine.getCurrentScene()->initializeEntities();
+	engine.setCurrentScene("sceneA");
 
-	//// Setup systems for each scene
-	//engine.setCurrentScene("sceneA");
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity, SpriteSize, SpriteAnimator>();
-	//		for (auto [e, pos, vel, sprite_size, sprite_animator] : view.each())
-	//		{
-	//			if (sprite_animator.state == State::play)
-	//			{
-	//				sprite_animator.elapsed += deltaTime;
+	// Init entities for sceneA
+	engine.getCurrentScene()->initializeEntities();
 
-	//				if (sprite_animator.elapsed > (1.0f / sprite_animator.fps))
-	//				{
-	//					sprite_animator.elapsed = 0.0f;
+	// Register Actions for sceneA
+	engine.getCurrentScene()->registerKeyAction("Escape", SDLK_ESCAPE);
+	engine.getCurrentScene()->registerKeyAction("Right", SDLK_RIGHT);
 
-	//					if (sprite_animator.frame < sprite_animator.lastFrame) {
-	//						sprite_animator.frame += 1;
-	//					}
-	//					else
-	//					{
-	//						sprite_animator.frame = 0;
-	//					}
-	//				}
+	// Register Callbacks for sceneA
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "There is no escape from sceneA...\n";
+		}
+	);
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_RIGHT, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "Switching from sceneA to fallingBlockScene!\n";
+			eng.setCurrentScene("fallingBlockScene");
+		}
+	);
 
-	//				//renderers[i].index = animators[i].animation[animators[i].frame];
-	//			}
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity>();
-	//		for (auto [e_block, pos, vel] : view.each())
-	//		{
-	//			auto xAdd = static_cast<float>(vel.x) * deltaTime;
-	//			auto yAdd = static_cast<float>(vel.y) * deltaTime;
-	//			pos.x += static_cast<int>(xAdd);
-	//			pos.y += static_cast<int>(yAdd);
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity, SpriteSize>();
-	//		for (auto [e_block, pos, vel, sprite_size] : view.each())
-	//		{
-	//			if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
-	//				vel.y *= -1;
-	//			}
-	//		}
-	//	}
-	//);
+	// Register Systems for sceneA
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize, SpriteAnimator>();
+			for (auto [e, pos, vel, sprite_size, sprite_animator] : view.each())
+			{
+				if (sprite_animator.state == State::play)
+				{
+					sprite_animator.elapsed += deltaTime;
 
-	//engine.setCurrentScene("sceneB");
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity>();
-	//		for (auto [e_block, pos, vel] : view.each())
-	//		{
-	//			auto xAdd = static_cast<float>(vel.x) * deltaTime;
-	//			auto yAdd = static_cast<float>(vel.y) * deltaTime;
-	//			pos.x += static_cast<int>(xAdd);
-	//			pos.y += static_cast<int>(yAdd);
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity, SpriteSize>();
-	//		for (auto [e_block, pos, vel, sprite_size] : view.each())
-	//		{
-	//			if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
-	//				vel.x *= -1;
-	//			}
-	//		}
-	//	}
-	//);
+					if (sprite_animator.elapsed > (1.0f / sprite_animator.fps))
+					{
+						sprite_animator.elapsed = 0.0f;
 
-	//engine.setCurrentScene("fallingBlockScene");
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity>();
-	//		for (auto [e_block, pos, vel] : view.each())
-	//		{
-	//			auto xAdd = static_cast<float>(vel.x) * deltaTime;
-	//			auto yAdd = static_cast<float>(vel.y) * deltaTime;
-	//			pos.x += static_cast<int>(xAdd);
-	//			pos.y += static_cast<int>(yAdd);
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity, SpriteSize>(entt::exclude<Sprite>);
-	//		for (auto [e_block, pos, vel, sprite_size] : view.each())
-	//		{
-	//			if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
-	//				vel.x *= -1;
-	//			}
+						if (sprite_animator.frame < sprite_animator.lastFrame) {
+							sprite_animator.frame += 1;
+						}
+						else
+						{
+							sprite_animator.frame = 0;
+						}
+					}
 
-	//			if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
-	//				vel.y *= -1;
-	//			}
-	//		}
-	//	}
-	//);
-	//engine.getCurrentScene()->addSystem(
-	//	[](entt::registry& registry, float deltaTime) {
-	//		auto view = registry.view<Position, Velocity, SpriteSize, Sprite>();
-	//		for (auto [e_sprite, pos, vel, sprite_size, sprite] : view.each())
-	//		{
-	//			if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
-	//				vel.x *= -1;
-	//			}
+					//renderers[i].index = animators[i].animation[animators[i].frame];
+				}
+			}
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>();
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
+					vel.y *= -1;
+				}
+			}
+		}
+	);
 
-	//			if (pos.y < 0 || pos.y > 768 - sprite_size.h) {
-	//				vel.y *= -1;
-	//			}
-	//		}
-	//	}
-	//);
+	engine.setCurrentScene("sceneB");
+
+	// Init entities for sceneA
+	engine.getCurrentScene()->initializeEntities();
+
+	// Register Actions for sceneB
+	engine.getCurrentScene()->registerKeyAction("Escape", SDLK_ESCAPE);
+	engine.getCurrentScene()->registerKeyAction("Right", SDLK_LEFT);
+
+	// Register Callbacks for sceneB
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "There is no escape from sceneB...\n";
+		}
+	);
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_LEFT, SDL_KEYUP,
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			std::cout << "Switching from sceneB to fallingBlockScene!\n";
+			eng.setCurrentScene("fallingBlockScene");
+		}
+	);
+
+	// Register Systems for sceneB
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity>();
+			for (auto [e_block, pos, vel] : view.each())
+			{
+				auto xAdd = static_cast<float>(vel.x) * deltaTime;
+				auto yAdd = static_cast<float>(vel.y) * deltaTime;
+				pos.x += static_cast<int>(xAdd);
+				pos.y += static_cast<int>(yAdd);
+			}
+		}
+	);
+	engine.getCurrentScene()->addSystem(
+		[](entt::registry& registry, float deltaTime) {
+			auto view = registry.view<Position, Velocity, SpriteSize>();
+			for (auto [e_block, pos, vel, sprite_size] : view.each())
+			{
+				if (pos.x < 0 || pos.x > 1024 - sprite_size.w) {
+					vel.x *= -1;
+				}
+			}
+		}
+	);
+
+	engine.setCurrentScene("fallingBlockScene");
 
 	engine.run();
 
