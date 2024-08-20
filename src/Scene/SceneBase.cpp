@@ -61,7 +61,7 @@ namespace Sigil
 		}
     }
 
-    void SceneBase::handleMouseEvent(Engine& engine, const MouseButtonEvent& event) {
+    void SceneBase::handleMouseButtonEvent(Engine& engine, const MouseButtonEvent& event) {
 		if (event.evnt_type == SDL_MOUSEBUTTONDOWN) {
 			auto& mousePressCallBacksRef = getCallbackManager().getMousePressCallbacks();
 			auto it = mousePressCallBacksRef.find(event.mouse_evnt.button);

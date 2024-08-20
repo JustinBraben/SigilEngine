@@ -188,7 +188,7 @@ namespace Sigil
 		MouseButtonEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene) {
-			currentScene->handleMouseEvent(*this, mouseEvent);
+			currentScene->handleMouseButtonEvent(*this, mouseEvent);
 		}
 	}
 

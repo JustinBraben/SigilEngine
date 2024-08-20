@@ -30,7 +30,7 @@ namespace Sigil
 		void registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
 		void registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseButtonActionCallback callback);
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
-		void handleMouseEvent(Engine& engine, const MouseButtonEvent& event);
+		void handleMouseButtonEvent(Engine& engine, const MouseButtonEvent& event);
 
 		using SystemFunction = std::function<void(entt::registry&, float)>;
 		void addSystem(SystemFunction system);
