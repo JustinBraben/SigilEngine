@@ -5,6 +5,7 @@
 #include <Sigil/Scene/SceneManager.hpp>
 #include <Sigil/Asset/AssetManager.hpp>
 #include <Sigil/Action/ActionManager.hpp>
+#include <Sigil/Timer.hpp>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -38,6 +39,7 @@ namespace Sigil
 		float ticksToSeconds(Uint64 ticks) const;
 
 		json& getConfig() { return m_config; };
+		SDL_Renderer* getRenderer() { return m_renderer; };
 		AssetManager& getAssetManager() { return m_assetManager; };
 		SceneManager& getSceneManager() { return m_sceneManager; };
 
@@ -52,6 +54,8 @@ namespace Sigil
 		Uint64 m_previousTime;
 		Uint64 m_currentTime;
 		Uint64 m_deltaTime;
+		Timer m_timer;
+		float m_fps;
 		bool m_running;
 	};
 } // namespace Sigil

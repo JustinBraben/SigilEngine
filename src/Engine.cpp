@@ -9,6 +9,8 @@ namespace Sigil
 			m_currentTime(0), 
 			m_deltaTime(0), 
 			m_previousTime(0), 
+			m_timer(),
+			m_fps(60.0f),
 			m_running(false)
     {
     }
@@ -92,6 +94,8 @@ namespace Sigil
 
 		while (m_running)
 		{
+			m_timer.start();
+
 			// Queues up actions that the application finds for the current scene
 			SDL_Event evnt;
 			while (SDL_PollEvent(&evnt))
@@ -170,7 +174,7 @@ namespace Sigil
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene)
 		{
-			currentScene->render(m_renderer, deltaTime);
+			currentScene->render(deltaTime);
 		}
 
 		SDL_RenderPresent(m_renderer);

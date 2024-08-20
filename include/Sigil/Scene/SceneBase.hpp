@@ -49,7 +49,7 @@ namespace Sigil
 		virtual void initializeEntities() = 0;
 
 		virtual void update(float deltaTime) = 0;
-		virtual void render(SDL_Renderer* renderer, float deltaTime) = 0;
+		virtual void render(float deltaTime) = 0;
 
 	protected:
 		Engine& m_engine;

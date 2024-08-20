@@ -52,8 +52,9 @@ public:
 		runSystems(deltaTime);
 	}
 
-	void render(SDL_Renderer* renderer, float deltaTime) override
+	void render(float deltaTime) override
 	{
+		auto* renderer = m_engine.getRenderer();
 		SDL_SetRenderDrawColor(renderer, 0, 122, 0, 255);
 		SDL_RenderClear(renderer);
 
@@ -141,8 +142,9 @@ public:
 		runSystems(deltaTime);
 	}
 
-	void render(SDL_Renderer* renderer, float deltaTime) override
+	void render(float deltaTime) override
 	{
+		auto* renderer = m_engine.getRenderer();
 		SDL_SetRenderDrawColor(renderer, 122, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
@@ -189,8 +191,9 @@ public:
 		runSystems(deltaTime);
 	}
 
-	void render(SDL_Renderer* renderer, float deltaTime) override
+	void render(float deltaTime) override
 	{
+		auto* renderer = m_engine.getRenderer();
 		SDL_SetRenderDrawColor(renderer, 0, 0, 122, 255);
 		SDL_RenderClear(renderer);
 
