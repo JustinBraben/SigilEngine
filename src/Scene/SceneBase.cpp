@@ -16,16 +16,6 @@ namespace Sigil
 		return m_name;
 	}
 
-	/*void SceneBase::registerKeyAction(SDL_Keycode key, KeyActionCallback callback)
-	{
-		m_keyBindings[key] = std::move(callback);
-	}
-
-	void SceneBase::registerMouseAction(Uint8 button, MouseActionCallback callback)
-	{
-		m_mouseBindings[button] = std::move(callback);
-	}*/
-
     void SceneBase::registerKeyAction(const std::string& name, SDL_Keycode key)
     {
 		KeyAction<SDL_KEYDOWN> actionPressed(name + "_Pressed", key);
@@ -98,48 +88,6 @@ namespace Sigil
 			}
 		}
 	}
-
-	void SceneBase::handleKeyEventNew(Engine& engine, const SDL_Event& event) {
-		// auto keydownAction = m_actionManager.getKeyAction<SDL_KEYDOWN>(event.key.keysym.sym);
-		if (event.key.type == SDL_KEYDOWN)
-		{
-			auto keyPressIt = m_actionManager.getKeyPressActions().find(event.key.keysym.sym);
-			if (keyPressIt != m_actionManager.getKeyPressActions().end()) {
-
-				// auto keyPressCallbackIt = m_mousePressCallbacks.find(event.key.keysym.sym);
-				// if (keyPressCallbackIt != m_mousePressCallbacks.end()){
-				// 	keyPressCallbackIt->second(engine, event);
-				// }
-			}
-		}
-
-		if (event.key.type == SDL_KEYUP)
-		{
-			auto keyReleaseIt = m_actionManager.getKeyReleaseActions().find(event.key.keysym.sym);
-			if (keyReleaseIt != m_actionManager.getKeyReleaseActions().end()) {
-				// Run KeyReleaseAction callback that is associated with keyPressIt
-			}
-		}
-	}
-
-    void SceneBase::handleMouseEventNew(Engine &engine, const SDL_Event &event)
-    {
-		if (event.button.type == SDL_MOUSEBUTTONDOWN)
-		{
-			auto mousePressIt = m_actionManager.getMouseButtonPressActions().find(event.button.button);
-			if (mousePressIt != m_actionManager.getMouseButtonPressActions().end()) {
-				// Run KeyPressAction callback that is associated with keyPressIt
-			}
-		}
-
-		if (event.button.type == SDL_MOUSEBUTTONUP)
-		{
-			auto mouseReleaseIt = m_actionManager.getMouseButtonReleaseActions().find(event.button.button);
-			if (mouseReleaseIt != m_actionManager.getMouseButtonReleaseActions().end()) {
-				// Run KeyReleaseAction callback that is associated with keyPressIt
-			}
-		}
-    }
 
     void SceneBase::addSystem(SystemFunction system)
     {

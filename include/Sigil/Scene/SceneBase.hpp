@@ -24,8 +24,6 @@ namespace Sigil
 
 		std::string getName() const;
 
-		/*void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
-		void registerMouseAction(Uint8 button, MouseActionCallback callback);*/
 		void registerKeyAction(const std::string& name, SDL_Keycode key);
 		void registerMouseButtonAction(const std::string& name, Uint8 button);
 		void registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
@@ -52,8 +50,6 @@ namespace Sigil
 	protected:
 		Engine& m_engine;
 		std::string m_name;
-		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
-		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyPressCallbacks;
 		std::unordered_map<Uint8, MouseActionCallback> m_mousePressCallbacks;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyReleaseCallbacks;
