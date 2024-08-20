@@ -26,8 +26,15 @@ namespace Sigil
 
 		void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
 		void registerMouseAction(Uint8 button, MouseActionCallback callback);
+		void registerKeyActionNew(const std::string& name, SDL_Keycode key);
+		void registerMouseActionNew(const std::string& name, Uint8 button);
+		void registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
+		void registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseActionCallback callback);
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseEvent& event);
+
+		void handleKeyEventNew(Engine& engine, const SDL_Event& event);
+		void handleMouseEventNew(Engine& engine, const SDL_Event& event);
 
 		using SystemFunction = std::function<void(entt::registry&, float)>;
 		void addSystem(SystemFunction system);
@@ -47,6 +54,10 @@ namespace Sigil
 		std::string m_name;
 		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyBindings;
 		std::unordered_map<Uint8, MouseActionCallback> m_mouseBindings;
+		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyPressCallbacks;
+		std::unordered_map<Uint8, MouseActionCallback> m_mousePressCallbacks;
+		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyReleaseCallbacks;
+		std::unordered_map<Uint8, MouseActionCallback> m_mouseReleaseCallbacks;
 		ActionManager m_actionManager;
 		entt::registry m_registry;
 		std::vector<SystemFunction> m_systems;
