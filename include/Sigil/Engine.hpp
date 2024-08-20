@@ -31,14 +31,6 @@ namespace Sigil
 		void handleKeyEvent(const SDL_Event& event);
 		void handleMouseButtonEvent(const SDL_Event& event);
 
-		//template<typename SceneBaseDerivedType>
-		//void addNewScene(const std::string& name) {
-		//	// TODO: Have this emit a compiler error if trying to add a scene with a name already used
-		//	if (!m_sceneManager.sceneExists(name))
-		//	{
-		//		m_sceneManager.addScene<SceneBaseDerivedType>(name);
-		//	}
-		//}
 		void addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene);
 		void setCurrentScene(const std::string& name);
 		std::shared_ptr<SceneBase> getCurrentScene();

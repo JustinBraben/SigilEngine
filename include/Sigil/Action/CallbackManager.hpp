@@ -18,11 +18,19 @@ namespace Sigil
 	public:
 		CallbackManager() = default;
 		~CallbackManager() = default;
+
+		KeyActionCallbackMap& getKeyPressCallbacks();
+		MouseButtonActionCallbackMap& getMousePressCallbacks();
+		KeyActionCallbackMap& getKeyReleaseCallbacks();
+		MouseButtonActionCallbackMap& getMouseReleaseCallbacks();
+
+		void addKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
+		void addMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseButtonActionCallback callback);
 	protected:
-		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyPressCallbacks;
-		std::unordered_map<Uint8, MouseButtonActionCallback> m_mousePressCallbacks;
-		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyReleaseCallbacks;
-		std::unordered_map<Uint8, MouseButtonActionCallback> m_mouseReleaseCallbacks;
+		KeyActionCallbackMap m_keyPressCallbacks;
+		MouseButtonActionCallbackMap m_mousePressCallbacks;
+		KeyActionCallbackMap m_keyReleaseCallbacks;
+		MouseButtonActionCallbackMap m_mouseReleaseCallbacks;
 	};
 } // namespace Sigil
 

@@ -20,54 +20,42 @@ namespace Sigil
     {
 		KeyAction<SDL_KEYDOWN> actionPressed(name + "_Pressed", key);
 		KeyAction<SDL_KEYUP> actionReleased(name + "_Released", key);
-		m_actionManager.addKeyAction(actionPressed);
-		m_actionManager.addKeyAction(actionReleased);
+		getActionManager().addKeyAction(actionPressed);
+		getActionManager().addKeyAction(actionReleased);
     }
 
     void SceneBase::registerMouseButtonAction(const std::string &name, Uint8 button)
     {
 		MouseButtonAction<SDL_MOUSEBUTTONDOWN> actionPressed(name + "_Pressed", button);
 		MouseButtonAction<SDL_MOUSEBUTTONUP> actionReleased(name + "_Released", button);
-		m_actionManager.addMouseButtonAction(actionPressed);
-		m_actionManager.addMouseButtonAction(actionReleased);
+		getActionManager().addMouseButtonAction(actionPressed);
+		getActionManager().addMouseButtonAction(actionReleased);
     }
 
     void SceneBase::registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback)
     {
-		if (eventType == SDL_KEYDOWN)
-		{
-			m_keyPressCallbacks[key] = std::move(callback);
-		}
-		else if (eventType == SDL_KEYUP)
-		{
-			m_keyReleaseCallbacks[key] = std::move(callback);
-		}
+		getCallbackManager().addKeyActionCallback(key, eventType, callback);
     }
 
     void SceneBase::registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseButtonActionCallback callback)
     {
-		if (eventType == SDL_MOUSEBUTTONDOWN)
-		{
-			m_mousePressCallbacks[button] = std::move(callback);
-		}
-		else if (eventType == SDL_MOUSEBUTTONUP)
-		{
-			m_mouseReleaseCallbacks[button] = std::move(callback);
-		}
+		getCallbackManager().addMouseButtonActionCallback(button, eventType, callback);
     }
 
     void SceneBase::handleKeyEvent(Engine &engine, const KeyEvent &event)
     {
 		if (event.evnt_type == SDL_KEYDOWN) {
-			auto it = m_keyPressCallbacks.find(event.key_evnt.keysym.sym);
-			if (it != m_keyPressCallbacks.end()) {
+			auto& keyPressCallBacksRef = getCallbackManager().getKeyPressCallbacks();
+			auto it = keyPressCallBacksRef.find(event.key_evnt.keysym.sym);
+			if (it != keyPressCallBacksRef.end()) {
 				it->second(engine, event);
 			}
 		}
 
 		if (event.evnt_type == SDL_KEYUP) {
-			auto it = m_keyReleaseCallbacks.find(event.key_evnt.keysym.sym);
-			if (it != m_keyReleaseCallbacks.end()) {
+			auto& keyReleaseCallBacksRef = getCallbackManager().getKeyReleaseCallbacks();
+			auto it = keyReleaseCallBacksRef.find(event.key_evnt.keysym.sym);
+			if (it != keyReleaseCallBacksRef.end()) {
 				it->second(engine, event);
 			}
 		}
@@ -75,15 +63,17 @@ namespace Sigil
 
     void SceneBase::handleMouseEvent(Engine& engine, const MouseButtonEvent& event) {
 		if (event.evnt_type == SDL_MOUSEBUTTONDOWN) {
-			auto it = m_mousePressCallbacks.find(event.mouse_evnt.button);
-			if (it != m_mousePressCallbacks.end()) {
+			auto& mousePressCallBacksRef = getCallbackManager().getMousePressCallbacks();
+			auto it = mousePressCallBacksRef.find(event.mouse_evnt.button);
+			if (it != mousePressCallBacksRef.end()) {
 				it->second(engine, event);
 			}
 		}
 
 		if (event.evnt_type == SDL_MOUSEBUTTONDOWN) {
-			auto it = m_mouseReleaseCallbacks.find(event.mouse_evnt.button);
-			if (it != m_mouseReleaseCallbacks.end()) {
+			auto& mouseReleaseCallBacksRef = getCallbackManager().getMouseReleaseCallbacks();
+			auto it = mouseReleaseCallBacksRef.find(event.mouse_evnt.button);
+			if (it != mouseReleaseCallBacksRef.end()) {
 				it->second(engine, event);
 			}
 		}
@@ -105,6 +95,11 @@ namespace Sigil
 	ActionManager& SceneBase::getActionManager()
 	{
 		return m_actionManager;
+	}
+
+	CallbackManager& SceneBase::getCallbackManager()
+	{
+		return m_callbackManager;
 	}
 
 	void SceneBase::clearRegistry()

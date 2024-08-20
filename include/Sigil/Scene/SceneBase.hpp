@@ -4,6 +4,7 @@
 #include <Sigil/EngineFwd.hpp>
 #include <Sigil/Action/ActionTypes.hpp>
 #include <Sigil/Action/ActionManager.hpp>
+#include <Sigil/Action/CallbackManager.hpp>
 
 #include <string>
 #include <unordered_map>
@@ -31,14 +32,12 @@ namespace Sigil
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
 		void handleMouseEvent(Engine& engine, const MouseButtonEvent& event);
 
-		void handleKeyEventNew(Engine& engine, const SDL_Event& event);
-		void handleMouseEventNew(Engine& engine, const SDL_Event& event);
-
 		using SystemFunction = std::function<void(entt::registry&, float)>;
 		void addSystem(SystemFunction system);
 		void runSystems(float deltaTime);
 
 		ActionManager& getActionManager();
+		CallbackManager& getCallbackManager();
 
 		void clearRegistry();
 		void initializeScene();
@@ -50,11 +49,8 @@ namespace Sigil
 	protected:
 		Engine& m_engine;
 		std::string m_name;
-		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyPressCallbacks;
-		std::unordered_map<Uint8, MouseButtonActionCallback> m_mousePressCallbacks;
-		std::unordered_map<SDL_Keycode, KeyActionCallback> m_keyReleaseCallbacks;
-		std::unordered_map<Uint8, MouseButtonActionCallback> m_mouseReleaseCallbacks;
 		ActionManager m_actionManager;
+		CallbackManager m_callbackManager;
 		entt::registry m_registry;
 		std::vector<SystemFunction> m_systems;
 
