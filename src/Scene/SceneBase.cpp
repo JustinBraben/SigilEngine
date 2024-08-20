@@ -9,6 +9,9 @@ namespace Sigil
 	SceneBase::SceneBase(Engine& engine, const std::string& inputName)
 		: m_engine(engine), m_name(inputName) {}
 
+	SceneBase::SceneBase(Engine& engine, const std::string& inputName, json sceneJson)
+		: m_engine(engine), m_name(inputName), m_sceneJson(sceneJson) {}
+
 	SceneBase::~SceneBase() {}
 
 	std::string SceneBase::getName() const
@@ -168,7 +171,7 @@ namespace Sigil
 		m_registry.clear();
 	}
 
-	void SceneBase::initializeScene()
+	void SceneBase::initializeScene(json sceneJson)
 	{
 		clearRegistry();
 		initializeEntities();

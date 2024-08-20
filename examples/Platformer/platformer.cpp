@@ -34,14 +34,17 @@ int main()
 
 	engine.init();
 
+
 	auto platformerMenuScene = std::make_shared<PlatformerMenuScene>(engine, "platformerMenuScene");
 	engine.addNewScene("platformerMenuScene", platformerMenuScene);
 
-	auto platformerLevelOne = std::make_shared<PlatformerLevelOne>(engine, "platformerLevelOne");
+	std::ifstream inputLevelConfig("./resources/config_files/platformerLevelOne.json");
+	json inputLevelJson = json::parse(inputLevelConfig);
+	auto platformerLevelOne = std::make_shared<PlatformerLevelOne>(engine, "platformerLevelOne", inputLevelJson);
 	engine.addNewScene("platformerLevelOne", platformerLevelOne);
 	engine.setCurrentScene("platformerLevelOne");
 
-	engine.getCurrentScene()->initializeEntities();
+	engine.getCurrentScene()->initializeScene(inputLevelJson);
 
 	// Add Actions to platformerLevelOne
 	engine.getCurrentScene()->registerKeyAction("Jump", SDLK_SPACE);

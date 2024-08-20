@@ -22,6 +22,7 @@ namespace Sigil
 	public:
 		SceneBase() = delete;
 		SceneBase(Engine& engine, const std::string& inputName);
+		SceneBase(Engine& engine, const std::string& inputName, json sceneJson);
 		~SceneBase();
 
 		std::string getName() const;
@@ -46,7 +47,7 @@ namespace Sigil
 		entt::registry& getRegistry();
 
 		void clearRegistry();
-		void initializeScene();
+		void initializeScene(json sceneJson);
 		virtual void initializeEntities() = 0;
 
 		virtual void update(float deltaTime) = 0;
@@ -63,7 +64,7 @@ namespace Sigil
 		std::queue<MouseButtonEvent> m_mouseButtonReleaseActionQueue;
 		entt::registry m_registry;
 		std::vector<SystemFunction> m_systems;
-
+		json m_sceneJson;
 	};
 } // namespace Sigil
 

@@ -27,6 +27,16 @@ struct PlayerMovementInput {
 	bool jump = false;
 };
 
+// Used to place game objects on grid
+struct GridPosition {
+	int x, y;
+};
+
+// Grid size
+struct GridSize {
+	int w = 64, h = 64;
+};
+
 struct Position {
 	int x, y;
 

@@ -1,6 +1,7 @@
 #ifndef SIGIL_ENGINE_HPP
 #define SIGIL_ENGINE_HPP
 
+#include <Sigil/EngineFwd.hpp>
 #include <SDL2/SDL.h>
 #include <Sigil/Scene/SceneManager.hpp>
 #include <Sigil/Asset/AssetManager.hpp>
@@ -9,9 +10,7 @@
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
 
 namespace Sigil
 {

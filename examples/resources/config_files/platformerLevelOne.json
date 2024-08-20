@@ -1,0 +1,68 @@
+{
+  "entities": {
+    "Players": {
+      "Player1": {
+        "GridPosition": {
+          "x": 4,
+          "y": 4
+        },
+        "GridSize": {
+          "w": 64,
+          "h": 64
+        },
+        "Animations": {
+          "Fall": {
+            "fps": 60,
+            "name": "Fall",
+            "path": "./resources/sprites/Fall_(32x32).png",
+            "totalFrames": 1
+          },
+          "Idle": {
+            "fps": 60,
+            "name": "Idle",
+            "path": "./resources/sprites/Idle_(32x32).png",
+            "totalFrames": 11
+          },
+          "Jump": {
+            "fps": 60,
+            "name": "Jump",
+            "path": "./resources/sprites/Jump_(32x32).png",
+            "totalFrames": 1
+          },
+          "Run": {
+            "fps": 60,
+            "name": "Run",
+            "path": "./resources/sprites/Run_(32x32).png",
+            "totalFrames": 12
+          }
+        }
+      }
+    },
+    "Terrain": {
+      "Bricks": {
+        "Brick1": {
+          "GridPosition": {
+            "x": 0,
+            "y": 0
+          },
+          "GridSize": {
+            "w": 64,
+            "h": 64
+          },
+          "terrainType": "Brick"
+        },
+        "Brick2": {
+          "GridPosition": {
+            "x": 1,
+            "y": 0
+          },
+          "GridSize": {
+            "w": 64,
+            "h": 64
+          },
+          "terrainType": "Brick"
+        }
+      }
+    }
+  }
+}
