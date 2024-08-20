@@ -62,13 +62,13 @@ int main()
 	engine.addNewScene("platformerLevelOne", platformerLevelOne);
 	engine.setCurrentScene("platformerLevelOne");
 
-	engine.getCurrentScene()->registerKeyActionNew("Jump", SDLK_SPACE);
-	engine.getCurrentScene()->registerKeyActionNew("Right", SDLK_d);
-	engine.getCurrentScene()->registerKeyActionNew("Left", SDLK_a);
+	engine.getCurrentScene()->registerKeyAction("Jump", SDLK_SPACE);
+	engine.getCurrentScene()->registerKeyAction("Right", SDLK_d);
+	engine.getCurrentScene()->registerKeyAction("Left", SDLK_a);
 
-	engine.getCurrentScene()->registerKeyActionCallback(SDLK_SPACE, SDL_KEYDOWN, 
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYDOWN, 
 		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
-
+			eng.quit();
 		}
 	);
 
@@ -77,6 +77,8 @@ int main()
 	// Then it generates a KeyUp and KeyDown for SDLK_SPACE
 
 	// engine.getCurrentScene()->registerKeyActionNew("Jump", SDLK_SPACE);
+	// engine.getCurrentScene()->registerActionCallback
+
 
 	engine.run();
 

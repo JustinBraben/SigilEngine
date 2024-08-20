@@ -16,7 +16,7 @@ namespace Sigil
 		return m_name;
 	}
 
-	void SceneBase::registerKeyAction(SDL_Keycode key, KeyActionCallback callback)
+	/*void SceneBase::registerKeyAction(SDL_Keycode key, KeyActionCallback callback)
 	{
 		m_keyBindings[key] = std::move(callback);
 	}
@@ -24,9 +24,9 @@ namespace Sigil
 	void SceneBase::registerMouseAction(Uint8 button, MouseActionCallback callback)
 	{
 		m_mouseBindings[button] = std::move(callback);
-	}
+	}*/
 
-    void SceneBase::registerKeyActionNew(const std::string& name, SDL_Keycode key)
+    void SceneBase::registerKeyAction(const std::string& name, SDL_Keycode key)
     {
 		KeyAction<SDL_KEYDOWN> actionPressed(name + "_Pressed", key);
 		KeyAction<SDL_KEYUP> actionReleased(name + "_Released", key);
@@ -34,7 +34,7 @@ namespace Sigil
 		m_actionManager.addKeyAction(actionReleased);
     }
 
-    void SceneBase::registerMouseActionNew(const std::string &name, Uint8 button)
+    void SceneBase::registerMouseButtonAction(const std::string &name, Uint8 button)
     {
 		MouseButtonAction<SDL_MOUSEBUTTONDOWN> actionPressed(name + "_Pressed", button);
 		MouseButtonAction<SDL_MOUSEBUTTONUP> actionReleased(name + "_Released", button);

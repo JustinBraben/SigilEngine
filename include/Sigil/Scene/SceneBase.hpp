@@ -24,10 +24,10 @@ namespace Sigil
 
 		std::string getName() const;
 
-		void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
-		void registerMouseAction(Uint8 button, MouseActionCallback callback);
-		void registerKeyActionNew(const std::string& name, SDL_Keycode key);
-		void registerMouseActionNew(const std::string& name, Uint8 button);
+		/*void registerKeyAction(SDL_Keycode key, KeyActionCallback callback);
+		void registerMouseAction(Uint8 button, MouseActionCallback callback);*/
+		void registerKeyAction(const std::string& name, SDL_Keycode key);
+		void registerMouseButtonAction(const std::string& name, Uint8 button);
 		void registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
 		void registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseActionCallback callback);
 		void handleKeyEvent(Engine& engine, const KeyEvent& event);
