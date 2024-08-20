@@ -29,7 +29,7 @@ namespace Sigil
 		void render(float deltaTime);
 
 		void handleKeyEvent(const SDL_Event& event);
-		void handleMouseEvent(const SDL_Event& event);
+		void handleMouseButtonEvent(const SDL_Event& event);
 
 		//template<typename SceneBaseDerivedType>
 		//void addNewScene(const std::string& name) {

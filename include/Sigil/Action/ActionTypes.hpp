@@ -1,5 +1,5 @@
-#ifndef SIGIL_EVENT_TYPES_HPP
-#define SIGIL_EVENT_TYPES_HPP
+#ifndef SIGIL_ACTION_TYPES_HPP
+#define SIGIL_ACTION_TYPES_HPP
 
 #include <Sigil/EngineFwd.hpp>
 #include <SDL2/SDL.h>
@@ -13,13 +13,13 @@ namespace Sigil
 		SDL_KeyboardEvent key_evnt;
 	};
 
-	struct MouseEvent {
+	struct MouseButtonEvent {
 		SDL_EventType evnt_type;
 		SDL_MouseButtonEvent mouse_evnt;
 	};
 
 	using KeyActionCallback = std::function<void(Engine&, const KeyEvent&)>;
-	using MouseActionCallback = std::function<void(Engine&, const MouseEvent&)>;
+	using MouseButtonActionCallback = std::function<void(Engine&, const MouseButtonEvent&)>;
 } // namespace Sigil
 
-#endif // SIGIL_EVENT_TYPES_HPP
+#endif // SIGIL_ACTION_TYPES_HPP

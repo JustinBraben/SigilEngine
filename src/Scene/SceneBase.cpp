@@ -44,7 +44,7 @@ namespace Sigil
 		}
     }
 
-    void SceneBase::registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseActionCallback callback)
+    void SceneBase::registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseButtonActionCallback callback)
     {
 		if (eventType == SDL_MOUSEBUTTONDOWN)
 		{
@@ -73,7 +73,7 @@ namespace Sigil
 		}
     }
 
-    void SceneBase::handleMouseEvent(Engine& engine, const MouseEvent& event) {
+    void SceneBase::handleMouseEvent(Engine& engine, const MouseButtonEvent& event) {
 		if (event.evnt_type == SDL_MOUSEBUTTONDOWN) {
 			auto it = m_mousePressCallbacks.find(event.mouse_evnt.button);
 			if (it != m_mousePressCallbacks.end()) {

@@ -107,10 +107,10 @@ namespace Sigil
 					handleKeyEvent(evnt);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					handleMouseEvent(evnt);
+					handleMouseButtonEvent(evnt);
 					break;
 				case SDL_MOUSEBUTTONUP:
-					handleMouseEvent(evnt);
+					handleMouseButtonEvent(evnt);
 					break;
 				default:
 					break;
@@ -180,28 +180,16 @@ namespace Sigil
 		if (currentScene) {
 			currentScene->handleKeyEvent(*this, keyEvent);
 		}
-
-		// TODO: Deprecate
-		// auto currentScene = m_sceneManager.getCurrentScene();
-		// if (currentScene) {
-		// 	currentScene->handleKeyEventNew(*this, event);
-		// }
 	}
 
 	// Handles Mouse events relevant to the current scene
-	void Engine::handleMouseEvent(const SDL_Event& event) 
+	void Engine::handleMouseButtonEvent(const SDL_Event& event)
 	{
-		MouseEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
+		MouseButtonEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene) {
 			currentScene->handleMouseEvent(*this, mouseEvent);
 		}
-
-		// TODO: Deprecate
-		// auto currentScene = m_sceneManager.getCurrentScene();
-		// if (currentScene) {
-		// 	currentScene->handleMouseEventNew(*this, event);
-		// }
 	}
 
 	void Engine::addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene)

@@ -108,8 +108,8 @@ set(
     "include/Sigil/Asset/Animation.hpp"
 
     "include/Sigil/Action/ActionManager.hpp"
-
-    "include/Sigil/Event/EventTypes.hpp"
+    "include/Sigil/Action/CallbackManager.hpp"
+    "include/Sigil/Action/ActionTypes.hpp"
 )
 
 set(
@@ -126,6 +126,7 @@ set(
     "src/Asset/Animation.cpp"
 
     "src/Action/ActionManager.cpp"
+    "src/Action/CallbackManager.cpp"
 )
 
 add_library(Sigil STATIC ${HEADERS} ${SOURCES})
