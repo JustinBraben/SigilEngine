@@ -15,7 +15,7 @@ namespace Sigil
 
 	template<auto EventType> requires KeyEventType<EventType>
 	struct KeyCodePressOrRelease {
-		SDL_Keycode m_keycode;
+		std::string m_name = "NONE";
 		static constexpr SDL_EventType m_eventType = static_cast<SDL_EventType>(EventType);
 	};
 
@@ -43,7 +43,7 @@ namespace Sigil
 
 	template<auto EventType> requires MouseButtonEventType<EventType>
 	struct MouseButtonPressOrRelease {
-		Uint8 m_button;
+		std::string m_name = "NONE";
 		static constexpr SDL_EventType m_eventType = static_cast<SDL_EventType>(EventType);
 	};
 
@@ -64,10 +64,10 @@ namespace Sigil
 		Uint8 m_button = SDL_BUTTON_LEFT;
 	};
 
-	using KeyPressActionMap = std::unordered_map<std::string, KeyCodePressOrRelease<SDL_KEYDOWN>>;
-	using MouseButtonPressActionMap = std::unordered_map<std::string, MouseButtonPressOrRelease<SDL_MOUSEBUTTONDOWN>>;
-	using KeyReleaseActionMap = std::unordered_map<std::string, KeyCodePressOrRelease<SDL_KEYUP>>;
-	using MouseButtonReleaseActionMap = std::unordered_map<std::string, MouseButtonPressOrRelease<SDL_MOUSEBUTTONUP>>;
+	using KeyPressActionMap = std::unordered_map<SDL_Keycode, KeyCodePressOrRelease<SDL_KEYDOWN>>;
+	using MouseButtonPressActionMap = std::unordered_map<Uint8, MouseButtonPressOrRelease<SDL_MOUSEBUTTONDOWN>>;
+	using KeyReleaseActionMap = std::unordered_map<SDL_Keycode, KeyCodePressOrRelease<SDL_KEYUP>>;
+	using MouseButtonReleaseActionMap = std::unordered_map<Uint8, MouseButtonPressOrRelease<SDL_MOUSEBUTTONUP>>;
 
 	class ActionManager
 	{
@@ -76,23 +76,23 @@ namespace Sigil
 		void addKeyAction(const KeyAction<EventType>& action) {
 			if (EventType == SDL_KEYDOWN)
 			{
-				m_keyPressActions[action.getName()] = { action.getKeycode() };
+				m_keyPressActions[action.getKeycode()] = { action.getName() };
 			}
 			else
 			{
-				m_keyReleaseActions[action.getName()] = { action.getKeycode() };
+				m_keyReleaseActions[action.getKeycode()] = { action.getName() };
 			}
 		}
 
 		template<auto EventType> requires KeyEventType<EventType>
-		KeyCodePressOrRelease<EventType> getKeyAction(const std::string& name) const {
+		KeyCodePressOrRelease<EventType> getKeyAction(SDL_Keycode keycode) const {
 			if constexpr (EventType == SDL_KEYDOWN)
 			{
-				return m_keyPressActions.at(name);
+				return m_keyPressActions.at(keycode);
 			}
 			else
 			{
-				return m_keyReleaseActions.at(name);
+				return m_keyReleaseActions.at(keycode);
 			}
 		}
 
@@ -100,25 +100,45 @@ namespace Sigil
 		void addMouseButtonAction(const MouseButtonAction<EventType>& action) {
 			if (EventType == SDL_MOUSEBUTTONDOWN) 
 			{
-				m_mouseButtonPressActions[action.getName()] = { action.getButton() };
+				m_mouseButtonPressActions[action.getButton()] = { action.getName() };
 			}
 			else
 			{
-				m_mouseButtonReleaseActions[action.getName()] = { action.getButton() };
+				m_mouseButtonReleaseActions[action.getButton()] = { action.getName() };
 			}
 		}
 
 		template<auto EventType> requires MouseButtonEventType<EventType>
-		MouseButtonPressOrRelease<EventType> getMouseAction(const std::string& name) const 
+		MouseButtonPressOrRelease<EventType> getMouseAction(const Uint8& button) const 
 		{
-			if constexpr (EventType == SDL_MOUSEBUTTONDOWN) 
+			if constexpr (EventType == SDL_MOUSEBUTTONDOWN)
 			{
-				return m_mouseButtonPressActions.at(name);
+				return m_mouseButtonPressActions.at(button);
 			}
 			else
 			{
-				return m_mouseButtonReleaseActions.at(name);
+				return m_mouseButtonReleaseActions.at(button);
 			}
+		}
+
+		KeyPressActionMap& getKeyPressActions() 
+		{
+			return m_keyPressActions;
+		}
+
+		KeyReleaseActionMap& getKeyReleaseActions() 
+		{
+			return m_keyReleaseActions;
+		}
+
+		MouseButtonPressActionMap& getMouseButtonPressActions() 
+		{
+			return m_mouseButtonPressActions;
+		}
+
+		MouseButtonReleaseActionMap& getMouseButtonReleaseActions() 
+		{
+			return m_mouseButtonReleaseActions;
 		}
 
 	private:

@@ -180,6 +180,12 @@ namespace Sigil
 		if (currentScene) {
 			currentScene->handleKeyEvent(*this, keyEvent);
 		}
+
+		// TODO: Deprecate
+		// auto currentScene = m_sceneManager.getCurrentScene();
+		// if (currentScene) {
+		// 	currentScene->handleKeyEventNew(*this, event);
+		// }
 	}
 
 	// Handles Mouse events relevant to the current scene
@@ -190,6 +196,12 @@ namespace Sigil
 		if (currentScene) {
 			currentScene->handleMouseEvent(*this, mouseEvent);
 		}
+
+		// TODO: Deprecate
+		// auto currentScene = m_sceneManager.getCurrentScene();
+		// if (currentScene) {
+		// 	currentScene->handleMouseEventNew(*this, event);
+		// }
 	}
 
 	void Engine::addNewScene(const std::string& name, std::shared_ptr<SceneBase> scene)

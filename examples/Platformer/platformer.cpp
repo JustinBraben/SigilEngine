@@ -61,19 +61,24 @@ int main()
 	auto platformerLevelOne = std::make_shared<PlatformerLevelOne>(engine, "platformerLevelOne");
 	engine.addNewScene("platformerLevelOne", platformerLevelOne);
 	engine.setCurrentScene("platformerLevelOne");
-	
-	Sigil::KeyAction<SDL_KEYDOWN> jumpPressed("Jump_Pressed", SDLK_SPACE);
-	Sigil::KeyAction<SDL_KEYDOWN> rightPressed("Right_Pressed", SDLK_d);
-	Sigil::KeyAction<SDL_KEYDOWN> leftPressed("Left_Pressed", SDLK_a);
-	Sigil::KeyAction<SDL_KEYUP> jumpReleased("Jump_Released", SDLK_SPACE);
-	Sigil::KeyAction<SDL_KEYUP> rightReleased("Right_Released", SDLK_d);
-	Sigil::KeyAction<SDL_KEYUP> leftReleased("Left_Released", SDLK_a);
-	engine.getCurrentScene()->getActionManager().addKeyAction(jumpPressed);
-	engine.getCurrentScene()->getActionManager().addKeyAction(rightPressed);
-	engine.getCurrentScene()->getActionManager().addKeyAction(leftPressed);
-	engine.getCurrentScene()->getActionManager().addKeyAction(jumpReleased);
-	engine.getCurrentScene()->getActionManager().addKeyAction(rightReleased);
-	engine.getCurrentScene()->getActionManager().addKeyAction(leftReleased);
+
+	engine.getCurrentScene()->registerKeyAction("Jump", SDLK_SPACE);
+	engine.getCurrentScene()->registerKeyAction("Right", SDLK_d);
+	engine.getCurrentScene()->registerKeyAction("Left", SDLK_a);
+
+	engine.getCurrentScene()->registerKeyActionCallback(SDLK_ESCAPE, SDL_KEYUP, 
+		[](Sigil::Engine& eng, const Sigil::KeyEvent& keyboardEvnt) {
+			eng.quit();
+		}
+	);
+
+	// Imagine using it like this
+	// Sigil::KeyAction jump("Jump", SDLK_SPACE);
+	// Then it generates a KeyUp and KeyDown for SDLK_SPACE
+
+	// engine.getCurrentScene()->registerKeyActionNew("Jump", SDLK_SPACE);
+	// engine.getCurrentScene()->registerActionCallback
+
 
 	engine.run();
 
