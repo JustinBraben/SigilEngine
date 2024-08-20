@@ -5,6 +5,11 @@
 
 #include <vector>
 
+enum class terrainType {
+	Brick,
+	Dirt
+};
+
 enum class State {
 	pause,
 	play
@@ -15,6 +20,11 @@ enum class PlayerState {
 	Run,
 	Jump,
 	Fall
+};
+
+struct PlayerMovementInput {
+	bool right = false, left = false;
+	bool jump = false;
 };
 
 struct Position {
@@ -110,6 +120,12 @@ struct Sprite {
 	const char* name;
 };
 
+struct SpriteSource {
+	const char* name;
+	int x, y;
+	int w, h;
+};
+
 struct SpriteAnimator {
 	const char* name;
 	// Current frame of animation
@@ -123,6 +139,7 @@ struct SpriteAnimator {
 	// fps the animation is expected to run at
 	size_t fps = 0;
 	int w = 0, h = 0;
+	SDL_RendererFlip flip;
 };
 
 #endif // COMPONENTS_HPP

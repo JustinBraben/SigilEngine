@@ -60,6 +60,10 @@
       "flower": {
         "name": "flower",
         "path": "./resources/sprites/flower.png"
+      },
+      "Terrain": {
+        "name": "Terrain",
+        "path": "./resources/sprites/Terrain_(16x16).png"
       }
     }
   }

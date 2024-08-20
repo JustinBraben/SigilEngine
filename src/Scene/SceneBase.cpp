@@ -158,6 +158,11 @@ namespace Sigil
 		return m_callbackManager;
 	}
 
+	entt::registry& SceneBase::getRegistry()
+	{
+		return m_registry;
+	}
+
 	void SceneBase::clearRegistry()
 	{
 		m_registry.clear();

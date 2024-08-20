@@ -43,6 +43,7 @@ namespace Sigil
 
 		ActionManager& getActionManager();
 		CallbackManager& getCallbackManager();
+		entt::registry& getRegistry();
 
 		void clearRegistry();
 		void initializeScene();
