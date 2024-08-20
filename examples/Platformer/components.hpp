@@ -77,6 +77,29 @@ struct SpriteSize {
 	}
 };
 
+struct CollisionBox {
+	int w, h;
+	int halfW, halfH;
+
+	// Member function approach
+	bool operator==(const CollisionBox& other) const {
+		return	(w == other.w) && (h == other.h) &&
+				(halfW == other.halfW) && (halfH == other.halfH);
+	}
+
+	// Member function approach
+	bool operator!=(const CollisionBox& other) const {
+		return	(w != other.w) && (h != other.h) &&
+				(halfW != other.halfW) && (halfH != other.halfH);
+	}
+
+	// Add this operator for ordering
+	bool operator<(const CollisionBox& other) const {
+		if (w != other.w) return w < other.w;
+		return h < other.h;
+	}
+};
+
 struct Text {
 	const char* str;
 	SDL_Color foregroundColor;

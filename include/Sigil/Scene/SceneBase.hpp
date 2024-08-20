@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <queue>
 #include <functional>
 
 #include <SDL2/SDL.h>
@@ -29,8 +30,12 @@ namespace Sigil
 		void registerMouseButtonAction(const std::string& name, Uint8 button);
 		void registerKeyActionCallback(SDL_Keycode key, SDL_EventType eventType, KeyActionCallback callback);
 		void registerMouseButtonActionCallback(Uint8 button, SDL_EventType eventType, MouseButtonActionCallback callback);
-		void handleKeyEvent(Engine& engine, const KeyEvent& event);
-		void handleMouseButtonEvent(Engine& engine, const MouseButtonEvent& event);
+		void handleKeyEvent(const KeyEvent& event);
+		void handleMouseButtonEvent(const MouseButtonEvent& event);
+
+		void processActions();
+		void processKeyActions();
+		void processMouseActions();
 
 		using SystemFunction = std::function<void(entt::registry&, float)>;
 		void addSystem(SystemFunction system);
@@ -51,6 +56,10 @@ namespace Sigil
 		std::string m_name;
 		ActionManager m_actionManager;
 		CallbackManager m_callbackManager;
+		std::queue<KeyEvent> m_keyPressActionQueue;
+		std::queue<MouseButtonEvent> m_mouseButtonPressActionQueue;
+		std::queue<KeyEvent> m_keyReleaseActionQueue;
+		std::queue<MouseButtonEvent> m_mouseButtonReleaseActionQueue;
 		entt::registry m_registry;
 		std::vector<SystemFunction> m_systems;
 

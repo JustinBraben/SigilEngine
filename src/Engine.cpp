@@ -92,6 +92,7 @@ namespace Sigil
 
 		while (m_running)
 		{
+			// Queues up actions that the application finds for the current scene
 			SDL_Event evnt;
 			while (SDL_PollEvent(&evnt))
 			{
@@ -116,6 +117,9 @@ namespace Sigil
 					break;
 				}
 			}
+
+			// Processes the actions of the current scene, in order as they came in
+			m_sceneManager.getCurrentScene()->processActions();
 
 			m_currentTime = SDL_GetPerformanceCounter();
 			m_deltaTime = m_currentTime - m_previousTime;
@@ -178,7 +182,7 @@ namespace Sigil
 		KeyEvent keyEvent{ static_cast<SDL_EventType>(event.type), event.key };
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene) {
-			currentScene->handleKeyEvent(*this, keyEvent);
+			currentScene->handleKeyEvent(keyEvent);
 		}
 	}
 
@@ -188,7 +192,7 @@ namespace Sigil
 		MouseButtonEvent mouseEvent{ static_cast<SDL_EventType>(event.type), event.button };
 		auto currentScene = m_sceneManager.getCurrentScene();
 		if (currentScene) {
-			currentScene->handleMouseButtonEvent(*this, mouseEvent);
+			currentScene->handleMouseButtonEvent(mouseEvent);
 		}
 	}
 
