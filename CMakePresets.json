@@ -7,102 +7,44 @@
   },
   "configurePresets": [
     {
-      "name": "windows-base",
+      "name": "base",
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/install/${presetName}",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe"
-      },
+      "installDir": "${sourceDir}/out/install/${presetName}"
+    },
+    {
+      "name": "windows-base",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
       }
     },
     {
-      "name": "x64-debug",
-      "displayName": "x64 Debug",
+      "name": "windows-debug",
+      "displayName": "Windows Debug",
       "inherits": "windows-base",
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
-      },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "Build-Examples",
-      "displayName": "Build Examples",
-      "inherits": "x64-debug",
-      "cacheVariables": {
-        "SIGIL_BUILD_EXAMPLES": "ON"
-      }
-    },
-    {
-      "name": "Build-Tests",
-      "displayName": "Build Tests",
-      "inherits": "x64-debug",
-      "cacheVariables": {
-        "SIGIL_BUILD_TESTING": "ON"
-      }
-    },
-    {
-      "name": "Build-Shared",
-      "displayName": "Build Shared",
-      "inherits": "x64-debug",
-      "cacheVariables": {
-        "BUILD_SHARED_LIBS": "ON"
-      }
-    },
-    {
-      "name": "Build-Docs",
-      "displayName": "Build Docs",
-      "inherits": "x64-debug",
-      "cacheVariables": {
-        "SIGIL_BUILD_DOCS": "ON"
-      }
-    },
-    {
-      "name": "x64-release",
-      "displayName": "x64 Release",
-      "inherits": "x64-debug",
+      "name": "windows-release",
+      "displayName": "Windows Release",
+      "inherits": "windows-base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "x86-debug",
-      "displayName": "x86 Debug",
-      "inherits": "windows-base",
-      "architecture": {
-        "value": "x86",
-        "strategy": "external"
-      },
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "x86-release",
-      "displayName": "x86 Release",
-      "inherits": "x86-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "name": "linux-debug",
-      "displayName": "Linux Debug",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/install/${presetName}",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      },
+      "name": "linux-base",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -115,19 +57,32 @@
       }
     },
     {
-      "name": "macos-base",
-      "hidden": true,
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/install/${presetName}",
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "inherits": "linux-base",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
-        "CMAKE_CXX_COMPILER": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++"
-      },
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Linux Release",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "macos-base",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++"
       },
       "vendor": {
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
@@ -144,19 +99,43 @@
       }
     },
     {
-      "name": "macos-Build-Examples",
-      "displayName": "macos Build Examples",
-      "inherits": "macos-debug",
-      "cacheVariables": {
-        "SIGIL_BUILD_EXAMPLES": "ON"
-      }
-    },
-    {
       "name": "macos-release",
       "displayName": "macOS Release",
       "inherits": "macos-base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "Build-Examples",
+      "displayName": "Build Examples",
+      "inherits": [ "windows-debug", "linux-debug", "macos-debug" ],
+      "cacheVariables": {
+        "SIGIL_BUILD_EXAMPLES": "ON"
+      }
+    },
+    {
+      "name": "Build-Tests",
+      "displayName": "Build Tests",
+      "inherits": [ "windows-debug", "linux-debug", "macos-debug" ],
+      "cacheVariables": {
+        "SIGIL_BUILD_TESTING": "ON"
+      }
+    },
+    {
+      "name": "Build-Shared",
+      "displayName": "Build Shared",
+      "inherits": [ "windows-debug", "linux-debug", "macos-debug" ],
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": "ON"
+      }
+    },
+    {
+      "name": "Build-Docs",
+      "displayName": "Build Docs",
+      "inherits": [ "windows-debug", "linux-debug", "macos-debug" ],
+      "cacheVariables": {
+        "SIGIL_BUILD_DOCS": "ON"
       }
     }
   ]

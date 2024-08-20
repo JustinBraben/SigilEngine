@@ -79,7 +79,6 @@ public:
 			SDL_Rect srcRect = { srcX, 0, sprite_source.w, sprite_source.h };
 			SDL_Rect dstRect = { pos.x, pos.y, sprite_size.w, sprite_size.h };
 
-			// SDL_RenderCopy(renderer, spriteTexture, &srcRect, &dstRect);
 			SDL_RenderCopyEx(renderer, spriteTexture, &srcRect, &dstRect, 0.0, NULL, sprite_animator.flip);
 		}
 	}
